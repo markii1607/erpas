@@ -1,0 +1,91 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "datatables.net-autofill-bs",
+        "scope": null,
+        "escapedName": "datatables.net-autofill-bs",
+        "name": "datatables.net-autofill-bs",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "c:\\xampp\\htdocs\\node"
+    ]
+  ],
+  "_from": "datatables.net-autofill-bs@latest",
+  "_id": "datatables.net-autofill-bs@2.0.0",
+  "_inCache": true,
+  "_location": "/datatables.net-autofill-bs",
+  "_nodeVersion": "4.1.1",
+  "_npmUser": {
+    "name": "datatables",
+    "email": "npm@datatables.net"
+  },
+  "_npmVersion": "2.14.4",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "datatables.net-autofill-bs",
+    "scope": null,
+    "escapedName": "datatables.net-autofill-bs",
+    "name": "datatables.net-autofill-bs",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/datatables.net-autofill-bs/-/datatables.net-autofill-bs-2.0.0.tgz",
+  "_shasum": "3ce59811cf6fd1d061b967bc03c131f5ef9e4b52",
+  "_shrinkwrap": null,
+  "_spec": "datatables.net-autofill-bs",
+  "_where": "c:\\xampp\\htdocs\\node",
+  "author": {
+    "name": "SpryMedia Ltd",
+    "url": "http://datatables.net"
+  },
+  "bugs": {
+    "url": "https://datatables.net/forums"
+  },
+  "dependencies": {
+    "datatables.net-autofill": ">=2.0.0",
+    "datatables.net-bs": ">=1.10.9",
+    "jquery": ">=1.7"
+  },
+  "description": "AutoFill for DataTables with styling for [Bootstrap](http://getbootstrap.com/)",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "3ce59811cf6fd1d061b967bc03c131f5ef9e4b52",
+    "tarball": "https://registry.npmjs.org/datatables.net-autofill-bs/-/datatables.net-autofill-bs-2.0.0.tgz"
+  },
+  "files": [
+    "js/autoFill.bootstrap.js",
+    "css/autoFill.bootstrap.css"
+  ],
+  "gitHead": "102810b3d9f98d5e1cd9d9cb72805e8dbbb3fbfd",
+  "homepage": "https://datatables.net",
+  "keywords": [
+    "autofill",
+    "excel",
+    "DataTables",
+    "jQuery",
+    "table",
+    "Bootstrap"
+  ],
+  "license": "MIT",
+  "main": "./js/autoFill.bootstrap.js",
+  "maintainers": [
+    {
+      "name": "datatables",
+      "email": "npm@datatables.net"
+    }
+  ],
+  "name": "datatables.net-autofill-bs",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "scripts": {},
+  "version": "2.0.0"
+}

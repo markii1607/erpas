@@ -1,0 +1,196 @@
+<style type="text/css">
+    .datepicker{z-index:9999 !important}
+</style>
+<script type="text/ng-template" id="employment_history.html">
+    <div block-ui="blockEmploymentHistory">
+        <form name="employmentHistoryForm" ng-submit="save(employmentHistoryForm.$valid)" novalidate>
+            <div class="modal-header">
+                <span class="fa-stack fa-lg">
+                    <i class="fa fa-square fa-stack-2x text-danger"></i>
+                    <i class="{{ config.mIcon }}" style="color: white;"></i>
+                </span>
+
+                <span style="letter-spacing: 1px;" class="text-uppercase">{{ config.mType }} EMPLOYMENT HISTORY</span>
+
+                <button type="button" class="close" aria-label="Close" ng-click="closeModal()" style="margin-top: 7px; margin-right: 7px;">
+                    <span aria-hidden="true">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row" style="font-style: italic;">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                        <!-- inclusive_date -->
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+                                <div class="form-group has-feedback">
+                                    <input type="text"
+                                        name="inclusive_date_from"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-trigger="focus"
+                                        title="Inclusive Date[From] (e.g. 03/31/2014)."
+                                        placeholder="Enter inclusive date (From)."
+                                        class="form-control"
+                                        id="from_date"
+                                        data-language="en"
+                                        autofocus="autofocus"
+                                        data-inputmask="'mask': '99/99/9999','placeholder': 'mm/dd/yyyy'"
+                                        data-mask
+                                        required>
+                                        <!-- ng-model="employmentHistoryInfo.from_date" -->
+                                    <span class="form-control-feedback feedback"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-1 col-lg-1 hidden-xs hidden-sm">
+                                <center>-</center>
+                            </div>
+                            
+                            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+                                <div class="form-group has-feedback">
+                                    <input type="text"
+                                        name="inclusive_date_to"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-trigger="focus"
+                                        title="Inclusive Date[To] (e.g. 03/31/2014)."
+                                        placeholder="Enter inclusive date (To)."
+                                        class="form-control"
+                                        id="to_date"
+                                        data-language="en"
+                                        data-inputmask="'mask': '99/99/9999','placeholder': 'mm/dd/yyyy'"
+                                        data-mask
+                                        required>
+                                        <!-- ng-model="employmentHistoryInfo.to_date" -->
+                                    <span class="form-control-feedback feedback"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- department -->
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <input type="text"
+                                        name="department"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-trigger="focus"
+                                        title="Department (e.g. Construction, Human Resources, etc.)."
+                                        ng-model="employmentHistoryInfo.department_name"
+                                        placeholder="Enter department."
+                                        class="form-control"
+                                        required>
+                                    <span class="form-control-feedback feedback"><i class="fa fa-edit"></i></span>
+                                    <!--
+                                    <ui-select ng-model="employmentHistoryInfo.department"
+                                        theme="bootstrap"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-trigger="focus"
+                                        title="Department (e.g. Construction, Human Resource, etc.)"
+                                        reset-search-input="true"
+                                        required>
+                                    <ui-select-match placeholder="Select department...">
+                                        {{ $select.selected.name }}
+                                    </ui-select-match>
+                                    <ui-select-choices style="font-size: 12px;" 
+                                        repeat="department in departments | filter: $select.search | limitTo: infiniteScroll.currentItems"
+                                        infinite-scroll="addMoreItems()"
+                                        infinite-scroll-distance="2">
+                                        <div class="activity-code-item" 
+                                            ng-bind-html="department.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 
+                            position
+                        -->
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <input type="text"
+                                        name="position"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-trigger="focus"
+                                        title="Position (e.g. Accountant, Engineer, etc.)."
+                                        ng-model="employmentHistoryInfo.position_name"
+                                        placeholder="Enter position."
+                                        class="form-control"
+                                        required>
+                                    <span class="form-control-feedback feedback"><i class="fa fa-edit"></i></span>
+                                    <!--
+                                    <ui-select ng-model="employmentHistoryInfo.position"
+                                        theme="bootstrap"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-trigger="focus"
+                                        title="Position (e.g. Accountant, etc.)"
+                                        reset-search-input="true"
+                                        required>
+                                    <ui-select-match placeholder="Select position...">
+                                        {{ $select.selected.name }}
+                                    </ui-select-match>
+                                    <ui-select-choices style="font-size: 12px;" 
+                                        repeat="position in positions | filter: $select.search | limitTo: infiniteScroll.currentItems"
+                                        infinite-scroll="addMoreItems()"
+                                        infinite-scroll-distance="2">
+                                        <div class="activity-code-item" 
+                                            ng-bind-html="position.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- rating -->
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                <div class="form-group has-feedback">
+                                    <input type="text" 
+                                        name="salary"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-trigger="focus"
+                                        title="Salary (e.g. 10,000.00)"
+                                        ng-model="employmentHistoryInfo.salary_range" 
+                                        class="form-control" 
+                                        placeholder="Enter salary." 
+                                        data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '₱', 'placeholder': '0'"
+                                        data-mask
+                                        required>
+                                    <span class="form-control-feedback feedback"><i class="fa fa-money"></i></span>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row text-center">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <button type="submit" class="btn btn-warning hoverable">
+                            <i class="fa fa-save"></i>&nbsp;{{ config.btnLabel }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // input-mask
+            Inputmask().mask(document.querySelectorAll("input"));
+        });
+    </script>
+</script>

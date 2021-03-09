@@ -1,0 +1,93 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "datatables.net-colreorder-bs@1.4.0",
+        "scope": null,
+        "escapedName": "datatables.net-colreorder-bs",
+        "name": "datatables.net-colreorder-bs",
+        "rawSpec": "1.4.0",
+        "spec": "1.4.0",
+        "type": "version"
+      },
+      "c:\\xampp\\htdocs\\node"
+    ]
+  ],
+  "_from": "datatables.net-colreorder-bs@1.4.0",
+  "_id": "datatables.net-colreorder-bs@1.4.0",
+  "_inCache": true,
+  "_location": "/datatables.net-colreorder-bs",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/datatables.net-colreorder-bs-1.4.0.tgz_1504103171040_0.605422229738906"
+  },
+  "_npmUser": {
+    "name": "datatables",
+    "email": "npm@datatables.net"
+  },
+  "_npmVersion": "1.3.6",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "datatables.net-colreorder-bs@1.4.0",
+    "scope": null,
+    "escapedName": "datatables.net-colreorder-bs",
+    "name": "datatables.net-colreorder-bs",
+    "rawSpec": "1.4.0",
+    "spec": "1.4.0",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/datatables.net-colreorder-bs/-/datatables.net-colreorder-bs-1.4.0.tgz",
+  "_shasum": "8fdbb00007a3528744e956b71967a6c91a9873a9",
+  "_shrinkwrap": null,
+  "_spec": "datatables.net-colreorder-bs@1.4.0",
+  "_where": "c:\\xampp\\htdocs\\node",
+  "author": {
+    "name": "SpryMedia Ltd",
+    "url": "http://datatables.net"
+  },
+  "bugs": {
+    "url": "https://datatables.net/forums"
+  },
+  "dependencies": {
+    "datatables.net-bs": "^1.10.15",
+    "datatables.net-colreorder": "1.4.0",
+    "jquery": ">=1.7"
+  },
+  "description": "ColReorder for DataTables with styling for [Bootstrap 3](http://getbootstrap.com/)",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "8fdbb00007a3528744e956b71967a6c91a9873a9",
+    "tarball": "https://registry.npmjs.org/datatables.net-colreorder-bs/-/datatables.net-colreorder-bs-1.4.0.tgz"
+  },
+  "files": [
+    "css/colReorder.bootstrap.css"
+  ],
+  "homepage": "https://datatables.net",
+  "keywords": [
+    "reorder",
+    "DataTables",
+    "jQuery",
+    "table",
+    "Bootstrap"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "datatables",
+      "email": "npm@datatables.net"
+    }
+  ],
+  "name": "datatables.net-colreorder-bs",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DataTables/Dist-DataTables-ColReorder-Bootstrap.git"
+  },
+  "style": "css/colReorder.bootstrap.css",
+  "version": "1.4.0"
+}

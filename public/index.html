@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>eRPAS</title>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <!-- Logo/Icon of the site -->
+        <link rel="icon" type="x-ico/png" href="../public/img/erpas_logo.png">
+
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <!-- select2 -->
+        <link rel="stylesheet" href="plugins/select2/dist/css/select2.min.css">
+
+        <!-- block-ui -->
+        <link rel="stylesheet" href="plugins/angular-block-ui/dist/angular-block-ui.min.css">
+
+        <!-- Bootstrap 3.3.6 -->
+        <!-- <link rel="stylesheet" href="../template/AdminLTE/bootstrap/css/bootstrap.min.css"> -->
+
+        <!-- Core UI CSS -->
+        <link rel="stylesheet" href="../node_modules/@coreui/coreui/dist/css/coreui.min.css">
+
+        <!-- iCheck -->
+        <!-- <link rel="stylesheet" href="../template/AdminLTE/plugins/iCheck/all.css"> -->
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
+
+        <!-- alertify.js -->
+        <link rel="stylesheet" href="plugins/alertify.js/dist/css/alertify.css">
+
+        <!-- UI Select -->
+        <link rel="stylesheet" href="plugins/ui-select/dist/select.min.css">
+
+        <!-- angular-ui-bootstrap -->
+        <link rel="stylesheet" href="plugins/angular-ui-bootstrap/dist/ui-bootstrap-csp.css">
+
+        <!-- datatables.net-bs -->
+        <link rel="stylesheet" href="plugins/datatables.net-bs/css/dataTables.bootstrap.css">
+
+        <!-- datatables.net-autofill-bs -->
+        <link rel="stylesheet" href="plugins/datatables.net-autofill-bs/css/autoFill.bootstrap.css">
+
+        <!-- datatables.net-buttons-bs -->
+        <link rel="stylesheet" href="plugins/datatables.net-buttons-bs/css/buttons.bootstrap.css">
+
+        <!-- datatables.net-colreorder-bs -->
+        <link rel="stylesheet" href="plugins/datatables.net-colreorder-bs/css/colReorder.bootstrap.css">
+
+        <!-- datatables.net-fixedcolumns-bs -->
+        <link rel="stylesheet" href="plugins/datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap.css">
+
+        <!-- datatables.net-fixedheader-bs -->
+        <link rel="stylesheet" href="plugins/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.css">
+
+        <!-- datatables.net-keytable-bs -->
+        <link rel="stylesheet" href="plugins/datatables.net-keytable-bs/css/keyTable.bootstrap.css">
+
+        <!-- datatables.net-responsive-bs -->
+        <link rel="stylesheet" href="plugins/datatables.net-responsive-bs/css/responsive.bootstrap.css">
+
+        <!-- datatables.net-rowgroup-bs -->
+        <link rel="stylesheet" href="plugins/datatables.net-rowgroup-bs/css/rowGroup.bootstrap.css">
+
+        <!-- datatables.net-scroller-bs -->
+        <link rel="stylesheet" href="plugins/datatables.net-scroller-bs/css/scroller.bootstrap.css">
+
+        <!-- datatables.net-select-bs -->
+        <link rel="stylesheet" href="plugins/datatables.net-select-bs/css/select.bootstrap.css">
+
+        <!-- datatables.net-plugins -->
+        <link rel="stylesheet" href="plugins/datatables.net-plugins/datatables.mark/dist/datatables.mark.min.css">
+
+        <!-- Ionicons -->
+        <!-- <link rel="stylesheet" href="../node_modules/ionicons/dist/css/ionicons.min.css"> -->
+
+        <!-- Intro.js -->
+        <!-- <link rel="stylesheet" href="../bower_components/intro.js/minified/introjs.min.css"> -->
+        <!-- <link rel="stylesheet" href="../bower_components/intro.js/themes/introjs-modern.css">  -->
+
+        <!-- dhtmlxgantt -->
+        <!-- <link rel="stylesheet" href="../node_modules/dhtmlxgantt/dhtmlxgantt.css"> -->
+
+        <!-- org-chart -->
+        <!-- <link rel="stylesheet" href="plugins/OrgChart/dist/css/jquery.orgchart.min.css"> -->
+
+        <!-- dhtml-gantt -->
+        <link rel="stylesheet" href="plugins/dhtml_gantt/codebase/dhtmlxgantt.css">
+
+        <!-- bootstrap-treeview -->
+        <!-- <link rel="stylesheet" href="plugins/bootstrap-treeview/bootstrap-treeview.min.css"> -->
+
+        <!-- bootstrap-orgchar3 -->
+        <!-- <link rel="stylesheet" href="plugins/bootstrap-orgchart3/bt-orgchart3.css"> -->
+
+        <!-- air-datepicker -->
+        <link rel="stylesheet" href="plugins/air-datepicker/dist/css/datepicker.min.css">
+
+        <!-- tui-chart -->
+        <link rel="stylesheet" href="plugins/tui.chart/dist/tui-chart.min.css">
+
+        <!-- dropzone -->
+        <link rel="stylesheet" href="../bower_components/dropzone/dist/min/basic.min.css">
+        <link rel="stylesheet" href="../bower_components/dropzone/dist/min/dropzone.min.css">
+
+        <!-- ng-dropzone -->
+        <link rel="stylesheet" href="../bower_components/ng-dropzone/dist/ng-dropzone.min.css">
+
+        <!-- datepicker -->
+        <!-- <link rel="stylesheet" href="../template/AdminLTE/plugins/datepicker/datepicker3.css"> -->
+
+        <!-- Theme style -->
+        <!-- <link rel="stylesheet" href="../template/AdminLTE/dist/css/AdminLTE.min.css"> -->
+
+        <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
+        <!-- <link rel="stylesheet" href="../template/AdminLTE/dist/css/skins/_all-skins.min.css"> -->
+
+        <!-- my-css -->
+        <link rel="stylesheet" href="css/index.css">
+    </head>
+
+    <!-- hold-transition login-page skin-red sidebar-mini -->
+    <!-- <body oncontextmenu="return false" class="hold-transition login-page wysihtml5-supported layout-top-nav"> -->
+    <!-- <body class="hold-transition layout-top-nav"> -->
+    <!-- <body class="hold-transition skin-red sidebar-mini login-page" oncontextmenu="return false"> -->
+    <body class="hold-transition skin-red sidebar-mini login-page">
+        <div ng-cloak ng-controller="IndexController" class="ui-view-container">
+            <div ui-view style="min-height: 100vh;"></div>
+        </div>
+
+        <script>
+            var path_name, APP;
+
+            APP = {
+                VERSION           : "",
+                BASE_URL          : "",
+                JS_PATH           : "js/",
+                LTE_TEMPLATE_PATH : "../../template/AdminLTE/",
+                VENDOR_PATH       : "../plugins/",
+                BOWER_PATH        : "../../bower_components/",
+                NODE_PATH         : "../../node_modules/"
+            };
+
+            /**
+             * server and development implementation.
+             */
+            path_name           = window.location.pathname.match(/.*(erpas\/)/gi)[0];
+            APP.SERVER_BASE_URL = path_name.slice(0, path_name.length - 1);
+
+            // electron setup
+            // window.nodeRequire = require;z
+            // delete window.require;
+            // delete window.exports;
+            // delete window.module;
+        </script>
+    </body>
+
+    <!-- Socket.IO -->
+    <!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
+    <!-- <script src="http://192.168.43.249:3000/socket.io/socket.io.js"></script> -->
+    <!-- <script src="http://192.168.21.16:3000/socket.io/socket.io.js"></script> -->
+    <!-- <script src="http://192.168.50.10:3000/socket.io/socket.io.js"></script> -->
+
+    <script data-main="js/config.js" src="plugins/require/require.min.js"></script>
+</html>

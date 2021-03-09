@@ -1,0 +1,82 @@
+<script type="text/ng-template" id="access.html">
+    <div block-ui="blockAccessForm">
+        <form name="form.accessForm" ng-submit="save(form.accessForm.$valid)" novalidate>
+            <div class="modal-header">
+				<span class="fa-stack fa-lg">
+	                <i class="fa fa-square fa-stack-2x text-danger"></i>
+	                <i class="{{ accessConf.mIcon }}" style="color: white;"></i>
+	            </span>
+
+	            <span style="letter-spacing: 1px;" class="text-uppercase">{{ accessConf.mLabel }} ACCESS</span>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()" style="margin-top: 7px; margin-right: 7px;">
+	                <span aria-hidden="true">
+	                    <i class="fa fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+                    	<!-- menu-modules -->
+                        <div class="row">
+                        	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <ui-select ng-model="access.menu"
+                                        theme="bootstrap"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-trigger="focus"
+                                        title="Modules / Menu (e.g. 201 Files, Materials, etc.)"
+                                        reset-search-input="true"
+                                        autofocus="autofocus"
+                                        required>
+                                    <ui-select-match placeholder="Select menu / modules...">
+                                        {{ $select.selected.name }}
+                                    </ui-select-match>
+                                    <ui-select-choices style="font-size: 12px;" 
+                                        repeat="menu in menus | filter: $select.search | limitTo: infiniteScroll.currentItems"
+                                        infinite-scroll="addMoreItems()"
+                                        infinite-scroll-distance="2">
+                                        <p>{{ menu.name }}</p>
+                                        <small><span>{{ menu.parent_name }}</span></small>
+                                    </ui-select-choices>
+                                </div>
+                            </div>
+                        </div>
+
+                    	<!-- level -->
+                        <div class="row" ng-if="access.menu.parent != null">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group has-feedback">
+                                    <input type="text" 
+                                        name="level"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-trigger="focus"
+                                        title="Access Level (e.g. 1,1,1 which means [add,edit,delete])"
+                                        ng-model="access.level" 
+                                        class="form-control" 
+                                        autofocus="autofocus"
+                                        placeholder="Enter access level." 
+                                        required>
+                                    <span class="form-control-feedback feedback"><i class="fa fa-qrcode"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>            	
+            </div>
+            <div class="modal-footer">
+                <div class="row text-center">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 10px;">
+                        <button class="btn btn-warning hoverable" ng-disabled="!form.accessForm.modified">
+                            <i class="fa fa-save"></i>&nbsp;{{ accessConf.btnLabel }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>

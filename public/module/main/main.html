@@ -1,0 +1,447 @@
+<style type="text/css">
+
+</style>
+
+<style>
+    .floating-panel {
+        position: fixed;
+        bottom: 10px;
+        right: 30px;
+        text-align: center;
+        z-index: 100000;
+    }
+
+    #messagebox_body {
+        height: 300px;
+        max-height: 300px;
+        overflow-y: scroll;
+        background: ivory;
+    }
+
+    .scrollable_body {
+        height: 300px !important;
+        max-height: 300px !important;
+        overflow-y: hidden;
+        /* overflow-y: scroll !important; */
+    }
+
+    .scrollable_body:hover, .scrollable_body:active, .scrollable_body:focus {
+        overflow-y: auto;
+    }
+
+    .bg_danger_notif {
+        background-color: salmon;
+    }
+    .bg_danger_notif_text {
+        color:white !important;
+    }
+
+    .bg_danger_notif:hover {
+        background-color: rgb(250, 157, 114) !important;
+    }
+    .bg_danger_notif_text {
+        color:white !important;
+    }
+
+
+
+
+</style>
+<!-- <div class="wrapper"> -->
+<div block-ui="blockMain">
+    <!-- <header class="main-header"> -->
+    <header class="main-header">
+        <!-- Logo -->
+        <a ui-sref="main.dashboard" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <!--
+            <span class="logo-mini">
+                <img width="70" height="40" src="/projects/arpeggio/public/img/scdc_icon.png">
+            </span>
+            -->
+
+            <!-- logo for regular state and mobile devices -->
+
+            <span class="logo-lg">
+                <!-- <img width="200" height="50" src="/projects/arpeggio/public/img/sw-new-logo.png"> -->
+                <img width="50" height="50" ng-src="{{ server.base_url }}/public/img/arpeggio_logo.png">
+            </span>
+
+            <!--
+            <span>
+                <b>A</b>rpeggio
+            </span>
+            -->
+        </a>
+
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+
+
+                    <!-- <! -- Toggle Chat -->
+                    <li >
+                        <!-- <span class="label label-success">{{no_of_clients}}</span> -->
+
+                        <!--
+                        {{no_of_clients.length}}
+                        Online
+                        -->
+                    </li>
+
+                    <!-- Messages: style can be found in dropdown.less-->
+                    <li class="dropdown messages-menu" title="Messages">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-envelope-o"></i>
+                            <span class="label label-success">4</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">You have 4 messages</li>
+                            <li>
+                                <!-- inner menu: contains the actual data -->
+                                <ul class="menu">
+                                    <li>
+                                        <!-- start message -->
+                                        <a href="#">
+                                            <div class="pull-left">
+                                                <img ng-src="{{ server.base_url }}/public/img/user1.png" class="img-circle" alt="User Image">
+                                            </div>
+                                            <h4>
+                                                Support Team
+                                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                            </h4>
+                                            <p>Why not buy a new awesome theme?</p>
+                                        </a>
+                                    </li>
+                                    <!-- end message -->
+                                    <li>
+                                        <a href="#">
+                                            <div class="pull-left">
+                                                <img ng-src="{{ server.base_url }}/public/img/user1.png" class="img-circle" alt="User Image">
+                                            </div>
+                                            <h4>
+                                                AdminLTE Design Team
+                                                <small><i class="fa fa-clock-o"></i> 2 hours</small>
+                                            </h4>
+                                            <p>Why not buy a new awesome theme?</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="footer"><a href="#">See All Messages</a></li>
+                        </ul>
+                    </li>
+              
+                     <!-- ====================== NOTIFICATIONS ============================= -->
+                    <li class="dropdown messages-menu" title="Notifications">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-bell-o"></i>
+                            <span class="label label-warning">{{notifications.length}}</span> 
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">You have {{notifications.length}} notification/s</li>
+                            
+
+                            <li class="scrollable_body"><!-- start message -->
+                                <ul class="menu" ng-repeat="notif in notifications">
+                                    <li><!-- start message -->
+                                        <!-- <a href="/main/make_prs"> -->
+                                        <a href="javascript:void(0);" ng-click="goToTransacDoc(notif.is_prs, notif.is_aob, notif.is_po, notif.is_withdrawal, notif.is_unique_notifications, notif.is_unique_tasks)">
+                                            <div class="pull-left">
+                                                <i class="fa fa-warning text-yellow"></i> 
+                                            </div>
+
+                                            <h4 ng-if="notif.prs_info.request_type_id == 1" style="color:green">Materials</h4>
+                                            <h4 ng-if="notif.prs_info.request_type_id == 2" style="color:aqua">Heavy Equipment</h4>
+                                            <h4 ng-if="notif.prs_info.request_type_id == 3" style="color:red">Labor</h4>
+                                            <h4 ng-if="notif.prs_info.request_type_id == 4" style="color:purple">Tools</h4>
+                                            <h4 ng-if="notif.prs_info.request_type_id == 5" style="color:teal">Light Equipment</h4>
+                                            <h4 ng-if="notif.prs_info.request_type_id == 6" style="color:rgb(182, 165, 7)">Manpower Services</h4>
+                                            <h4 ng-if="notif.prs_info.request_type_id == 7" style="color:rgb(206, 135, 3)">Medical</h4>
+                                            <h4 ng-if="notif.prs_info.request_type_id == 8" style="color:maroon">PPE</h4>
+                                            <h4 style="color:orange">
+                                                 <strong style="color:black">PRS-{{notif.prs_info.prs_no}}</strong> {{notif.message}}
+                                            </h4>
+                                            <p>To be signed by <i style="color:blue; white-space: pre-line;" >{{notif.assignee_info.full_name}}</i></p>
+                                            <p class="pull-left">
+                                                <!-- <small><i class="fa fa-clock-o"></i> 5 mins</small> -->
+                                                <small ng-if="notif.time_passed_log != 0"><i class="fa fa-clock-o"></i> {{notif.time_passed_log}} days ago</small>
+                                                <small ng-if="notif.time_passed_log == 0"><i class="fa fa-clock-o"></i> Just Today</small>
+
+                                            </p>
+                                            
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            
+                            <li class="footer" ng-click='toNotifMod()'><a>View all Notifications</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- ====================== TASKS ============================= -->
+                    <li class="dropdown messages-menu" title="Tasks">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class=" fa fa-tasks"></i>
+                           
+                            <span class="label label-warning">{{tasks.length}}</span> 
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">You have {{tasks.length}} task/s</li>
+                            
+
+                            <li class="scrollable_body"><!-- start message -->
+                                <ul class="menu" ng-repeat="task in tasks">
+                                    <li ng-class="{'bg_danger_notif':task.time_passed_log > 2}"><!-- start message -->
+                                        <a href="#" ng-class="{'bg_danger_notif':task.time_passed_log > 2}">
+                                            <div class="pull-left">
+                                                <i class="fa fa-flag-o text-yellow" ng-class="{'bg_danger_notif_text':task.time_passed_log > 2}"></i> 
+                                            </div>
+                                            <p ng-class="{'bg_danger_notif_text':task.time_passed_log > 2}">To approve:</p>
+                                            <h4 style="color:black">
+                                                    <strong >PRS - {{task.prs_info.prs_no}}</strong>
+                                            </h4>
+                                            <!-- <p>To be signed by <i style="color:blue; white-space: pre-line;" >{{task.assignee_info.full_name}}</i></p> -->
+                                            <p class="pull-left" ng-class="{'bg_danger_notif_text':task.time_passed_log > 2}">
+                                                <small ng-if="task.time_passed_log != 0"><i class="fa fa-clock-o"></i> received {{task.time_passed_log}} days ago</small>
+                                                <small ng-if="task.time_passed_log == 0"><i class="fa fa-clock-o"></i> received Just Today</small>
+                                            </p>                   
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            
+                            <li class="footer" ng-click='toTaskMod()'><a >View all Tasks</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Toggle Chat -->
+                    <li class="dropdown notifications-menu" title="Chat">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-click="ToggleChat()">
+                            <i class="fa fa-paper-plane"></i>
+                            <!-- <span class="label label-warning">10</span> -->
+                        </a>
+                    </li>
+
+                    
+                    <!-- ====================== DEV TOOL ============================= -->
+                    <li ng-if="employee.position_id == '1'" class="dropdown messages-menu" title="Developer Tool">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-click="toDevTool()">
+                            <i class=" fa fa-wrench"></i>
+                        </a>
+                    </li>
+
+
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu" ng-hide="isHdfVisitor">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img ng-if="employee.photo != ''" ng-src="{{ server.ftp_url }}employee_records/{{ employee.user_image }}" class="user-image" alt="User Image">
+                            <img ng-if="employee.photo == ''" ng-src="{{ server.ftp_url }}employee_records/default-user.png" class="user-image" alt="User Image">
+                            <!-- <img src="{{ server.base_url }}/public/files/employee_records/{{employee.user_image}}" class="user-image" alt="User Image"> -->
+                            <!-- <img src="{{ server.base_url }}/employee_records/{{employee.user_image}}" class="user-image" alt="User Image"> -->
+                            <span class="hidden-xs">{{ employee.fullname | titleCase }}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <p class="pull-left" ng-hide=true>
+                                    <a href="" class="btn btn-danger btn-lg fa fa-edit" ng-click="updateProfile()" title="Update Profile"></a>
+                                </p>
+                            <img ng-if="employee.photo != ''" ng-src="{{ server.ftp_url }}employee_records/{{ employee.user_image }}" class="user-image" alt="User Image">
+                            <img ng-if="employee.photo == ''" ng-src="{{ server.ftp_url }}employee_records/default-user.png" class="user-image" alt="User Image">
+                                <!-- <img src="{{ server.base_url }}/public/files/employee_records/{{employee.user_image}}" class="img-circle" alt="User Image"> -->
+                                <!-- <img src="{{ server.base_url }}/employee_records/{{employee.user_image}}" class="img-circle" alt="User Image"> -->
+
+                                <p>
+                                    <b>{{ employee.fullname | titleCase }}</b>
+                                    <br />
+                                    <small>{{ employee.position_name | titleCase }}</small>
+                                    <small>Hired since {{ employee.date_hired }}</small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="box-body">
+                                    <a class="btn btn-block btn-default" ng-click="updateProfile()"><i class="fa fa-user pull-left"></i> My Profile</a>
+                                    <a class="btn btn-block btn-default" ng-click="updateImage()"><i class="fa fa-file-image-o pull-left"></i> Change Image</a>
+                                    <a class="btn btn-block btn-default" ng-click="changePassword()"><i class="fa fa-lock pull-left"></i> Change Password</a>
+                                    <a class="btn btn-block btn-default" ng-click="signOut()"><i class="fa fa-sign-out pull-left"></i> Sign out</a>
+                                </div>
+                            </li>
+                            <!-- Menu Footer-->
+                            <!-- <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="" class="btn btn-default btn-flat" ng-click="changePassword()">Change Password</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="" class="btn btn-default btn-flat" ng-click="signOut()">Sign out</a>
+                                </div>
+                            </li> -->
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Content Wrapper. Contains page content -->
+    <!-- <div class="content-wrapper"> -->
+    <div class="container-fluid">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                {{ contentheader.title }}
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">{{ contentheader.title }}</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->   
+        <section class="content">
+            <!-- Info boxes -->
+            <div class="row" ui-view></div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+      <!-- Floating Icon -->
+
+
+    <div class="row clearfix" ng-show="ChatToggle == true">
+        <div class="floating-panel col-xs-5 col-md-3">
+            <div class="panel panel-default">
+                <!-- HEADER -->
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <h3 class="panel-title" data-toggle="collapse" href="#collapse1">
+                                <!-- <a data-toggle="collapse" href="#collapse1">Message Board</a> -->
+                                Chat
+                            </h3>
+                        </div>
+                        <!-- <div class="col-md-2 col-xs-2">
+                        <button style="float: right;">-</button>
+                        </div> -->
+                    </div>
+
+                </div>
+                <div id="collapse1" class="panel-collapse collapse">
+                    <!-- BODY -->
+                    <div id="messagebox_body" class="panel-body" style="margin:10px;">
+                        
+                    </div>
+                    <!-- FOOTER -->
+                    <div class="panel-footer">
+                        <input ng-model="input_message_body" ng-change="typeListener()" id="input_message" type="text" class="form-control" placeholder="Press Enter to send message ...">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- <div class="container">
+        <div class="row chat-window col-xs-5 col-md-3" id="chat_window_1" style="margin-left:10px;">
+            <div class="col-xs-12 col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading top-bar">
+                        <div class="col-md-8 col-xs-8">
+                            <h3 class="panel-title"><span class="glyphicon glyphicon-comment"></span> Chat - Name_of_User</h3>
+                        </div>
+                        <div class="col-md-4 col-xs-4" style="text-align: right;">
+                            <a href="#"><span id="minim_chat_window" class="glyphicon glyphicon-minus icon_minim"></span></a>
+                            <a href="#"><span class="glyphicon glyphicon-remove icon_close" data-id="chat_window_1"></span></a>
+                        </div>
+                    </div>
+                    <div class="panel-body msg_container_base">
+                        <div class="row msg_container base_sent">
+                            <div class="col-md-10 col-xs-10">
+                                <div class="messages msg_sent">
+                                    <p>something, something, something, something, something, something, something</p>
+                                    <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-xs-2 avatar">
+                                <img height='50px' width='50px' src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="input-group">
+                            <input id="btn-input" type="text" class="form-control input-sm chat_input" placeholder="Write your message here..." />
+                            <span class="input-group-btn">
+                            <button class="btn btn-primary btn-sm" id="btn-chat">Send</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        
+        <!-- <div class="btn-group dropup">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-cog"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#" id="new_chat"><span class="glyphicon glyphicon-plus"></span> Novo</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-list"></span> Ver outras</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-remove"></span> Fechar Tudo</a></li>
+                <li class="divider"></li>
+                <li><a href="#"><span class="glyphicon glyphicon-eye-close"></span> Invisivel</a></li>
+            </ul>
+        </div>
+    </div> -->
+
+
+
+
+
+    <!-- <footer class="main-footer"> -->
+    <footer class="custom-footer">
+        <!-- <div class="pull-right hidden-xs"> -->
+        <span style="display: inline-block; vertical-align: middle; line-height: normal;">
+                <small>
+                    <b>Copyright</b> &copy; 2016-2020.&nbsp;|&nbsp;
+                    <a href="" class="hidden-xs hidden-sm">
+                        <b>Sunwest Construction and Development Corporation.</b>
+                    </a>
+                    <a href="" class="hidden-md hidden-lg">
+                        <b>SCDC</b>
+                    </a>
+                    <span>&nbsp;|&nbsp;All rights reserved.</span>
+        </small>
+        </span>
+        <!-- </div> -->
+    </footer>
+</div>
+
+<!-- Load modal template -->
+<div class="modal" ng-repeat="template in templates">
+    <ng-include ng-src="template"></ng-include>
+</div>
+
+<script type="text/javascript">
+    var $document = $(document),
+        $element = $('.main-header'),
+        className = 'custom-header';
+
+    $document.scroll(function() {
+        if ($document.scrollTop() >= 0.1) {
+            // Change 50 to the value you require
+            // for the event to trigger
+            $element.addClass(className);
+        } else {
+            $element.removeClass(className);
+        }
+    });
+</script>

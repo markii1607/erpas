@@ -1,0 +1,180 @@
+<script type="text/ng-template" id="spouse.html">
+    <div block-ui="blockSpouse">
+        <form name="spouseForm" ng-submit="save(spouseForm.$valid)" novalidate>
+            <div class="modal-header">
+                <span class="fa-stack fa-lg">
+                    <i class="fa fa-square fa-stack-2x text-danger"></i>
+                    <i class="{{ config.mIcon }}" style="color: white;"></i>
+                </span>
+
+                <span style="letter-spacing: 1px;" class="text-uppercase">{{ config.mType }} SPOUSE</span>
+
+                <button type="button" class="close" aria-label="Close" ng-click="closeModal()" style="margin-top: 7px; margin-right: 7px;">
+                    <span aria-hidden="true">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row" style="font-style: italic;">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <!-- 
+                            Spouse name
+                        -->
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group has-feedback">
+                                    <input type="text" 
+                                        name="spouse_name"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-trigger="focus"
+                                        title="Spouse name (e.g. Jasmin Doe)"
+                                        ng-model="spouseInfo.spouse_name"
+                                        class="form-control text-capitalize" 
+                                        placeholder="Enter spouse name."
+                                        autofocus="autofocus"
+                                        required>
+                                      <span class="form-control-feedback feedback"><i class="fa fa-pencil"></i></span>
+                                </div>
+                            </div>
+                        </div>
+						
+						<!-- 
+                            Spouse business address
+                        -->
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group has-feedback">
+                                    <input type="text" 
+                                        name="spouse_bus_address"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-trigger="focus"
+                                        title="Spouse business address (e.g. Old Albay, Bicol)"
+                                        ng-model="spouseInfo.business_address"
+                                        class="form-control text-capitalize" 
+                                        placeholder="Enter spouse business address."
+                                        required>
+                                      <span class="form-control-feedback feedback"><i class="fa fa-pencil"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                        	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        		<hr />
+                        	</div>
+                        </div>
+
+						<!-- children -->
+                        <div class="row">
+                        	<div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                                <div class="form-group has-feedback">
+                                    <input type="text" 
+                                        id="ch-name"
+                                        name="ch_name"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-trigger="focus"
+                                        title="Child Name (e.g. Johnny Doe)"
+                                        ng-model="childInfo.ch_name"
+                                        class="form-control text-capitalize" 
+                                        placeholder="Enter child name.">
+                                      <span class="form-control-feedback feedback"><i class="fa fa-pencil"></i></span>
+                                </div>
+                        	</div>
+                        	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <div class="form-group has-feedback">
+                                    <input type="text" 
+                                        name="ch_age"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        data-trigger="focus"
+                                        title="Child age (e.g. 10)"
+                                        ng-model="childInfo.ch_age"
+                                        class="form-control" 
+                                        placeholder="Enter age."
+                                        data-inputmask="'alias': 'integer', 'groupSeparator': ',', 'autoGroup': true, 'digitsOptional': false, 'prefix': '', 'placeholder': '0'"
+                                        data-mask>
+                                      <span class="form-control-feedback feedback"><i class="fa fa-pencil"></i></span>
+                                </div>
+                        	</div>
+                        	<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+		                        <button type="button" class="btn btn-warning hoverable" ng-click="addChild()">
+		                            <i class="fa fa-check"></i>
+		                        </button>
+                        	</div>
+                        </div>
+
+                        <!-- <div class="row" ng-show="spouseInfo.children.length > 0"> -->
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="box box-danger" style="box-shadow: 0px 0px 5px 0px #000;">
+                                    <div class="box-header">
+                                        <span class="fa-stack fa-md">
+                                            <i class="fa fa-square fa-stack-2x text-danger"></i>
+                                            <i class="fa fa-user fa-stack-1x" style="color: white;"></i>
+                                        </span>
+                                        <span style="letter-spacing: 1px;">LIST OF CHILDREN</span>
+                                    </div>
+                                    <div class="box-body">
+                                    	<ul class="todo-list">
+                                    		<li ng-show="spouseInfo.children.length == 0">
+                                    			<center>
+								                  	<!-- todo text -->
+								                  	<span class="text text-capitalize"><i class="fa fa-warning"></i>&nbsp;no listed child/children.</span>
+								                </center>
+                                    		</li>
+							                <li ng-repeat="(childIndex, child) in spouseInfo.children">
+							                  	<!-- drag handle -->
+							                  	<!--
+							                    <span class="handle">
+							                    	<i class="fa fa-ellipsis-v"></i>
+							                        <i class="fa fa-ellipsis-v"></i>
+							                    </span>
+							                	-->
+
+							                  	<!-- checkbox -->
+							                  	<!-- <input type="checkbox" value=""> -->
+							                  
+							                  	<!-- todo text -->
+							                  	<span class="text text-capitalize">{{ child.ch_name }}</span>
+							                  
+							                  	<!-- Emphasis label -->
+							                  	<small class="label label-danger"><i class="fa fa-calendar"></i> {{ child.ch_age }} years old</small>
+							                  
+							                  	<!-- General tools such as edit or delete-->
+							                  	<div class="tools">
+							                    	<!-- <i class="fa fa-edit" ng-click="editChild(childIndex)"></i> -->
+							                    	<i class="fa fa-trash-o" ng-click="deleteChild(childIndex)"></i>
+							                  	</div>
+							                </li>
+							            </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row text-center">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <button type="submit" class="btn btn-warning hoverable">
+                            <i class="fa fa-save"></i>&nbsp;{{ config.btnLabel }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // input-mask
+            Inputmask().mask(document.querySelectorAll("input"));
+        });
+    </script>
+</script>

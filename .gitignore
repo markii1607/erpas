@@ -1,0 +1,11 @@
+/App/Config/db_config.php
+node_modules/
+backup_db/
+data/
+forms/
+no_rental_rate.txt
+class_diagram
+informations
+vendor
+template/
+/public/files/ 

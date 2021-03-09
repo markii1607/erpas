@@ -1,0 +1,88 @@
+<!-- <style type="text/css">
+    .ehm {
+        width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 1.3rem;
+        background: white;
+    }
+</style> -->
+<script type="text/ng-template" id="update_image.html">
+    <div block-ui="blockViewJobsForm">
+        <form name="form.viewJobsForm" ng-submit="save(form.viewJobsForm.$valid)" novalidate>
+            <div class="modal-header">
+                <span class="fa-stack fa-lg">
+                    <i class="fa fa-square fa-stack-2x text-danger"></i>
+                    <i class="fa fa-plus fa-stack-1x" style="color: white;"></i>
+                </span>
+
+	            <span style="letter-spacing: 1px;" class="text-uppercase">My Profile Picture</span>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()" style="margin-top: 7px; margin-right: 7px;">
+	                <span aria-hidden="true">
+	                    <i class="fa fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    	<div id="animated-thumbnails" class="list-unstyled row clearfix">
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                <center>
+                                    <div class="img-responsive thumbnail">
+                                        <a href="" class="btn btn-xs btn-danger" style="position: absolute; right: 0; margin-top: -10px;" ng-click="removeAttachment()">
+                                            <i class="fa fa-close"></i>
+                                        </a>
+                                        <img class="img-responsive thumbnail" src="{{ viewAttachmentsConfig.server_ftp_url }}/employee_records/{{ viewAttachmentsInfo.photo }}">
+                                        <!-- <i class="material-icons" style="font-size: 150px;" ng-if="type == 'application/pdf'">insert_drive_file</i> -->
+                                        <table style="width: 100%; bottom: 0;">
+                                            <tr style="width: 100%;">
+                                                <td style="width: 100%" colspan="2">
+                                                    <!-- <p class="ehm">{{ viewAttachmentsInfo.photo }}</p> -->
+                                                </td>
+                                            </tr>
+                                            <tr style="width: 100%;">
+                                                <td style="width: 50%" align="center">
+                                                    <a href="{{ viewAttachmentsConfig.server_ftp_url }}/employee_records/{{ viewAttachmentsInfo.photo }}" data-sub-html="Demo Description" target="_blank">
+                                                        <button type="button" class="btn btn-primary btn-sm" style="width: 90%;">
+                                                            <!-- View -->
+                                                            <i class="fa fa-search-plus" style="color: #FFF; font-weight: unset; font-size: 16px;"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                                <td style="width: 50%" align="center">
+                                                    <a href="{{ viewAttachmentsConfig.server_ftp_url }}/employee_records/{{ viewAttachmentsInfo.photo }}" data-sub-html="Demo Description" download>
+                                                        <button type="button" class="btn btn-warning btn-sm" style="width: 90%;">
+                                                            <!-- Download -->
+                                                            <i class="fa fa-download" style="color: #FFF; font-weight: unset; font-size: 16px;"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </div>            	
+            </div>
+            <!-- <div class="modal-footer">
+                <div class="row text-center">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 10px;">
+                        <button class="btn btn-warning hoverable" ng-disabled="!form.viewJobsForm">
+                            <i class="fa fa-save"></i>&nbsp;{{ config.btnLabel }}
+                        </button>
+                    </div>
+                </div>
+            </div> -->
+        </form>
+    </div>
+    <script>
+        setTimeout(function (){
+            $('.date').inputmask('mm/dd/yyyy', { placeholder: '__/__/____' });
+        }, 200);
+    </script>
+</script>

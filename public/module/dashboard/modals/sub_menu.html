@@ -1,0 +1,43 @@
+<script type="text/ng-template" id="sub_menu.html">
+    <div block-ui="blockSubMenu">
+        <div class="modal-header">
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-square fa-stack-2x text-danger"></i>
+                <i class="fa fa-list fa-stack-1x" style="color: white;"></i>
+            </span>
+
+            <span style="letter-spacing: 1px;">LIST OF MODULES - <i>{{ subMenu.name }}</i></span>
+
+            <button type="button" class="close" aria-label="Close" ng-click="closeSubMenu()" style="margin-top: 7px; margin-right: 7px;">
+                <span aria-hidden="true">
+                    <i class="fa fa-times"></i>
+                </span>
+            </button>
+        </div>
+        <div class="modal-body" id="modal-body" style="padding-left: 30px; padding-right: 30px;">
+            <div class="row" style="font-style: italic;">
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" ng-repeat="subMenu in subMenu.lists" align="center" style="padding: 5px;">
+                    <div class="{{ subMenu.box_color }}" style="height: 100px; margin-bottom: 2px; padding-left: 1px; padding-right: 1px;" ng-click="loadModule(subMenu.id, subMenu.link, subMenu.name)">
+                        <center>
+                            <i class="{{ subMenu.icon }}" style="margin-bottom: 8px;"></i>
+                            <p style="letter-spacing: 1px;">
+                                <small>{{ subMenu.name | uppercase }}</small>
+                            </p>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--
+        <div class="modal-footer">
+            <div class="row text-center">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 10px;">
+                    <button class="btn btn-primary hoverable">
+                        <i class="fa fa-save"></i>&nbsp;Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    	-->
+    </div>    
+</script>

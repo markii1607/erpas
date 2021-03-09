@@ -1,0 +1,95 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "datatables.net-keytable-bs@2.3.1",
+        "scope": null,
+        "escapedName": "datatables.net-keytable-bs",
+        "name": "datatables.net-keytable-bs",
+        "rawSpec": "2.3.1",
+        "spec": "2.3.1",
+        "type": "version"
+      },
+      "c:\\xampp\\htdocs\\node"
+    ]
+  ],
+  "_from": "datatables.net-keytable-bs@2.3.1",
+  "_id": "datatables.net-keytable-bs@2.3.1",
+  "_inCache": true,
+  "_location": "/datatables.net-keytable-bs",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/datatables.net-keytable-bs-2.3.1.tgz_1504022152076_0.25648868968710303"
+  },
+  "_npmUser": {
+    "name": "datatables",
+    "email": "npm@datatables.net"
+  },
+  "_npmVersion": "1.3.6",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "datatables.net-keytable-bs@2.3.1",
+    "scope": null,
+    "escapedName": "datatables.net-keytable-bs",
+    "name": "datatables.net-keytable-bs",
+    "rawSpec": "2.3.1",
+    "spec": "2.3.1",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/datatables.net-keytable-bs/-/datatables.net-keytable-bs-2.3.1.tgz",
+  "_shasum": "b189148566099d9d83f2f927df2c0d205c51a057",
+  "_shrinkwrap": null,
+  "_spec": "datatables.net-keytable-bs@2.3.1",
+  "_where": "c:\\xampp\\htdocs\\node",
+  "author": {
+    "name": "SpryMedia Ltd",
+    "url": "http://datatables.net"
+  },
+  "bugs": {
+    "url": "https://datatables.net/forums"
+  },
+  "dependencies": {
+    "datatables.net-bs": "^1.10.15",
+    "datatables.net-keytable": "2.3.1",
+    "jquery": ">=1.7"
+  },
+  "description": "KeyTable for DataTables with styling for [Bootstrap 3](http://getbootstrap.com/)",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "b189148566099d9d83f2f927df2c0d205c51a057",
+    "tarball": "https://registry.npmjs.org/datatables.net-keytable-bs/-/datatables.net-keytable-bs-2.3.1.tgz"
+  },
+  "files": [
+    "css/keyTable.bootstrap.css"
+  ],
+  "homepage": "https://datatables.net",
+  "keywords": [
+    "spreadsheet",
+    "excel",
+    "keyboard",
+    "DataTables",
+    "jQuery",
+    "table",
+    "Bootstrap"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "datatables",
+      "email": "npm@datatables.net"
+    }
+  ],
+  "name": "datatables.net-keytable-bs",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DataTables/Dist-DataTables-KeyTable-Bootstrap.git"
+  },
+  "style": "css/keyTable.bootstrap.css",
+  "version": "2.3.1"
+}
