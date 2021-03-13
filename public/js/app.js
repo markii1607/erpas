@@ -21,7 +21,7 @@ define([
 ], function(angular, ngRoutes) {
     'use strict';
 
-    var module = angular.module('scdc', [
+    var module = angular.module('erpas', [
         'ui.router',
         'ngAnimate',
         'ngAlertify',
@@ -81,11 +81,6 @@ define([
              */
             path_name = window.location.pathname.match(/.*(erpas\/)/gi)[0];
             base_url = path_name.slice(0, path_name.length - 1);
-
-            /**
-             * vps implementation
-             */
-            // base_url     = "http://arpeggio.scdcapp.com";
 
             initInjector = angular.injector(['ng']);
             $http = initInjector.get('$http');
@@ -267,7 +262,7 @@ define([
              */
             if ('serviceWorker' in navigator) {
                 // navigator.serviceWorker.register('./serviceworker.js', { scope: '/arpeggio/public/' }).then(
-                    navigator.serviceWorker.register('./serviceworker.js', {scope: '/arpeggio_template/public/'}).then(
+                    navigator.serviceWorker.register('./serviceworker.js', {scope: '/erpas/public/'}).then(
                     function(registration) {
                         var serviceWorker;
 

@@ -1,79 +1,87 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="login-box" style="box-shadow: 0px 0px 5px 0px #AAA;" block-ui="blockLogin">
-                <div class="box box-danger">
-                    <div class="box-header">
-                        <div class="login-logo" style="margin-bottom: 40px;">
-                            <a href="index.html">
-                                <img src="img/arpeggio_logo.png" width="50%" height="50%" />
-                                <!-- <img src="img/sw-new-logo.png" width="100%" /> -->
-                            </a>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-
-                    <form name="loginForm" ng-submit="signIn(loginForm.$valid)" novalidate style="margin-top: -50px;">
-                        <div class="box-body">
-
-                            <!-- username -->
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <div class="form-group has-feedback">
-                                        <input type="name" class="form-control" placeholder="Username" ng-model="login.username" autofocus="autofocus" required>
-                                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- password -->
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <div class="form-group has-feedback" style="margin-top: -10px;">
-                                        <input type="password" class="form-control" placeholder="Password" ng-model="login.password" required>
-                                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- sign-in button -->
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <button class="btn btn-primary btn-block btn-flat" type="submit">
-                                        <i class="fa fa-sign-in"></i>&nbsp;Sign in
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- space -->
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">&nbsp;</div>
-                            </div>
-                        </div>
-                    </form>
-
-                    <div class="box-footer">
+    <div class="row justify-content-center">
+        <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="card shadow-lg border-0 rounded-lg mt-5" id="login-card">
+                <div class="card-body p-0">
+                    <div class="col-12">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
-                                <small>
-                                    <b>Copyright</b> &copy; 2016-2021.
-                                    <br />
-                                    <a href="" class="hidden-xs hidden-sm"><b>Sunwest Construction and Development Corporation.</b></a>
-                                    <a href="" class="hidden-md hidden-lg"><b>SCDC</b></a>
-                                    <br />
-                                    <span>All rights reserved.</span>
-                                </small>
+                            <div class="col-lg-6 d-none d-lg-block">
+                                <div class="login-image-wrap h-100">
+                                    <img src="img/lgu_malilipot.png" class="login-image" alt="LGU Malilipot Logo">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="py-5 pr-3">
+                                    <div class="text-center">
+                                        <img src="img/erpas.png" class="logo" alt="eRPAS Logo">
+                                    </div>
+                                    <form name="loginForm" ng-submit="signIn(loginForm.$valid)" class="ng-pristine ng-valid">
+                                        <div class="form-group">
+                                            <label class="small mb-1" for="inputUsername">Username</label>
+                                            <input class="form-control py-4 ng-pristine ng-untouched ng-valid ng-empty ng-not-modified" ng-model="login.username" id="inputUsername" type="text" placeholder="Enter username">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="small mb-1" for="inputPassword">Password</label>
+                                            <input class="form-control py-4 ng-pristine ng-untouched ng-valid ng-empty ng-not-modified" ng-model="login.password" id="inputPassword" type="password" placeholder="Enter password">
+                                        </div>
+                                        <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                                            <a class="small" href="password.html">Forgot Password?</a>
+                                        </div> <br>
+                                        <div>
+                                            <a class="btn bg-crimson-red btn-block" href="index.html" ng-click="signIn()">Login</a>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
+                </div>
+                <div class="card-footer text-center">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright © eRPAS 2020</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            ·
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Load modal template -->
+<style>
+    .sign-up {
+        color: #4e73df !important;
+    }
+
+    .sign-up:hover {
+        text-decoration: underline;
+        color: #4e73df;
+    }
+
+    .login-image {
+        position: absolute;
+        width: 80%;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
+    .logo {
+        width: 90%;
+    }
+
+    #login-card {
+        margin-left: auto;
+        margin-right: auto;
+        width: 60%;
+    }
+</style>
+
 <div class="modal" ng-repeat="template in templates">
     <ng-include src="template"></ng-include>
 </div>

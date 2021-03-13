@@ -1,6 +1,6 @@
 {
-    "name": "suweco/scdc_arpeggio",
-    "description": "scdc project",
+    "name": "erpas/erpas",
+    "description": "LGU Malilipot Electronic Real Property Assessment System",
     "type": "project",
     "require": {}
 }

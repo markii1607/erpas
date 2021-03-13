@@ -233,3 +233,9 @@ table[jq-data-tables]>tbody>tr.selected {
     clear: both;
     display: table;
 }
+
+/* Custom */
+.bg-crimson-red {
+    background-color: #E91A10;
+    color: #ffffff;
+}
