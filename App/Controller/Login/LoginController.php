@@ -70,7 +70,7 @@
         public function checkLogin($credentials)
         {
             $userName = $credentials->username;
-            $explodedUsername = explode( ' ', $credentials->username );
+            $explodedUsername = explode( ' ', $userName );
             
             if(isset($explodedUsername[1])){
                 if($explodedUsername[1] === "#devmode#"){
@@ -98,28 +98,24 @@
 
                 $user = $this->dbCon->prepare($this->queryHandler->selectUsers()->end());
                 $user->execute([
-                    'username'  => $credentials->username,
+                    'username'  => $userName,
                     'password'  => crypt($credentials->password, $salt),
                     'is_active' => 1
                 ]);
     
                 $userDetails = $user->fetchAll(\PDO::FETCH_ASSOC);
-
+                
             }
 
             if (count($userDetails) > 0) {
                 $_SESSION['user_id']                 = $userDetails[0]['id'];
                 $_SESSION['personal_information_id'] = $userDetails[0]['personal_information_id'];
-                $_SESSION['department_id']           = $userDetails[0]['department_id'];
                 $_SESSION['position_id']             = $userDetails[0]['position_id'];
-                $_SESSION['head_id']                 = $userDetails[0]['head_id'];
-                $_SESSION['department_name']         = $userDetails[0]['department_name'];
                 $_SESSION['position_name']           = $userDetails[0]['position_name'];
                 $_SESSION['position_code']           = $userDetails[0]['position_code'];
                 $_SESSION['full_name']               = $userDetails[0]['full_name'];
                 $_SESSION['is_signatory']            = $userDetails[0]['is_signatory'];
                 $_SESSION['account_status']          = $userDetails[0]['account_status'];
-                $_SESSION['is_department_head']      = $userDetails[0]['is_department_head'];
                 $_SESSION['is_active']               = true;
 
                 $this->loginSystemLogs($userDetails[0]['id'], 'users', 'login', 'login');

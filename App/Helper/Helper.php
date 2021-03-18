@@ -91,5 +91,8 @@
         die();
     }
 
-
+    function dd() {
+        $args = func_get_args();
+        call_user_func_array('fn_print_die', $args);
+    }
 ?>

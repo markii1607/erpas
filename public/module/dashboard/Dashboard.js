@@ -128,7 +128,6 @@ define([
                 Factory.autoloadSettings();
 
                 $scope.global.prev_route = '/main/dashboard';
-                $scope.contentheader.title = 'Dashboard';
 
                 $scope.templates = Factory.templates();
                 $scope.dbMenu = {};

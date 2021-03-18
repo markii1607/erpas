@@ -83,17 +83,11 @@ class LoginQueryHandler extends QueryHandler
             'U.account_status',
             'U.personal_information_id',
             'U.account_status',
-            'CONCAT_WS(" ", NULLIF(PI.fname, ""), NULLIF(PI.mname, ""), NULLIF(PI.lname, "")) as full_name',
             'P.is_signatory',
-            'EI.head_id',
-            'EI.is_department_head',
-
+            'CONCAT_WS(" ", NULLIF(PI.fname, ""), NULLIF(PI.mname, ""), NULLIF(PI.lname, "")) as full_name',
             'P.id as position_id',
             'P.name as position_name',
             'P.code as position_code',
-
-            'D.id as department_id',
-            'D.name as department_name'
         ];
 
         $whereCondition = [
@@ -107,7 +101,6 @@ class LoginQueryHandler extends QueryHandler
             'personal_informations PI'   => 'U.personal_information_id = PI.id',
             'employment_informations EI' => 'PI.id = EI.personal_information_id',
             'positions P'                => 'EI.position_id = P.id',
-            'departments D'              => 'P.department_id = D.id'
         ];
 
         $initQuery = $this->select($fields)
@@ -131,15 +124,9 @@ class LoginQueryHandler extends QueryHandler
             'U.account_status',
             'CONCAT_WS(" ", NULLIF(PI.fname, ""), NULLIF(PI.mname, ""), NULLIF(PI.lname, "")) as full_name',
             'P.is_signatory',
-            'EI.head_id',
-            'EI.is_department_head',
-
             'P.id as position_id',
             'P.name as position_name',
             'P.code as position_code',
-
-            'D.id as department_id',
-            'D.name as department_name'
         ];
 
         $whereCondition = [
@@ -152,7 +139,6 @@ class LoginQueryHandler extends QueryHandler
             'personal_informations PI'   => 'U.personal_information_id = PI.id',
             'employment_informations EI' => 'PI.id = EI.personal_information_id',
             'positions P'                => 'EI.position_id = P.id',
-            'departments D'              => 'P.department_id = D.id'
         ];
 
         $initQuery = $this->select($fields)

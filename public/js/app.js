@@ -2,7 +2,7 @@ define([
     'angular',
     'js/routes.js',
     'uiRoute',
-    // 'bootstrap',
+    'bootstrap',
     // 'adminLTE',
     'coreui',
     'alertify',

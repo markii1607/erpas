@@ -15,20 +15,23 @@
                                     <div class="text-center">
                                         <img src="img/erpas.png" class="logo" alt="eRPAS Logo">
                                     </div>
-                                    <form name="loginForm" ng-submit="signIn(loginForm.$valid)" class="ng-pristine ng-valid">
+
+                                    <form name="loginForm" ng-submit="signIn(loginForm.$valid)">
                                         <div class="form-group">
                                             <label class="small mb-1" for="inputUsername">Username</label>
-                                            <input class="form-control py-4 ng-pristine ng-untouched ng-valid ng-empty ng-not-modified" ng-model="login.username" id="inputUsername" type="text" placeholder="Enter username">
+                                            <input class="form-control py-4" ng-model="login.username" id="inputUsername" type="text" placeholder="Enter username">
                                         </div>
                                         <div class="form-group">
                                             <label class="small mb-1" for="inputPassword">Password</label>
-                                            <input class="form-control py-4 ng-pristine ng-untouched ng-valid ng-empty ng-not-modified" ng-model="login.password" id="inputPassword" type="password" placeholder="Enter password">
+                                            <input class="form-control py-4" ng-model="login.password" id="inputPassword" type="password" placeholder="Enter password">
                                         </div>
                                         <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
                                             <a class="small" href="password.html">Forgot Password?</a>
                                         </div> <br>
                                         <div>
-                                            <a class="btn bg-crimson-red btn-block" href="index.html" ng-click="signIn()">Login</a>
+                                            <button class="btn bg-crimson-red btn-block" type="submit">
+                                                LOGIN
+                                            </button>
                                         </div>
                                     </form>
                                 </div>

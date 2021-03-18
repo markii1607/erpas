@@ -3,7 +3,7 @@ require.config({
     // alias libraries paths
     paths: {
         // 'adminLTE': APP.LTE_TEMPLATE_PATH + 'dist/js/app.min',
-        // 'bootstrap': APP.LTE_TEMPLATE_PATH + 'bootstrap/js/bootstrap.min',
+        'bootstrap': APP.LTE_TEMPLATE_PATH + 'bootstrap/js/bootstrap.min',
         // 'iCheck': APP.LTE_TEMPLATE_PATH + 'plugins/iCheck/icheck.min',
         'jquery': APP.NODE_PATH + 'jquery/dist/jquery.min',
         'coreui': APP.NODE_PATH + '@coreui/coreui/dist/js/coreui.bundle.min',
@@ -70,7 +70,8 @@ require.config({
     }, // paths
     shim: {
         'jquery': { exports: '$' },
-        // 'bootstrap': ['jquery'],
+        'bootstrap': ['jquery'],
+        'coreui': ['bootstrap'],
         // 'slimscroll': { exports: 'slimscroll', deps: ['jquery'] },
         // 'iCheck': ['jquery'],
         // 'adminLTE': ['bootstrap', 'slimscroll', 'iCheck', 'fastclick'],
