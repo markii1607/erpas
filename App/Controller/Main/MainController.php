@@ -50,9 +50,44 @@ class MainController extends BaseController
     {
         $output = [
             'check_session' => $this->checkSession(),
-            'user_details'  => $_SESSION
+            'user_details'  => $this->getInformation($_SESSION['user_id']),
         ];
 
         return $output;
+    }
+
+    public function getInformation($userId = '')
+    {
+        $informations = $this->dbCon->prepare($this->queryHandler->selectUsers(true)->end());
+        $informations->execute(['is_active' => 1, 'id' => $userId]);
+
+        return $informations->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * `signOut` destroying session.
+     * @return destroy session
+     */
+    public function signOut()
+    {    
+
+        $ip = $this->getClientIP();
+        $hasEntryExistingAlready = $this->checkSessionLogs($ip);
+
+        $entryData = array(
+            'ip_address'    => $ip,
+            'user_id'       => $_SESSION['user_id'],
+            'session_data'  => json_encode($_SESSION),
+            'status'        => "logged_off"
+        );
+
+        if(count($hasEntryExistingAlready) != 0){
+            foreach ($hasEntryExistingAlready as $key => $value) {
+                $logSession = $this->dbCon->prepare($this->queryHandler->updateSessionLogs($value['id'], $entryData));
+                $logSession->execute($entryData);
+            }
+        }
+
+        session_destroy();
     }
 }

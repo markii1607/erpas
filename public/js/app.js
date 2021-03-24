@@ -4,7 +4,7 @@ define([
     'uiRoute',
     'bootstrap',
     // 'adminLTE',
-    'coreui',
+    'sbadmin',
     'alertify',
     'ngBlockUI',
     'ngAnimate',
