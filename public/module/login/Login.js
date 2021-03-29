@@ -75,19 +75,27 @@ define([
                 Service.getDetails().then(function(res) {
                     $rootScope.check_session = angular.copy(res.data.check_session);
 
-                    if (res.data) {
-                        if (res.data.session_logs.length !== 0) {
-                            if (res.data.session_logs[0].status == "logged_off") {
-                                $scope.hasExistingUserLogged = false;
+                    if (res.data.check_session) {
+                        console.log('HAS SESSION !!!')
+                        if (res.data) {
+                            if (res.data.session_logs.length !== 0) {
+                                if (res.data.session_logs[0].status == "logged_off") {
+                                    $scope.hasExistingUserLogged = false;
+                                } else {
+                                    $scope.hasExistingUserLogged = true;
+                                    $scope.login.username        = res.data.session_logs[0].unme.username
+                                }
                             } else {
-                                $scope.hasExistingUserLogged = true;
-                                $scope.login.username        = res.data.session_logs[0].unme.username
+                                $scope.hasExistingUserLogged = false;
                             }
                         } else {
                             $scope.hasExistingUserLogged = false;
                         }
+
+                        $location.path('/main/dashboard')
                     } else {
-                        $scope.hasExistingUserLogged = false;
+                        console.log('NO SESSION!!!')
+                        $location.path('/')
                     }
 
                     blocker.stop();
