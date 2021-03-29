@@ -1,0 +1,66 @@
+<script type="text/ng-template" id="change_deputy_status.html">
+    <div block-ui="blockAccessForm">
+        <form name="form.accessForm" novalidate>
+            <div class="modal-header">
+				<span class="fa-stack fa-lg">
+                    <i class="fa fa-square fa-stack-2x text-danger"></i>
+                    <i class="fa fa-edit fa-stack-1x" style="color: white;"></i>
+	            </span>
+
+	            <span style="letter-spacing: 1px;" class="text-uppercase">CHANGE DEPUTY STATUS</span>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()" style="margin-top: 7px; margin-right: 7px;">
+	                <span aria-hidden="true">
+	                    <i class="fa fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                        <div><h3>Status</h3></div>
+                        <label class="rocker">
+                            <input type="checkbox" id="status" ng-model="updatedStatus.newStatus">
+                            <span class="switch-left">On</span>
+                            <span class="switch-right">Off</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                        <hr>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div><h3>Priviledges</h3></div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
+                        <div><h5>APPROVALS</h5></div>
+                        <label class="rocker">
+                            <input type="checkbox" id="status_approvals" ng-model="priviledges.approve">
+                            <span class="switch-left">On</span>
+                            <span class="switch-right">Off</span>
+                        </label>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
+                        <div><h5>UPLOADING</h5></div>
+                        <label class="rocker">
+                            <input type="checkbox" id="status_uploading" ng-model="priviledges.upload">
+                            <span class="switch-left">On</span>
+                            <span class="switch-right">Off</span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <div class="row text-center">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 10px;">
+                        <button class="btn btn-warning hoverable" ng-click="update()" ng-disabled="!form.accessForm.modified">
+                            <i class="fa fa-edit"></i>&nbsp;UPDATE
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>

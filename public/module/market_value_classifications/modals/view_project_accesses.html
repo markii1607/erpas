@@ -1,0 +1,44 @@
+<style type="text/css">
+    #viewAccess tbody tr {
+        cursor: pointer;
+    }
+</style>
+<script type="text/ng-template" id="view_project_accesses.html">
+    <div block-ui="blockViewAccess">
+        <form name="form.viewAccessForm" ng-submit="save(form.viewAccessForm.$valid)" novalidate>
+            <div class="modal-header">
+				<span class="fa-stack fa-lg">
+	                <i class="fa fa-square fa-stack-2x text-danger"></i>
+	                <i class="fa fa-cogs fa-stack-1x" style="color: white;"></i>
+	            </span>
+
+	            <span style="letter-spacing: 1px;" class="text-uppercase">PROJECT ACCESS <small><i>({{ form.full_name }})</i></small></span>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()" style="margin-top: 7px; margin-right: 7px;">
+	                <span aria-hidden="true">
+	                    <i class="fa fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="table-responsive">
+	                        <table id="viewAccess" jq-data-tables options="jqDataTableOptions" rowbtn="rowBtns" class="table table-hover table-bordered table-striped" width="100%" blocker="'blockViewAccess'">
+	                            <thead>
+	                                <tr class="text-uppercase" style="letter-spacing: 1px;">
+	                                    <th class="text-center" style="width: 2%; border-top: solid 3px #d2d6de; vertical-align: middle;"></th>
+	                                    <th class="text-center" style="width: 5%; border-top: solid 3px #d2d6de; vertical-align: middle;"><small>Project Code</small></th>
+	                                    <th class="text-center" style="width: 10%; border-top: solid 3px #d2d6de; vertical-align: middle;"><small>Project Name</small></th>
+	                                    <th class="text-center" style="width: 5%; border-top: solid 3px #d2d6de; vertical-align: middle;"><small>Access Level</small></th>
+	                                </tr>
+	                            </thead>
+	                        </table>
+	                    </div>
+                    </div>
+                </div>            	
+            </div>
+            <div class="modal-footer"></div>
+        </form>
+    </div>
+</script>

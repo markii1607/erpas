@@ -1,0 +1,88 @@
+<script type="text/ng-template" id="add_deputy.html">
+    <div block-ui="blockAccessForm">
+        <form name="form.accessForm" ng-submit="save(form.accessForm.$valid)" novalidate>
+            <div class="modal-header">
+				<span class="fa-stack fa-lg">
+                    <i class="fa fa-square fa-stack-2x text-danger"></i>
+                    <i class="fa fa-plus fa-stack-1x" style="color: white;"></i>
+	            </span>
+
+	            <span style="letter-spacing: 1px;" class="text-uppercase">ADD USER DEPUTY</span>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()" style="margin-top: 7px; margin-right: 7px;">
+	                <span aria-hidden="true">
+	                    <i class="fa fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover table-bordered" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th width="2%" style="vertical-align: middle" class="bg-primary text-center">
+                                            <button type="button" class="btn btn-success btn-xs btn-block waves-effect" title="Add Item" ng-click="addSequence(userDeputies.length);">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                            </button>
+                                        </th>
+                                        <th width="10%" style="vertical-align: middle" class="bg-primary text-center"><small>FULLNAME</small></th>
+                                        <th width="5%" style="vertical-align: middle" class="bg-primary text-center"><small>STATUS</small></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="(key, value) in userDeputies track by $index">
+                                        <td class="text-center" style="vertical-align: middle">
+                                            <button type="button" class="btn btn-danger btn-xs btn-block waves-effect" title="Remove Activity" ng-click="removeSequence(key)" tabindex="-1">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <div class="form-group" style="margin-bottom: unset;">
+                                                <ui-select ng-model="userDeputies[key].deputy"
+                                                    theme="bootstrap"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    data-trigger="focus"
+                                                    reset-search-input="true"
+                                                    append-to-body = "true" required>
+                                                <ui-select-match placeholder="Select...">
+                                                    {{ $select.selected.full_name }}
+                                                </ui-select-match>
+                                                <ui-select-choices style="font-size: 12px;"
+                                                    repeat="user in users | filter: $select.search | limitTo: infiniteScroll.currentItems"
+                                                    infinite-scroll="addMoreItems()"
+                                                    infinite-scroll-distance="2">
+                                                    <b>{{user.full_name}}</b><br>
+                                                    <small>{{user.position_name}}</small><br>
+                                                </ui-select-choices>
+                                            </div>
+                                        </td>
+                                        <td class="text-center" style="vertical-align: middle">
+                                            <label class="rocker rocker-small">
+                                                <input type="checkbox" ng-model="userDeputies[key].status">
+                                                <span class="switch-left">ON</span>
+                                                <span class="switch-right">OFF</span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <div class="row text-center">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 10px;">
+                        <button class="btn btn-warning hoverable" ng-disabled="!form.accessForm.modified">
+                            <i class="fa fa-save"></i>&nbsp;SAVE
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>

@@ -29,6 +29,13 @@ define(function() {
             "controller": "UserAccessConfigurationController",
             "templateUrl": "/public/module/user_access_configuration/user_access_configuration.html",
             "deps": "/public/module/user_access_configuration/index.js"
+        },
+        {
+            "name": "main.market_value_classifications",
+            "url": "/market_value_classifications",
+            "controller": "MarketValueClassificationsController",
+            "templateUrl": "/public/module/market_value_classifications/market_value_classifications.html",
+            "deps": "/public/module/market_value_classifications/index.js"
         }
     ];
 

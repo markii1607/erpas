@@ -174,7 +174,6 @@ define([
                 // default $scope settings
                 $scope.login = {};
 
-                $scope.location = $location.path();
                 $scope.header = {
                     title: 'Main',
                     showButton: false,
