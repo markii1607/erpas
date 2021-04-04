@@ -1,8 +1,7 @@
 define([
     './MarketValueClassifications.js',
     './modals/AddClassification.js',
-    // './modals/ViewProjectAccesses.js',
-    // './modals/ViewDeputyConfig.js',
+    './modals/EditClassification.js',
     
     '../../directive/dataTable.js',
     '../../directive/ngInfinite.js',

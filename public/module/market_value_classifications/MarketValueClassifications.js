@@ -22,8 +22,7 @@ define([
              */
             Factory.templates = [
                 'module/market_value_classifications/modals/add_classification.html',
-                // 'module/market_value_classifications/modals/view_project_accesses.html',
-                // 'module/market_value_classifications/modals/view_deputy_config.html',
+                'module/market_value_classifications/modals/edit_classification.html',
             ];
 
             Factory.dtOptions = function () {
@@ -182,7 +181,7 @@ define([
                         altKey  : true 
                     }, 
                     'action'    : function () { 
-                        $scope.addClassifications(); 
+                        $scope.addClassification(); 
                     },
                     enabled     : true,
                     name        : 'add'
@@ -193,14 +192,14 @@ define([
 
             $scope.rowBtns = {
                 "firstButton": function(data, index) {
-                    console.log(data, index)
+                    $scope.editClassification(data, index)
                 },
                 "secondButton": function(data, index) {
-                    console.log(data, index)
+                    $scope.deleteClassification(data, index)
                 },
             };
 
-            $scope.addClassifications = function () {
+            $scope.addClassification = function () {
                 var paramData, modalInstance;
 
                 // paramData = {
@@ -218,6 +217,35 @@ define([
                     ariaDescribedBy : 'modal-body',
                     templateUrl     : 'add_classification.html',
                     controller      : 'AddClassificationController',
+                    size            : 'md',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (res) {
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+            }
+
+            $scope.editClassification = function (data, index) {
+                var paramData, modalInstance;
+
+                paramData = {
+                    data,
+                }
+
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'edit_classification.html',
+                    controller      : 'EditClassificationController',
                     size            : 'md',
                     resolve         : {
                         paramData : function () {
