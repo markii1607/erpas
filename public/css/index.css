@@ -168,18 +168,27 @@ table[jq-data-tables]>tbody>tr.selected {
     box-shadow: 0px 0px 5px 0px #000;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 576px) {
+    .modal-dialog {
+      max-width: none !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .modal-md {
+        width: 768px !important;
+    }
     .modal-lg {
-        width: 900px;
+        width: 900px !important;
     }
     .modal-xlg{
-        width: 70%;
+        width: 70% !important;
     }
     .modal-xxlg{
-        width: 90%;
+        width: 90% !important;
     }
     .modal-xxxlg{
-        width: 98%;
+        width: 98% !important;
     }
 }
 
@@ -272,25 +281,33 @@ table[jq-data-tables]>tbody>tr.selected {
 .btn-crimson.disabled,.btn-crimson:disabled {
     color: #fff;
     background-color: #E91A10;
-    border-color: #E91A10
+    border-color: #E91A10;
 }
 
 .btn-crimson:not(:disabled):not(.disabled).active,.btn-crimson:not(:disabled):not(.disabled):active,.show>.btn-crimson.dropdown-toggle {
     color: #fff;
     background-color: #ec4840;
-    border-color: #e30a00
+    border-color: #e30a00;
 }
 
 .btn-crimson:not(:disabled):not(.disabled).active:focus,.btn-crimson:not(:disabled):not(.disabled):active:focus,.show>.btn-crimson.dropdown-toggle:focus {
-    box-shadow: 0 0 0 .2rem rgba(196, 8, 8, 0.5)
+    box-shadow: 0 0 0 .2rem rgba(196, 8, 8, 0.5);
 }
 
 .text-crimson {
-    color: #e9362c!important
+    color: #e9362c !important
 }
 
 a.text-crimson:focus,a.text-crimson:hover {
-    color: #ec4840!important
+    color: #ec4840 !important
+}
+
+.border-left-crimson {
+    border-left: .25rem solid #E91A10 !important;
+}
+
+.border-bottom-crimson {
+    border-bottom: .25rem solid #E91A10 !important;
 }
 
 /* Custom CSS */
@@ -298,14 +315,60 @@ a.text-crimson:focus,a.text-crimson:hover {
     width: 100%;
 }
 
-/* #accordionSidebar {
-    position: fixed;
-    width: 15% !important;
-    left: 0;
+table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
+    color: #ffffff !important;
+    background-color: #f2615a !important;
 }
 
-#content-wrapper {
-    position: relative;
-    left: 15%;
-    width: 85% !important;
-} */
+.page-link {
+    color: #f2615a !important;
+}
+
+.page-link:hover {
+    color: #ec2e24 !important;
+}
+
+.page-link:focus {
+    box-shadow: 0 0 0 .2rem rgb(223 78 78 / 25%) !important;
+}
+
+.page-item.active .page-link {
+    color: #fff !important;
+    background-color: #f2615a !important;
+    border-color: #f2615a !important;
+}
+
+
+.page-item.disabled .page-link {
+    color: #858796 !important;
+}
+
+.dataTables_filter {
+    float: right !important;
+}
+
+.dataTables_filter input:focus {
+    box-shadow: none !important;
+    border: 1px solid #f2615a !important;
+}
+
+.alertify-logs .error,
+.alertify-logs .success {
+    font-size: 14px !important;
+}
+
+/* Fix for the UIBModal */
+.fade.in {
+    opacity: 1;
+}
+
+.modal.in .modal-dialog {
+  -webkit-transform: translate(0, 0);
+       -o-transform: translate(0, 0);
+          transform: translate(0, 0);
+}
+
+.modal-backdrop.in {
+    filter: alpha(opacity=50);
+    opacity: .5;
+}

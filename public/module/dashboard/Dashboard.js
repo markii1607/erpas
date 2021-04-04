@@ -76,8 +76,9 @@ define([
                 // default settings
                 Factory.autoloadSettings();
 
-                $scope.global.prev_route = '/main/dashboard';
                 $scope.header.title = "Dashboard";
+                $scope.header.link.sub = "";
+                $scope.header.link.main = "Dashboard";
                 $scope.header.showButton = true;
 
                 $scope.templates = Factory.templates();

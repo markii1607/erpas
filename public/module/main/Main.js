@@ -175,7 +175,11 @@ define([
                 $scope.login = {};
 
                 $scope.header = {
-                    title: 'Main',
+                    title: '',
+                    link: {
+                        sub: '',
+                        main: '',
+                    },
                     showButton: false,
                 }
 

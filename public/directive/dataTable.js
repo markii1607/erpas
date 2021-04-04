@@ -1,8 +1,8 @@
 define([
     'app',
     'datatables.net',
-    'datatables.net-bs',
-    'datatables.net-autofill',
+    'datatables.net-bs4',
+    // 'datatables.net-autofill',
     // 'datatables.net-autofill-bs',
     'datatables.net-buttons',
     'datatables.net-buttons-bs',
@@ -10,16 +10,16 @@ define([
     'datatables.net-buttons.flash',
     'datatables.net-buttons.html5',
     'datatables.net-buttons.print',
-    'datatables.net-colreorder',
+    // 'datatables.net-colreorder',
     'datatables.net-fixedcolumns',
     'datatables.net-fixedheader',
-    'datatables.net-keytable',
+    // 'datatables.net-keytable',
     'datatables.net-responsive',
     'datatables.net-responsive-bs',
     'datatables.net-rowgroup',
     'datatables.net-scroller',
     'datatables.net-select',
-    'datatables.net-piMarkjs'
+    // 'datatables.net-piMarkjs'
 ], function(app) {
     app.directive('jqDataTables', [
         '$timeout',
@@ -119,6 +119,7 @@ define([
                                  * Handle custom button when selecting row
                                  */
                                 table.on('select deselect', function() {
+                                    console.log('Selected')
                                     var selectedRows = table.rows({ selected: true }).count();
                                     var customBtn = table.buttons(['.edit', '.delete']);
 

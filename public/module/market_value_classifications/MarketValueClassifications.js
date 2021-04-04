@@ -1,7 +1,7 @@
 define([
     'app'
 ], function (app) {
-    app.factory('userAccessConfigurationFactory', [
+    app.factory('MarketValueClassificationsFactory', [
         'alertify',
         function (alertify) {
             var Factory = {};
@@ -21,82 +21,104 @@ define([
              * @type {Array}
              */
             Factory.templates = [
-                'module/user_access_configuration/modals/view_access.html',
-                'module/user_access_configuration/modals/view_project_accesses.html',
-                'module/user_access_configuration/modals/view_deputy_config.html',
-                'module/user_access_configuration/modals/sub_modals/access.html',
-                'module/user_access_configuration/modals/sub_modals/project_access.html',
-                'module/user_access_configuration/modals/sub_modals/add_deputy.html',
-                'module/user_access_configuration/modals/sub_modals/change_deputy_status.html',
+                'module/market_value_classifications/modals/add_classification.html',
+                // 'module/market_value_classifications/modals/view_project_accesses.html',
+                // 'module/market_value_classifications/modals/view_deputy_config.html',
             ];
 
             Factory.dtOptions = function () {
                 var options = {};
 
                 options = {
-                    "dom"            : 'Bfrtip',
-                    "paging"         : true,
-                    "lengthChange"   : true,
-                    "pageLength"     : 25,
-                    "searching"      : true,
-                    "ordering"       : true,
-                    "info"           : true,
-                    "select"         : {
-                        style : 'single'
+                    "dom": 'Bfrtip',
+                    "paging": true,
+                    "lengthChange": true,
+                    "pageLength": 10,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "select": {
+                        style: 'single'
                     },
-                    "keys"           : {
-                        keys: [ 
-                            13 /* ENTER */, 
-                            38 /* UP */, 
-                            40 /* DOWN */ 
+                    "keys": {
+                        keys: [
+                            13 /* ENTER */ ,
+                            38 /* UP */ ,
+                            40 /* DOWN */
                         ]
                     },
-                    "mark"           : true,
-                    "autoWidth"      : false,
-                    "responsive"     : true,
-                    "data"           : [],
-                    "buttons"        : [],
-                    "order"          : [
+                    "mark": true,
+                    "autoWidth": false,
+                    "responsive": true,
+                    "data": [],
+                    "buttons": [],
+                    "order": [
                         [
-                            1, 
-                            "desc" 
+                            0,
+                            "asc"
                         ]
                     ],
                     "columnDefs"   : [ 
                         {
                             "targets"    : 0,
                             "searchable" : false,
-                            "orderable"  : false,
+                            "orderable"  : true,
                             "className"  : "text-center"
-                        }
+                        },
+                        {
+                            "targets": 2,
+                            "searchable": false,
+                            "orderable": false,
+                            "className": "text-center",
+                            "render": function(data, type, full, meta) {
+                                var str = '';
+                                str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="Edit Classification" class="btn btn-default bg-success btn-sm mr-2 text-white"><i class="fas fa-edit"></i></button>';
+                                str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Delete Classification" class="btn btn-default bg-warning btn-sm text-white"><i class="fas fa-trash"></i></button>';
+
+                                return str;
+                            }
+                        },
                     ],
                     "columns"      : [
                         { 
                             "data" : "id" 
                         },
                         { 
-                            "data" : "employee_no", 
+                            "data" : "name"
                         },
                         { 
-                            "data" : "full_name", 
+                            "data" : null,
                         },
-                        { 
-                            "data" : "position_name", 
-                        },
-                        { 
-                            "data" : "username", 
-                        }
                     ]
                 };
 
                 return options;
             };
 
+            Factory.dummyData = [
+                {
+                    id: 1,
+                    name: 'Residential',
+                },
+                {
+                    id: 2,
+                    name: 'Commercial',
+                },
+                {
+                    id: 3,
+                    name: 'Industrial',
+                },
+                {
+                    id: 4,
+                    name: 'Improvement',
+                },
+            ];
+
             return Factory;
         }
     ]);
 
-    app.service('userAccessConfigurationService', [
+    app.service('MarketValueClassificationsService', [
         '$http',
         function ($http) {
             var _this = this;
@@ -105,22 +127,22 @@ define([
              * `getDetails` Query string that will get first needed details.
              * @return {[route]}
              */
-            _this.getDetails = function () {
-                return $http.get(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/UserAccessConfigurationService.php/getDetails');
-            };
+            // _this.getDetails = function () {
+            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/UserAccessConfigurationService.php/getDetails');
+            // };
         }
     ]);
 
-    app.controller('UserAccessConfigurationController', [
+    app.controller('MarketValueClassificationsController', [
         '$scope',
         '$uibModal',
         '$timeout',
         'blockUI',
         'alertify',
-        'userAccessConfigurationFactory',
-        'userAccessConfigurationService',
+        'MarketValueClassificationsFactory',
+        'MarketValueClassificationsService',
         function ($scope, $uibModal, $timeout, BlockUI, Alertify, Factory, Service) {
-            var _init, _loadDetails, _btnFunc, _viewAccesses, blocker = BlockUI.instances.get('blockUserAccessConfiguration'), table = angular.element('#userAccessConfiguration');
+            var _init, _loadDetails, _btnFunc, _viewAccesses, blocker = BlockUI.instances.get('blockClassifications'), table = angular.element('#marketValueClassifications');
 
             /**
              * `_loadDetails` Load first needed data
@@ -129,46 +151,14 @@ define([
             _loadDetails = function () {
                 blocker.start();
 
-                Service.getDetails().then( function (res) {
+                // Service.getDetails().then( function (res) {
                     $scope.jqDataTableOptions         = Factory.dtOptions();
                     $scope.jqDataTableOptions.buttons = _btnFunc();
-                    $scope.jqDataTableOptions.data    = res.data.users;
-                });
+                    $scope.jqDataTableOptions.data    = Factory.dummyData;
+
+                    blocker.stop();
+                // });
             };
-
-            /**
-             * `_viewAccesses` Viewing of modules.
-             * @return {[modal]}
-             */
-            // _viewAccesses = function () {
-            //     var paramData, modalInstance;
-
-            //     paramData = {
-            //         'id'        : table.DataTable().rows('.selected').data()[0].id,
-            //         'full_name' : table.DataTable().rows('.selected').data()[0].full_name
-            //     };
-
-            //     modalInstance = $uibModal.open({
-            //         animation       : true,
-            //         keyboard        : false,
-            //         backdrop        : 'static',
-            //         ariaLabelledBy  : 'modal-title',
-            //         ariaDescribedBy : 'modal-body',
-            //         templateUrl     : 'view_access.html',
-            //         controller      : 'ViewAccessController',
-            //         size            : 'lg',
-            //         resolve         : {
-            //             paramData : function () {
-            //                 return paramData;
-            //             }
-            //         }
-            //     });
-
-            //     modalInstance.result.then(function (res) {
-            //     }, function (res) {
-            //         // Result when modal is dismissed
-            //     });
-            // }
 
             /**
              * `_btnFunc` list of button functions.
@@ -179,64 +169,67 @@ define([
 
                 buttons = [];
 
-                buttons.unshift({ 
+                buttons.push({ 
                     init        : function(api, node, config) {
-                        $(node).removeClass('btn-default');
-                        $(node).addClass('btn bg-olive btn-sm hoverable add'); 
-                        $(node).append('<i class="fa fa-users"></i>&nbsp;<span class="hidden-xs hidden-sm">VIEW DEPUTY INFO</span>');
+                        $(node).removeClass('btn-default btn-secondary');
+                        $(node).addClass('btn bg-info text-white btn-sm add'); 
+                        $(node).append('<i class="fas fa-plus"></i>&nbsp;<span class="hidden-xs hidden-sm">ADD</span>');
                     },
                     text        : '', 
-                    titleAttr   : 'View Deputy Info', 
+                    titleAttr   : 'Add Classification', 
                     key: { 
                         key     : '1', 
                         altKey  : true 
                     }, 
                     'action'    : function () { 
-                        _viewDeputyInfo(); 
+                        $scope.addClassifications(); 
                     },
                     enabled     : true,
                     name        : 'add'
-                }); 
-
-                buttons.unshift({ 
-                    init        : function(api, node, config) {
-                        $(node).removeClass('btn-default');
-                        $(node).addClass('btn bg-primary btn-sm hoverable add'); 
-                        $(node).append('<i class="fa fa-list-alt"></i>&nbsp;<span class="hidden-xs hidden-sm">VIEW POJECT ACCESSES</span>');
-                    },
-                    text        : '', 
-                    titleAttr   : 'View Project Access', 
-                    key: { 
-                        key     : '1', 
-                        altKey  : true 
-                    }, 
-                    'action'    : function () { 
-                        _viewProjectAccesses(); 
-                    },
-                    enabled     : true,
-                    name        : 'add'
-                }); 
-
-                buttons.unshift({ 
-                    init        : function(api, node, config) {
-                        $(node).removeClass('btn-default');
-                        $(node).addClass('btn bg-orange btn-sm hoverable edit'); 
-                        $(node).append('<i class="fa fa-edit"></i>&nbsp;<span class="hidden-xs hidden-sm">VIEW</span>');
-                    }, 
-                    text        : '', 
-                    titleAttr   : 'View Access', 
-                    key: { 
-                        key     : '2', 
-                        altKey  : true 
-                    }, 
-                    'action'    : function () { 
-                        _viewAccesses(); 
-                    },
-                    enabled     : false,
-                    name        : 'edit'
-                }); 
+                });
                 
                 return buttons;
+            }
+
+            $scope.rowBtns = {
+                "firstButton": function(data, index) {
+                    console.log(data, index)
+                },
+                "secondButton": function(data, index) {
+                    console.log(data, index)
+                },
+            };
+
+            $scope.addClassifications = function () {
+                var paramData, modalInstance;
+
+                // paramData = {
+                //     'id'        : table.DataTable().rows('.selected').data()[0].id,
+                //     'full_name' : table.DataTable().rows('.selected').data()[0].full_name
+                // };
+
+                paramData = {}
+
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'add_classification.html',
+                    controller      : 'AddClassificationController',
+                    size            : 'md',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (res) {
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
             }
 
             /**
@@ -247,10 +240,10 @@ define([
                 // default settings
                 Factory.autoloadSettings();
 
-                $scope.parent.header = {
-                    title: 'User Access Configuration',
-                    showButton: false,
-                }
+                $scope.header.title = "Classifications"
+                $scope.header.link.sub = "Market Value"
+                $scope.header.link.main = "Classifications"
+                $scope.header.showButton = false
 
                 $scope.templates = Factory.templates;
 
