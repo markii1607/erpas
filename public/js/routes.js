@@ -36,7 +36,14 @@ define(function() {
             "controller": "MarketValueClassificationsController",
             "templateUrl": "/public/module/market_value_classifications/market_value_classifications.html",
             "deps": "/public/module/market_value_classifications/index.js"
-        }
+        },
+        {
+            "name": "main.market_value_subclassifications",
+            "url": "/market_value_subclassifications",
+            "controller": "MarketValueSubClassificationsController",
+            "templateUrl": "/public/module/market_value_subclassifications/market_value_subclassifications.html",
+            "deps": "/public/module/market_value_subclassifications/index.js"
+        },
     ];
 
     return routes;

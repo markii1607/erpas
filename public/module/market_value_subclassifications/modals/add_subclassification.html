@@ -1,0 +1,50 @@
+<script type="text/ng-template" id="add_subclassification.html">
+    <div block-ui="blockAddSubClassification">
+        <form name="form.addSubClassification" ng-submit="save(form.addSubClassification.$valid)" novalidate>
+            <div class="modal-header align-items-center">
+				<span class="fa-stack fa-lg">
+	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+	                <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+	            </span>
+
+				<h5 class="modal-title" style="letter-spacing: 1px;">ADD SUB-CLASSIFICATION</h5>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+	                <span aria-hidden="true">
+	                    <i class="fas fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="form-group mb-3">
+                            <label for="subclass_class" class="font-weight-bold">Classification:<i class="text-danger">*</i></label>
+                            <ui-select ng-model="addSubClfn.classification" id="subclass_class" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+                                <ui-select-match placeholder="Select Classification">
+                                    {{ $select.selected.name }}
+                                </ui-select-match>
+                                <ui-select-choices style="font-size: 12px;" repeat="clfn in classifications | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+                                    <span>{{clfn.name}}</span>
+                                </ui-select-choices>
+                            </ui-select>
+						</div>
+						<div class="form-group mb-3">
+                            <label for="subclass_name" class="font-weight-bold">Sub-Classification Name:<i class="text-danger">*</i></label>
+                            <input type="text" ng-model="addSubClfn.name" class="form-control" id="subclass_name" placeholder="Enter Sub-Classification Name..." autocomplete="off" required />
+                        </div>
+                        <p class="text-danger font-italic" style="font-size: 10px;">* Fields are required.</p>
+                    </div>
+                </div>            	
+            </div>
+            <div class="modal-footer bordered">
+				<button type="submit" class="btn btn-default bg-crimson-red" ng-disabled="form.addSubClassification.$invalid">
+					<span>SAVE</span>
+				</button>
+				<button type="button" class="btn btn-default" ng-click="closeModal()">
+					<span>CLOSE</span>
+				</button>
+			</div>
+        </form>
+    </div>
+</script>
