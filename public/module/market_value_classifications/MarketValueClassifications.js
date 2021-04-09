@@ -260,6 +260,17 @@ define([
                 });
             }
 
+            $scope.deleteClassification = function(data, index) {
+                Alertify.confirm("Are you sure you want to delete the selected classification?",
+                    function (res) {
+                        if (res) {
+                            table.DataTable().row('.selected').remove().draw(true);
+                            Alertify.log('Deleted!');
+                        }
+                    }
+                );
+            }
+
             /**
              * `_init` Initialize first things first
              * @return {mixed}
