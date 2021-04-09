@@ -44,6 +44,13 @@ define(function() {
             "templateUrl": "/public/module/market_value_subclassifications/market_value_subclassifications.html",
             "deps": "/public/module/market_value_subclassifications/index.js"
         },
+        {
+            "name": "main.market_value_revisions",
+            "url": "/market_value_revisions",
+            "controller": "MarketValueRevisionsController",
+            "templateUrl": "/public/module/market_value_revisions/market_value_revisions.html",
+            "deps": "/public/module/market_value_revisions/index.js"
+        },
     ];
 
     return routes;

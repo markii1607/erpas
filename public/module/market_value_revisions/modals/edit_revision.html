@@ -1,0 +1,69 @@
+<script type="text/ng-template" id="edit_revision.html">
+    <div block-ui="blockEditRevision">
+        <form name="form.editRevision" ng-submit="save(form.editRevision.$valid)" novalidate>
+            <div class="modal-header align-items-center">
+				<span class="fa-stack fa-lg">
+	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+	                <i class="fas fa-edit fa-stack-1x fa-inverse"></i>
+	            </span>
+
+				<h5 class="modal-title" style="letter-spacing: 1px;">EDIT REVISION</h5>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+	                <span aria-hidden="true">
+	                    <i class="fas fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="form-group mb-3">
+                            <label for="rev_class" class="font-weight-bold">Classification:<i class="text-danger">*</i></label>
+                            <ui-select ng-model="editRev.classification" id="rev_class" theme="bootstrap" reset-search-input="true" append-to-body="true" ng-change="selectSubClasses(editRev.classification)" required>
+                                <ui-select-match placeholder="Select Classification">
+                                    {{ $select.selected.name }}
+                                </ui-select-match>
+                                <ui-select-choices style="font-size: 12px;" repeat="clfn in classifications | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+                                    <span>{{clfn.name}}</span>
+                                </ui-select-choices>
+                            </ui-select>
+						</div>
+                        <div class="form-group mb-3">
+                            <label for="rev_subclass" class="font-weight-bold">Sub-Classification:<i class="text-danger">*</i></label>
+                            <ui-select ng-model="editRev.subclassification" id="rev_subclass" theme="bootstrap" reset-search-input="true" append-to-body="true" required ng-disabled="editRev.disableSubClass">
+                                <ui-select-match placeholder="Select Sub-Classification">
+                                    {{ $select.selected.name }}
+                                </ui-select-match>
+                                <ui-select-choices style="font-size: 12px;" repeat="subClfn in subclassifications | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+                                    <span>{{subClfn.name}}</span>
+                                </ui-select-choices>
+                            </ui-select>
+						</div>
+						<div class="form-group mb-3">
+                            <label for="rev_no" class="font-weight-bold">Revision No.:<i class="text-danger">*</i></label>
+                            <input type="text" ng-model="editRev.rev_no" class="form-control" id="rev_no" placeholder="Enter Revision No..." autocomplete="off" required />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="market_value" class="font-weight-bold">Market Value:<i class="text-danger">*</i></label>
+                            <input type="text" ng-model="editRev.market_value" class="form-control" id="market_value" placeholder="Enter Market Value..." autocomplete="off" required />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="description" class="font-weight-bold">Description:<i class="text-danger">*</i></label>
+                            <textarea ng-model="editRev.description" rows="3" class="form-control resize-none" id="description" placeholder="Enter Description..." required></textarea>
+                        </div>
+                        <p class="text-danger font-italic" style="font-size: 10px;">* Fields are required.</p>
+                    </div>
+                </div>            	
+            </div>
+            <div class="modal-footer bordered">
+				<button type="submit" class="btn btn-default bg-crimson-red" ng-disabled="form.editRevision.$invalid">
+					<span>SAVE</span>
+				</button>
+				<button type="button" class="btn btn-default" ng-click="closeModal()">
+					<span>CLOSE</span>
+				</button>
+			</div>
+        </form>
+    </div>
+</script>

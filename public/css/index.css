@@ -311,6 +311,10 @@ a.text-crimson:focus,a.text-crimson:hover {
 }
 
 /* Custom CSS */
+.resize-none {
+    resize: none;
+}
+
 .w-100 {
     width: 100%;
 }
