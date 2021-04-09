@@ -71,8 +71,8 @@ define([
                             "className": "text-center",
                             "render": function(data, type, full, meta) {
                                 var str = '';
-                                str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="Edit Classification" class="btn btn-default bg-success btn-sm mr-2 text-white"><i class="fas fa-edit"></i></button>';
-                                str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Delete Classification" class="btn btn-default bg-warning btn-sm text-white"><i class="fas fa-trash"></i></button>';
+                                str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="Edit Sub-Classification" class="btn btn-default bg-success btn-sm mr-2 text-white"><i class="fas fa-edit"></i></button>';
+                                str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Delete Sub-Classification" class="btn btn-default bg-warning btn-sm text-white"><i class="fas fa-trash"></i></button>';
 
                                 return str;
                             }
