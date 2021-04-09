@@ -141,7 +141,7 @@ define([
         'MarketValueClassificationsFactory',
         'MarketValueClassificationsService',
         function ($scope, $uibModal, $timeout, BlockUI, Alertify, Factory, Service) {
-            var _init, _loadDetails, _btnFunc, _viewAccesses, blocker = BlockUI.instances.get('blockClassifications'), table = angular.element('#marketValueClassifications');
+            var _init, _loadDetails, _btnFunc, _viewAccesses, blocker = BlockUI.instances.get('blockMarketValueClassifications'), table = angular.element('#marketValueClassifications');
 
             /**
              * `_loadDetails` Load first needed data
