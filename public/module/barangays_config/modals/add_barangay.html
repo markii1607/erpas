@@ -1,0 +1,44 @@
+<script type="text/ng-template" id="add_barangay.html">
+    <div block-ui="blockAddBarangay">
+        <form name="form.addBarangay" ng-submit="save(form.addBarangay.$valid)" novalidate>
+            <div class="modal-header align-items-center">
+				<span class="fa-stack fa-lg">
+	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+	                <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+	            </span>
+
+				<h5 class="modal-title" style="letter-spacing: 1px;">ADD BARANGAY</h5>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+	                <span aria-hidden="true">
+	                    <i class="fas fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="form-group">
+							<label for="brgy_code" class="font-weight-bold">Barangay Code<i class="text-danger">*</i></label>
+							<input type="text" ng-model="addBrgy.code" class="form-control" id="brgy_code" placeholder="Enter Barangay Code..." autofocus autocomplete="off" required />
+						</div>
+
+						<div class="form-group">
+							<label for="brgy_name" class="font-weight-bold">Barangay Name<i class="text-danger">*</i></label>
+							<input type="text" ng-model="addBrgy.name" class="form-control" id="brgy_name" placeholder="Enter Barangay Name..." autocomplete="off" required />
+						</div>
+                        <p class="text-danger font-italic" style="font-size: 10px;">* Fields are required.</p>
+                    </div>
+                </div>            	
+            </div>
+            <div class="modal-footer bordered">
+				<button type="submit" class="btn btn-default bg-crimson-red" ng-disabled="form.addBarangay.$invalid">
+					<span>SAVE</span>
+				</button>
+				<button type="button" class="btn btn-default" ng-click="closeModal()">
+					<span>CLOSE</span>
+				</button>
+			</div>
+        </form>
+    </div>
+</script>

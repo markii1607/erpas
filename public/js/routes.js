@@ -51,6 +51,13 @@ define(function() {
             "templateUrl": "/public/module/market_value_revisions/market_value_revisions.html",
             "deps": "/public/module/market_value_revisions/index.js"
         },
+        {
+            "name": "main.barangays_config",
+            "url": "/barangays_config",
+            "controller": "BarangaysConfigController",
+            "templateUrl": "/public/module/barangays_config/barangays_config.html",
+            "deps": "/public/module/barangays_config/index.js"
+        },
     ];
 
     return routes;

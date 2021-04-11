@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card border-bottom-success shadow mb-4">
+            <div class="card-header bg-success py-3">
+                <h6 class="m-0 font-weight-bold text-white">Barangays List</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="barangays" jq-data-tables options="jqDataTableOptions" rowbtn="rowBtns" class="table table-hover table-bordered table-striped" width="100%" blocker="blockBarangays">
+                        <thead>
+                            <tr class="text-uppercase" style="letter-spacing: 1px;">
+                                <th class="text-center" style="width: 5%; vertical-align: middle;">#</th>
+                                <th class="text-center" style="vertical-align: middle;">Code</th>
+                                <th class="text-center" style="vertical-align: middle;">Brgy. Name</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Load modal template -->
+<div class="modal" ng-repeat="template in templates">
+    <ng-include src="template"></ng-include>
+</div>
