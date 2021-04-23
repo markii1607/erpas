@@ -97,99 +97,6 @@ define([
                 return options;
             };
 
-            Factory.dummyData = [
-                {
-                    id: 1,
-                    code: '01',
-                    name: 'Barangay 01 Poblacion',
-                },
-                {
-                    id: 2,
-                    code: '02',
-                    name: 'Barangay 02 Poblacion',
-                },
-                {
-                    id: 3,
-                    code: '03',
-                    name: 'Barangay 03 Poblacion',
-                },
-                {
-                    id: 4,
-                    code: '04',
-                    name: 'Barangay 04 Poblacion',
-                },
-                {
-                    id: 5,
-                    code: '05',
-                    name: 'Barangay 05 Poblacion',
-                },
-                {
-                    id: 6,
-                    code: '06',
-                    name: 'Binitayan',
-                },
-                {
-                    id: 7,
-                    code: '07',
-                    name: 'Calbayog',
-                },
-                {
-                    id: 8,
-                    code: '08',
-                    name: 'Canaway',
-                },
-                {
-                    id: 9,
-                    code: '09',
-                    name: 'Salvacion',
-                },
-                {
-                    id: 1,
-                    code: '010',
-                    name: 'San Antonio - Santicon',
-                },
-                {
-                    id: 11,
-                    code: '011',
-                    name: 'San Antonio - Sulong',
-                },
-                {
-                    id: 12,
-                    code: '012',
-                    name: 'San Francisco',
-                },
-                {
-                    id: 13,
-                    code: '013',
-                    name: 'San Isidro Ilawod',
-                },
-                {
-                    id: 14,
-                    code: '014',
-                    name: 'San Isidro Iraya',
-                },
-                {
-                    id: 15,
-                    code: '015',
-                    name: 'San Jose',
-                },
-                {
-                    id: 16,
-                    code: '016',
-                    name: 'San Roque',
-                },
-                {
-                    id: 17,
-                    code: '017',
-                    name: 'Sta. Cruz',
-                },
-                {
-                    id: 18,
-                    code: '018',
-                    name: 'Sta. Teresa',
-                },
-            ];
-
             return Factory;
         }
     ]);
@@ -203,9 +110,13 @@ define([
              * `getDetails` Query string that will get first needed details.
              * @return {[route]}
              */
-            // _this.getDetails = function () {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/UserAccessConfigurationService.php/getDetails');
-            // };
+            _this.getDetails = function () {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/BarangaysConfig/BarangaysConfigService.php/getDetails');
+            };
+
+            _this.archive = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/BarangaysConfig/BarangaysConfigService.php/archiveBarangay', data);
+            };
         }
     ]);
 
@@ -227,13 +138,17 @@ define([
             _loadDetails = function () {
                 blocker.start();
 
-                // Service.getDetails().then( function (res) {
-                    $scope.jqDataTableOptions         = Factory.dtOptions();
-                    $scope.jqDataTableOptions.buttons = _btnFunc();
-                    $scope.jqDataTableOptions.data    = Factory.dummyData;
+                Service.getDetails().then( function (res) {
+                    if (res.data.barangays != undefined) {
+                        $scope.jqDataTableOptions         = Factory.dtOptions();
+                        $scope.jqDataTableOptions.buttons = _btnFunc();
+                        $scope.jqDataTableOptions.data    = res.data.barangays;
+                    } else {
+                        Alertify.error("An error occurred while fetching data! Please contact the administrator.");
+                    }
 
                     blocker.stop();
-                // });
+                });
             };
 
             /**
@@ -279,11 +194,6 @@ define([
             $scope.addBarangay = function () {
                 var paramData, modalInstance;
 
-                // paramData = {
-                //     'id'        : table.DataTable().rows('.selected').data()[0].id,
-                //     'full_name' : table.DataTable().rows('.selected').data()[0].full_name
-                // };
-
                 paramData = {}
 
                 modalInstance = $uibModal.open({
@@ -303,6 +213,9 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
+                    console.log('addREsult: ', res);
+                    table.DataTable().row.add(res).draw();
+                    table.find('tbody tr').css('cursor', 'pointer');
                 }, function (res) {
                     // Result when modal is dismissed
                 });
@@ -332,6 +245,8 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
+                    console.log("editResult: ", res);
+                    table.DataTable().row(index).data(res).draw();
                 }, function (res) {
                     // Result when modal is dismissed
                 });
@@ -339,11 +254,19 @@ define([
 
             $scope.deleteBarangay = function(data, index) {
                 Alertify.confirm("Are you sure you want to delete the selected barangay?",
-                    function (res) {
-                        if (res) {
-                            table.DataTable().row('.selected').remove().draw(true);
-                            Alertify.log('Deleted!');
-                        }
+                    function () {
+                        blocker.start();
+                        Service.archive(data).then(res => {
+                            if (res.data.status) {
+                                table.DataTable().row('.selected').remove().draw(true);
+                                Alertify.log('Deleted!');
+                                
+                                blocker.stop();
+                            } else {
+                                Alertify.error("ERROR! Please contact the administrator.");
+                                blocker.stop();
+                            }
+                        });
                     }
                 );
             }

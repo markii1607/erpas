@@ -25,23 +25,9 @@ define([
         function ($http) {
             var _this = this;
 
-            /**
-             * `getDetails` Query string that will get first needed details.
-             * @param  {[type]} id
-             * @return {[type]}
-             */
-            // _this.getDetails = function (id) {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/ViewAccessService.php/getDetails?id=' + id);
-            // }
-
-            /**
-             * `archive` Query string that will archive information.
-             * @param  {[string]} id
-             * @return {[route]}
-             */
-            // _this.archive = function (id) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/ViewAccessService.php/archiveAccess', {'id' : id});
-            // }
+            _this.save = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/BarangaysConfig/BarangaysConfigService.php/saveUpdatedBarangay', data);
+            }
         }
     ]);
 
@@ -92,23 +78,19 @@ define([
                 if (isValid) {
                     Alertify.confirm("Are you sure you want to update this barangay?",
                         function (res) {
-                            if (res) {
-                                // blocker.start();
-
-                                // $timeout( function () {
-                                //     Service.save($scope.editClfn).then( function (res) {
-                                //         if (res.data.status == true) {
-                                //             Alertify.success("Classification successfully added!");
-
-                                //             $uibModalInstance.close($scope.editClfn);
-                                //             blocker.stop();
-                                //         } else {
-                                //             Alertify.error("Classification already exist!");
-                                //             blocker.stop();
-                                //         }
-                                //     });
-                                // }, 1000);
-                            }
+                            blocker.start();
+    
+                            Service.save($scope.editBrgy).then( function (res) {
+                                if (res.data.status) {
+                                    Alertify.success("Barangay successfully updated!");
+        
+                                    $uibModalInstance.close(res.data.rowData);
+                                    blocker.stop();
+                                } else {
+                                    Alertify.error("An error occurred while saving! Please contact the administrator.");
+                                    blocker.stop();
+                                }
+                            });
                         }
                     );
                 } else {

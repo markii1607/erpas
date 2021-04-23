@@ -16,95 +16,6 @@ define([
                 alertify.theme('')
             };
 
-            Factory.dtOptions = function () {
-                var options = {};
-
-                options = {
-                    "dom"            : 'Bfrtip',
-                    "paging"         : true,
-                    "lengthChange"   : true,
-                    "pageLength"     : 25,
-                    "searching"      : true,
-                    "ordering"       : false,
-                    "info"           : true,
-                    "select"         : {
-                        style : 'single'
-                    },
-                    "keys"           : {
-                        keys: [ 
-                            13 /* ENTER */, 
-                            38 /* UP */, 
-                            40 /* DOWN */ 
-                        ]
-                    },
-                    "mark"           : true,
-                    "autoWidth"      : false,
-                    "responsive"     : true,
-                    "data"           : [],
-                    "buttons"        : [],
-                    "order"          : [
-                        [
-                            1, 
-                            "desc" 
-                        ]
-                    ],
-                    "columnDefs"   : [ 
-                        {
-                            "targets"    : 0,
-                            "searchable" : false,
-                            "orderable"  : false,
-                            "className"  : "text-center"
-                        },
-                        {
-                            "className" : "text-center",
-                            "targets"   : 2,
-                            "render"    : function (data, type, row) {
-                            	var splitData, output;
-                            	
-                            	output    = '';
-                            	splitData = (data == '' || angular.isUndefined(data)) ? [] : data.split(',');
-
-                            	if (splitData[0]) {
-	                            	output = output + '<span class="label label-warning">ADD</span>&nbsp;';
-                            	}
-
-                            	if (splitData[1]) {
-	                            	output = output + '<span class="label label-warning">EDIT</span>&nbsp;';
-                            	}
-
-                            	if (splitData[2]) {
-	                            	output = output + '<span class="label label-warning">DELETE</span>';
-                            	}
-
-                            	if (splitData.length == 0) {
-	                            	output = output + '<span class="label label-primary">PARENT MENU</span>';
-                            	}
-
-                            	return output;
-                            }
-                        }
-                    ],
-                    "columns"      : [
-                        { 
-                            "data"   : "id" 
-                        },
-                        { 
-                            "data"      : "name", 
-                        },
-                        { 
-                            "data"      : "level", 
-                        }
-                    ],
-		            "createdRow" : function(row, data, dataIndex) {
-		                if (data.parent == null) {
-		                    $(row).addClass( "bg-red" );
-		                }
-		            },
-                };
-
-                return options;
-            };
-
             return Factory;
         }
     ]);
@@ -114,23 +25,9 @@ define([
         function ($http) {
             var _this = this;
 
-            /**
-             * `getDetails` Query string that will get first needed details.
-             * @param  {[type]} id
-             * @return {[type]}
-             */
-            // _this.getDetails = function (id) {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/ViewAccessService.php/getDetails?id=' + id);
-            // }
-
-            /**
-             * `archive` Query string that will archive information.
-             * @param  {[string]} id
-             * @return {[route]}
-             */
-            // _this.archive = function (id) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/ViewAccessService.php/archiveAccess', {'id' : id});
-            // }
+            _this.save = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/BarangaysConfig/BarangaysConfigService.php/saveNewBarangay', data);
+            }
         }
     ]);
 
@@ -153,15 +50,7 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
-                // blocker.start();
-
-            	// Service.getDetails(ParamData.id).then( function (res) {
-            	// 	$scope.accessList = angular.copy(res.data.access);
-
-                //     $scope.jqDataTableOptions         = Factory.dtOptions();
-                //     $scope.jqDataTableOptions.buttons = _btnFunc();
-                //     $scope.jqDataTableOptions.data    = _formatAccess(res.data.access);
-            	// });
+                
             }
 
             /**
@@ -180,24 +69,20 @@ define([
             $scope.save = function (isValid) {
                 if (isValid) {
                     Alertify.confirm("Are you sure you want to add this barangay?",
-                        function (res) {
-                            if (res) {
-                                // blocker.start();
-
-                                // $timeout( function () {
-                                //     Service.save($scope.addBrgy).then( function (res) {
-                                //         if (res.data.status == true) {
-                                //             Alertify.success("Classification successfully added!");
-
-                                //             $uibModalInstance.close($scope.addBrgy);
-                                //             blocker.stop();
-                                //         } else {
-                                //             Alertify.error("Classification already exist!");
-                                //             blocker.stop();
-                                //         }
-                                //     });
-                                // }, 1000);
-                            }
+                        function () {
+                            blocker.start();
+    
+                            Service.save($scope.addBrgy).then( function (res) {
+                                if (res.data.status) {
+                                    Alertify.success("Barangay successfully added!");
+        
+                                    $uibModalInstance.close(res.data.rowData);
+                                    blocker.stop();
+                                } else {
+                                    Alertify.error("An error occurred while saving! Please contact the administrator.");
+                                    blocker.stop();
+                                }
+                            });
                         }
                     );
                 } else {

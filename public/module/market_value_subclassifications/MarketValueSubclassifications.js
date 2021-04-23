@@ -64,6 +64,15 @@ define([
                             "orderable"  : true,
                             "className"  : "text-center"
                         },
+                        // {
+                        //     "targets"    : 1,
+                        //     "searchable" : true,
+                        //     "orderable"  : true,
+                        //     "className"  : "text-left",
+                        //     "render"     : function(data, type, full, meta){
+                        //                         return data.name;
+                        //     }
+                        // },
                         {
                             "targets": 3,
                             "searchable": false,
@@ -83,7 +92,7 @@ define([
                             "data" : "id" 
                         },
                         { 
-                            "data" : "classification_name"
+                            "data" : "classification.name"
                         },
                         { 
                             "data" : "name"
@@ -97,43 +106,6 @@ define([
                 return options;
             };
 
-            Factory.dummyData = [
-                {
-                    id: 1,
-                    classification_name: 'Residential',
-                    name: 'R1',
-                },
-                {
-                    id: 2,
-                    classification_name: 'Residential',
-                    name: 'R2',
-                },
-                {
-                    id: 3,
-                    classification_name: 'Residential',
-                    name: 'R3',
-                },
-                {
-                    id: 4,
-                    classification_name: 'Commercial',
-                    name: 'C1',
-                },
-                {
-                    id: 5,
-                    classification_name: 'Commercial',
-                    name: 'C2',
-                },
-                {
-                    id: 6,
-                    classification_name: 'Commercial',
-                    name: 'C3',
-                },
-                {
-                    id: 7,
-                    classification_name: 'Industrial',
-                    name: 'I1',
-                },
-            ];
 
             return Factory;
         }
@@ -144,13 +116,13 @@ define([
         function ($http) {
             var _this = this;
 
-            /**
-             * `getDetails` Query string that will get first needed details.
-             * @return {[route]}
-             */
-            // _this.getDetails = function () {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/UserAccessConfigurationService.php/getDetails');
-            // };
+            _this.getDetails = function () {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/MarketValueSubclassification/MarketValueSubclassificationService.php/getDetails');
+            };
+
+            _this.archive = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/MarketValueSubclassification/MarketValueSubclassificationService.php/archiveSubClassification', data);
+            };
         }
     ]);
 
@@ -172,13 +144,19 @@ define([
             _loadDetails = function () {
                 blocker.start();
 
-                // Service.getDetails().then( function (res) {
-                    $scope.jqDataTableOptions         = Factory.dtOptions();
-                    $scope.jqDataTableOptions.buttons = _btnFunc();
-                    $scope.jqDataTableOptions.data    = Factory.dummyData;
-
-                    blocker.stop();
-                // });
+                Service.getDetails().then( function (res) {
+                    if (res.data.subClassifications != undefined) {
+                        
+                        $scope.jqDataTableOptions         = Factory.dtOptions();
+                        $scope.jqDataTableOptions.buttons = _btnFunc();
+                        $scope.jqDataTableOptions.data    = res.data.subClassifications;
+    
+                        blocker.stop();
+                    } else {
+                        Alertify.error("An error occurred while fetching data. Please contact the administrator.");
+                        blocker.stop();
+                    }
+                });
             };
 
             /**
@@ -224,11 +202,6 @@ define([
             $scope.addSubClassification = function () {
                 var paramData, modalInstance;
 
-                // paramData = {
-                //     'id'        : table.DataTable().rows('.selected').data()[0].id,
-                //     'full_name' : table.DataTable().rows('.selected').data()[0].full_name
-                // };
-
                 paramData = {}
 
                 modalInstance = $uibModal.open({
@@ -248,6 +221,9 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
+                    console.log('addREsult: ', res);
+                    table.DataTable().row.add(res).draw();
+                    table.find('tbody tr').css('cursor', 'pointer');
                 }, function (res) {
                     // Result when modal is dismissed
                 });
@@ -277,6 +253,8 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
+                    console.log("editResult: ", res);
+                    table.DataTable().row(index).data(res).draw();
                 }, function (res) {
                     // Result when modal is dismissed
                 });
@@ -284,11 +262,19 @@ define([
 
             $scope.deleteSubClassification = function(data, index) {
                 Alertify.confirm("Are you sure you want to delete the selected sub-classification?",
-                    function (res) {
-                        if (res) {
-                            table.DataTable().row('.selected').remove().draw(true);
-                            Alertify.log('Deleted!');
-                        }
+                    function () {
+                        blocker.start();
+                        Service.archive(data).then(res => {
+                            if (res.data.status) {
+                                table.DataTable().row('.selected').remove().draw(true);
+                                Alertify.log('Deleted!');
+                                
+                                blocker.stop();
+                            } else {
+                                Alertify.error("ERROR! Please contact the administrator.");
+                                blocker.stop();
+                            }
+                        });
                     }
                 );
             }

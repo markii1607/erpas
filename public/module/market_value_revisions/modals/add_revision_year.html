@@ -1,0 +1,86 @@
+<script type="text/ng-template" id="add_revision_year.html">
+    <div block-ui="blockAddRevisionYear">
+        <form name="form.addClassification" novalidate>
+            <div class="modal-header align-items-center">
+				<span class="fa-stack fa-lg">
+	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+	                <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+	            </span>
+
+				<h5 class="modal-title" style="letter-spacing: 1px;">ADD REVISION YEAR</h5>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+	                <span aria-hidden="true">
+	                    <i class="fas fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                                <div class="form-group" ng-if="!enableEdit">
+                                    <label for="rev_year" class="font-weight-bold">Revision Year<i class="text-danger">*</i></label>
+                                    <input type="text" ng-model="addRvnYr.year" class="form-control" id="rev_year" placeholder="Enter New Revision Year..." autofocus autocomplete="off" />
+                                </div>
+                                <div class="form-group" ng-if="enableEdit">
+                                    <label for="rev_year" class="font-weight-bold">Revision Year<i class="text-danger">*</i></label>
+                                    <input type="text" ng-model="editRvnYr.year" class="form-control" id="rev_year" placeholder="Enter New Revision Year..." autofocus autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                <button type="submit" class="btn btn-default bg-crimson-red" ng-if="!enableEdit" ng-disabled="addRvnYr.year == undefined" ng-click="save()">
+                                    <span>SAVE</span>
+                                </button>
+                                <button type="submit" class="btn btn-default bg-info text-white" ng-if="enableEdit" ng-disabled="editRvnYr.year == undefined" ng-click="edit()">
+                                    <span>UPDATE</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div style="height: 30vh !important; overflow-y: auto;">
+                                    <table class="table table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Year</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-if="revision_years.length == 0">
+                                                <td class="text-center" colspan="3">No Data Found.</td>
+                                            </tr>
+                                            <tr ng-if="revision_years.length > 0" ng-repeat="(key, value) in revision_years track by $index">
+                                                <th scope="row">{{key+1}}</th>
+                                                <td>{{value.year}}</td>
+                                                <td>
+                                                    <button type="submit" id="{{$index + 1}}" data-toggle="tooltip" title="Edit Revision Year" class="btn btn-default bg-success btn-sm mr-2 text-white" ng-click="triggerUpdate(value, key)"><i class="fas fa-edit"></i></button>
+                                                    <button type="submit" id="{{$index + 2}}" data-toggle="tooltip" title="Delete Revision Year" class="btn btn-default bg-warning btn-sm text-white" ng-click="archive(value, key)"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>            	
+            </div>
+            <div class="modal-footer bordered">
+				<!-- <button type="submit" class="btn btn-default bg-crimson-red" ng-disabled="form.addClassification.$invalid">
+					<span>SAVE</span>
+				</button> -->
+				<button type="button" class="btn btn-default" ng-click="closeModal()">
+					<span>CLOSE</span>
+				</button>
+			</div>
+        </form>
+    </div>
+</script>
