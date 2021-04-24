@@ -126,9 +126,13 @@ define([
              * `getDetails` Query string that will get first needed details.
              * @return {[route]}
              */
-            // _this.getDetails = function () {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/UserAccessConfigurationService.php/getDetails');
-            // };
+            _this.getDetails = function () {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/MarketValueClassification/MarketValueClassificationService.php/getDetails');
+            };
+
+            _this.archive = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/MarketValueClassification/MarketValueClassificationService.php/archiveClassification', data);
+            };
         }
     ]);
 
@@ -150,13 +154,21 @@ define([
             _loadDetails = function () {
                 blocker.start();
 
-                // Service.getDetails().then( function (res) {
-                    $scope.jqDataTableOptions         = Factory.dtOptions();
-                    $scope.jqDataTableOptions.buttons = _btnFunc();
-                    $scope.jqDataTableOptions.data    = Factory.dummyData;
+                Service.getDetails().then( function (res) {
+                    if (res.data.classifications != undefined) {
 
-                    blocker.stop();
-                // });
+                        $scope.jqDataTableOptions         = Factory.dtOptions();
+                        $scope.jqDataTableOptions.buttons = _btnFunc();
+                        $scope.jqDataTableOptions.data    = res.data.classifications;
+                        // $scope.jqDataTableOptions.data    = Factory.dummyData;
+
+                        blocker.stop();
+                    } else {
+                        Alertify.error("An error occurred while fetching data! Please contact the administrator.");
+                        blocker.stop();
+                    }
+
+                });
             };
 
             /**
@@ -202,11 +214,6 @@ define([
             $scope.addClassification = function () {
                 var paramData, modalInstance;
 
-                // paramData = {
-                //     'id'        : table.DataTable().rows('.selected').data()[0].id,
-                //     'full_name' : table.DataTable().rows('.selected').data()[0].full_name
-                // };
-
                 paramData = {}
 
                 modalInstance = $uibModal.open({
@@ -226,6 +233,9 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
+                    console.log('addREsult: ', res);
+                    table.DataTable().row.add(res).draw();
+                    table.find('tbody tr').css('cursor', 'pointer');
                 }, function (res) {
                     // Result when modal is dismissed
                 });
@@ -255,20 +265,28 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
+                    console.log("editResult: ", res);
+                    table.DataTable().row(index).data(res).draw();
                 }, function (res) {
                     // Result when modal is dismissed
                 });
             }
 
             $scope.deleteClassification = function(data, index) {
-                Alertify.confirm("Are you sure you want to delete the selected classification?",
-                    function (res) {
-                        if (res) {
+                Alertify.confirm("Are you sure you want to delete the selected classification?", function () {
+                    blocker.start();
+                    Service.archive(data).then(res => {
+                        if (res.data.status) {
                             table.DataTable().row('.selected').remove().draw(true);
                             Alertify.log('Deleted!');
+                            
+                            blocker.stop();
+                        } else {
+                            Alertify.error("ERROR! Please contact the administrator.");
+                            blocker.stop();
                         }
-                    }
-                );
+                    });
+                });
             }
 
             /**

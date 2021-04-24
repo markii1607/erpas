@@ -23,6 +23,7 @@ define([
             Factory.templates = [
                 'module/market_value_revisions/modals/add_revision.html',
                 'module/market_value_revisions/modals/edit_revision.html',
+                'module/market_value_revisions/modals/add_revision_year.html',
             ];
 
             Factory.dtOptions = function () {
@@ -83,13 +84,13 @@ define([
                             "data" : "id" 
                         },
                         { 
-                            "data" : "classification_name"
+                            "data" : "sub_classification.classification.name"
                         },
                         { 
-                            "data" : "sub_classification_name"
+                            "data" : "sub_classification.name"
                         },
                         { 
-                            "data" : "rev_no"
+                            "data" : "revision_year.year"
                         },
                         { 
                             "data" : "market_value"
@@ -106,65 +107,6 @@ define([
                 return options;
             };
 
-            Factory.dummyData = [
-                {
-                    id: 1,
-                    classification_name: 'Residential',
-                    sub_classification_name: 'R1',
-                    rev_no: 'R1-1000',
-                    market_value: 1000,
-                    description: 'Sample Description',
-                },
-                {
-                    id: 2,
-                    classification_name: 'Residential',
-                    sub_classification_name: 'R2',
-                    rev_no: 'R2-1000',
-                    market_value: 1000,
-                    description: 'Sample Description',
-                },
-                {
-                    id: 3,
-                    classification_name: 'Residential',
-                    sub_classification_name: 'R3',
-                    rev_no: 'R3-1000',
-                    market_value: 1000,
-                    description: 'Sample Description',
-                },
-                {
-                    id: 4,
-                    classification_name: 'Commercial',
-                    sub_classification_name: 'C1',
-                    rev_no: 'C1-1000',
-                    market_value: 1000,
-                    description: 'Sample Description',
-                },
-                {
-                    id: 5,
-                    classification_name: 'Commercial',
-                    sub_classification_name: 'C2',
-                    rev_no: 'C2-1000',
-                    market_value: 1000,
-                    description: 'Sample Description',
-                },
-                {
-                    id: 6,
-                    classification_name: 'Commercial',
-                    sub_classification_name: 'C3',
-                    rev_no: 'C3-1000',
-                    market_value: 1000,
-                    description: 'Sample Description',
-                },
-                {
-                    id: 7,
-                    classification_name: 'Industrial',
-                    sub_classification_name: 'I1',
-                    rev_no: 'I1-1000',
-                    market_value: 1000,
-                    description: 'Sample Description',
-                },
-            ];
-
             return Factory;
         }
     ]);
@@ -178,9 +120,13 @@ define([
              * `getDetails` Query string that will get first needed details.
              * @return {[route]}
              */
-            // _this.getDetails = function () {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/UserAccessConfigurationService.php/getDetails');
-            // };
+            _this.getDetails = function () {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/MarketValueRevision/MarketValueRevisionService.php/getDetails');
+            };
+
+            _this.archive = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/MarketValueRevision/MarketValueRevisionService.php/archiveMarketValue', data);
+            };
         }
     ]);
 
@@ -202,13 +148,17 @@ define([
             _loadDetails = function () {
                 blocker.start();
 
-                // Service.getDetails().then( function (res) {
-                    $scope.jqDataTableOptions         = Factory.dtOptions();
-                    $scope.jqDataTableOptions.buttons = _btnFunc();
-                    $scope.jqDataTableOptions.data    = Factory.dummyData;
+                Service.getDetails().then( function (res) {
+                    if (res.data.market_values != undefined) {
+                        $scope.jqDataTableOptions         = Factory.dtOptions();
+                        $scope.jqDataTableOptions.buttons = _btnFunc();
+                        $scope.jqDataTableOptions.data    = res.data.market_values;
+                    } else {
+                        Alertify.error("An error occurred while fetching data! Please contact the administrator.")
+                    }
 
                     blocker.stop();
-                // });
+                });
             };
 
             /**
@@ -224,10 +174,29 @@ define([
                     init        : function(api, node, config) {
                         $(node).removeClass('btn-default btn-secondary');
                         $(node).addClass('btn bg-info text-white btn-sm add'); 
-                        $(node).append('<i class="fas fa-plus"></i>&nbsp;<span class="hidden-xs hidden-sm">ADD</span>');
+                        $(node).append('<i class="fas fa-plus"></i>&nbsp;<span class="hidden-xs hidden-sm">ADD REVISION YEAR</span>');
                     },
                     text        : '', 
-                    titleAttr   : 'Add Revision', 
+                    titleAttr   : 'Add Revision Year', 
+                    key: { 
+                        key     : '1', 
+                        altKey  : true 
+                    }, 
+                    'action'    : function () { 
+                        $scope.addRevisionYear(); 
+                    },
+                    enabled     : true,
+                    name        : 'add'
+                });
+
+                buttons.push({ 
+                    init        : function(api, node, config) {
+                        $(node).removeClass('btn-default btn-secondary');
+                        $(node).addClass('btn bg-success text-white btn-sm add'); 
+                        $(node).append('<i class="fas fa-plus"></i>&nbsp;<span class="hidden-xs hidden-sm">ADD NEW MARKET VALUE DATA</span>');
+                    },
+                    text        : '', 
+                    titleAttr   : 'Add Market Value Data', 
                     key: { 
                         key     : '1', 
                         altKey  : true 
@@ -254,11 +223,6 @@ define([
             $scope.addRevision = function () {
                 var paramData, modalInstance;
 
-                // paramData = {
-                //     'id'        : table.DataTable().rows('.selected').data()[0].id,
-                //     'full_name' : table.DataTable().rows('.selected').data()[0].full_name
-                // };
-
                 paramData = {}
 
                 modalInstance = $uibModal.open({
@@ -269,6 +233,36 @@ define([
                     ariaDescribedBy : 'modal-body',
                     templateUrl     : 'add_revision.html',
                     controller      : 'AddRevisionController',
+                    size            : 'md',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (res) {
+                    console.log('addREsult: ', res);
+                    table.DataTable().row.add(res).draw();
+                    table.find('tbody tr').css('cursor', 'pointer');
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+            }
+
+            $scope.addRevisionYear = function () {
+                var paramData, modalInstance;
+
+                paramData = {}
+
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'add_revision_year.html',
+                    controller      : 'AddRevisionYearController',
                     size            : 'md',
                     resolve         : {
                         paramData : function () {
@@ -307,18 +301,28 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
+                    console.log("editResult: ", res);
+                    table.DataTable().row(index).data(res).draw();
                 }, function (res) {
                     // Result when modal is dismissed
                 });
             }
 
             $scope.deleteRevision = function(data, index) {
-                Alertify.confirm("Are you sure you want to delete the selected revision?",
-                    function (res) {
-                        if (res) {
-                            table.DataTable().row('.selected').remove().draw(true);
-                            Alertify.log('Deleted!');
-                        }
+                Alertify.confirm("Are you sure you want to delete the selected market value details?",
+                    function () {
+                        blocker.start();
+                        Service.archive(data).then(res => {
+                            if (res.data.status) {
+                                table.DataTable().row('.selected').remove().draw(true);
+                                Alertify.log('Deleted!');
+                                
+                                blocker.stop();
+                            } else {
+                                Alertify.error("ERROR! Please contact the administrator.");
+                                blocker.stop();
+                            }
+                        });
                     }
                 );
             }
