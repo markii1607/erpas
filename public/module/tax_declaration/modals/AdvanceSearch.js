@@ -132,6 +132,18 @@ define([
                 
                 $scope.search = {};
 
+                $timeout(function() {
+                    angular.element('#date_range').datepicker({
+                        language: 'en',
+                        autoClose: true,
+                        position: 'top center',
+                        maxDate: new Date(), 
+                        onSelect: function(formattedDate, date, inst) {
+                            $scope.search.date_range = angular.copy(formattedDate);
+                        }
+                    });
+                }, 500);
+
                 _loadDetails();
             };
 
