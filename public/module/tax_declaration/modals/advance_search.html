@@ -1,0 +1,90 @@
+<script type="text/ng-template" id="advance_search.html">
+    <div block-ui="blockAddTaxDec">
+        <form name="form.addTaxDec" ng-submit="search()" novalidate>
+            <div class="modal-header align-items-center">
+				<span class="fa-stack fa-lg">
+	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+	                <i class="fas fa-search fa-stack-1x fa-inverse"></i>
+	            </span>
+
+				<h5 class="modal-title" style="letter-spacing: 1px;">ADVANCE SEARCH OPTIONS</h5>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+	                <span aria-hidden="true">
+	                    <i class="fas fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+				<div class="row mb-3">
+					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+						<label for="td_no" class="font-weight-bold">TD No.:</label>
+                        <input type="text" ng-model="search.td_no" class="form-control" id="td_no" placeholder="Enter TD No." autocomplete="off" />
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+						<label for="pin" class="font-weight-bold">PIN:</label>
+                        <input type="text" ng-model="search.pin" class="form-control" id="pin" placeholder="Enter PIN" autocomplete="off" />
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+						<label for="owner" class="font-weight-bold">Owner:</label>
+                        <input type="text" ng-model="search.owner" class="form-control" id="owner" placeholder="Enter Owner Name" autocomplete="off" />
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+						<label for="lot_no" class="font-weight-bold">Lot No.:</label>
+                        <input type="text" ng-model="search.lot_no" class="form-control" id="lot_no" placeholder="Enter Lot No." autocomplete="off" />
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+						<label for="location" class="font-weight-bold">Location of Property:</label>
+                        <input type="text" ng-model="search.location" class="form-control" id="location" placeholder="Enter Location of Property" autocomplete="off" />
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+						<label for="type" class="font-weight-bold">Kind of Property:</label>
+                        <input type="text" ng-model="search.type" class="form-control" id="type" placeholder="Enter Kind of Property" autocomplete="off" />
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+						<label for="classifications" class="font-weight-bold">Classifications:</label>
+                        <ui-select ng-model="search.classifications" theme="bootstrap" id="classifications" reset-search-input="true" append-to-body="true" required>
+							<ui-select-match placeholder="Select Brgy.">
+								{{ $select.selected.name }}
+							</ui-select-match>
+							<ui-select-choices style="font-size: 12px;" repeat="clf in classifications | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+								<span>{{ clf.name }}</span>
+							</ui-select-choices>
+						</ui-select>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+						<label for="actual_use" class="font-weight-bold">Actual Use:</label>
+                        <input type="text" ng-model="search.actual_use" class="form-control" id="actual_use" placeholder="Enter Actual Use" autocomplete="off" />
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+						<label for="date_range" class="font-weight-bold">Date Range:</label>
+						<input type="text" id="date_range" ng-model="search.date_range" data-range="true" data-multiple-dates-separator=" - " data-language='en' placeholder="Select Date Range" class="form-control date" autocomplete="off" />
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+						<p class="font-weight-bold mb-1">Taxable or Exempt?:</p>
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<input type="radio" id="tax_exempt1" class="custom-radio" ng-model="search.tax_exempt" name="tax_exempt" value="taxable" />
+								<label for="tax_exempt1">Taxable</label>&nbsp;&nbsp;
+								<input type="radio" id="tax_exempt2" class="custom-radio" ng-model="search.tax_exempt" name="tax_exempt" value="exempt" />
+								<label for="tax_exempt2">Exempt</label>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+            <div class="modal-footer bordered">
+				<button type="submit" class="btn btn-default bg-crimson-red">
+					<span>SEARCH</span>
+				</button>
+				<button type="button" class="btn btn-default" ng-click="closeModal()">
+					<span>CLOSE</span>
+				</button>
+			</div>
+        </form>
+    </div>
+</script>
