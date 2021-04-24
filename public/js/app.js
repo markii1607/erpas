@@ -360,6 +360,22 @@ define([
         }
     });
 
+    // Format a string to become a number
+    // Use in input type number and range to insert a default value from the ngModel
+    module.directive('stringToNumber', function() {
+        return {
+            require: 'ngModel',
+            link: function(scope, element, attrs, ngModel) {
+                ngModel.$parsers.push(function(value) {
+                    return '' + value;
+                });
+                ngModel.$formatters.push(function(value) {
+                    return parseFloat(value);
+                });
+            }
+        };
+    });
+
     module.filter('encodeURIComponent', function() {
         return window.encodeURIComponent;
     });

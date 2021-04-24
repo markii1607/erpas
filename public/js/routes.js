@@ -58,6 +58,13 @@ define(function() {
             "templateUrl": "/public/module/barangays_config/barangays_config.html",
             "deps": "/public/module/barangays_config/index.js"
         },
+        {
+            "name": "main.tax_declaration",
+            "url": "/tax_declaration",
+            "controller": "TaxDeclarationController",
+            "templateUrl": "/public/module/tax_declaration/tax_declaration.html",
+            "deps": "/public/module/tax_declaration/index.js"
+        },
     ];
 
     return routes;
