@@ -17,12 +17,21 @@
             </div>
             <div class="modal-body" id="modal-body">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 						<div class="form-group">
 							<label for="brgy_code" class="font-weight-bold">Barangay Code<i class="text-danger">*</i></label>
 							<input type="text" ng-model="addBrgy.code" class="form-control" id="brgy_code" placeholder="Enter Barangay Code..." autofocus autocomplete="off" required />
 						</div>
-
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+						<div class="form-group">
+							<label for="sections" class="font-weight-bold">No. of Sections<i class="text-danger">*</i></label>
+							<input type="text" ng-model="addBrgy.no_of_sections" class="form-control" id="sections" placeholder="Enter No. of Sections..." autofocus autocomplete="off" required />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<div class="form-group">
 							<label for="brgy_name" class="font-weight-bold">Barangay Name<i class="text-danger">*</i></label>
 							<input type="text" ng-model="addBrgy.name" class="form-control" id="brgy_name" placeholder="Enter Barangay Name..." autocomplete="off" required />

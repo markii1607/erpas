@@ -12,6 +12,7 @@
             $fields = [
                 'B.id',
                 'B.code',
+                'B.no_of_sections',
                 'B.name',
                 'B.created_by',
                 'B.created_at',

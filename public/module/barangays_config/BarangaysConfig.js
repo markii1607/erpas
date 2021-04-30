@@ -65,7 +65,7 @@ define([
                             "className"  : "text-center"
                         },
                         {
-                            "targets": 3,
+                            "targets": 4,
                             "searchable": false,
                             "orderable": false,
                             "className": "text-center",
@@ -84,6 +84,9 @@ define([
                         },
                         { 
                             "data" : "code"
+                        },
+                        { 
+                            "data" : "no_of_sections"
                         },
                         { 
                             "data" : "name"
