@@ -72,12 +72,13 @@
                 $this->dbCon->beginTransaction();
 
                 $entryData = [
-                    'code'          => $input->code,
-                    'name'          => $input->name,
-                    'created_by'    => $_SESSION['user_id'],
-                    'created_at'    => date('Y-m-d H:i:s'),
-                    'updated_by'    => $_SESSION['user_id'],
-                    'updated_at'    => date('Y-m-d H:i:s')
+                    'code'           => $input->code,
+                    'name'           => $input->name,
+                    'no_of_sections' => $input->no_of_sections,
+                    'created_by'     => $_SESSION['user_id'],
+                    'created_at'     => date('Y-m-d H:i:s'),
+                    'updated_by'     => $_SESSION['user_id'],
+                    'updated_at'     => date('Y-m-d H:i:s')
                 ];
 
                 $insertData = $this->dbCon->prepare($this->queryHandler->insertBarangay($entryData));
@@ -107,10 +108,11 @@
                 $this->dbCon->beginTransaction();
 
                 $entryData = [
-                    'code'          => $input->code,
-                    'name'          => $input->name,
-                    'updated_by'    => $_SESSION['user_id'],
-                    'updated_at'    => date('Y-m-d H:i:s')
+                    'code'           => $input->code,
+                    'name'           => $input->name,
+                    'no_of_sections' => $input->no_of_sections,
+                    'updated_by'     => $_SESSION['user_id'],
+                    'updated_at'     => date('Y-m-d H:i:s')
                 ];
 
                 $updateData = $this->dbCon->prepare($this->queryHandler->updateBarangay($input->id, $entryData));
