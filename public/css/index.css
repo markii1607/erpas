@@ -251,6 +251,26 @@ a.text-crimson:focus,a.text-crimson:hover {
     resize: none;
 }
 
+.w-80 {
+    width: 80%;
+    margin: auto;
+}
+
+.w-85 {
+    width: 85%;
+    margin: auto;
+}
+
+.w-90 {
+    width: 90%;
+    margin: auto;
+}
+
+.w-95 {
+    width: 95%;
+    margin: auto;
+}
+
 .w-100 {
     width: 100%;
 }
@@ -572,26 +592,42 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
 
 .font-times {
     font-family: 'Times New Roman', serif;
-    font-size: 12px;
+    font-size: 20px;
     color: black;
 }
 
-.font-9 {
-    font-size: 9px;
-}
-
-.font-10 {
-    font-size: 10px;
-}
-
-.font-11 {
-    font-size: 11px;
-}
-
-.font-14 {
-    font-size: 14px;
+.font-17 {
+    font-size: 17px;
 }
 
 .font-18 {
     font-size: 18px;
+}
+
+.font-19 {
+    font-size: 19px;
+}
+
+.font-22 {
+    font-size: 22px;
+}
+
+.font-30 {
+    font-size: 30px;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.border-bottom-form {
+    border-bottom: 1px solid black;
+}
+
+.pt-29 {
+    padding-top: 29px;
+}
+
+.white-space-pre {
+    white-space: pre;
 }

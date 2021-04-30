@@ -117,8 +117,6 @@ define([
                 // default settings
                 Factory.autoloadSettings();
 
-                $scope.editSubClfn = ParamData.data;
-
                 _loadDetails();
             };
 

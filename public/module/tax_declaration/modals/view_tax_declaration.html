@@ -1,0 +1,257 @@
+<script type="text/ng-template" id="view_tax_declaration.html">
+    <div block-ui="blockViewTaxDec">
+		<div class="modal-header align-items-center">
+			<span class="fa-stack fa-lg">
+				<i class="fas fa-square fa-stack-2x text-crimson"></i>
+				<i class="fas fa-eye fa-stack-1x fa-inverse"></i>
+			</span>
+
+			<h5 class="modal-title" style="letter-spacing: 1px;">VIEW TAX DECLARATION</h5>
+
+			<button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+				<span aria-hidden="true">
+					<i class="fas fa-times"></i>
+				</span>
+			</button>
+		</div>
+		<div class="modal-body" id="print-identifier" style="padding-left: 30px; padding-right: 30px;">
+			<div class="row mb-4 align-items-center">
+				<div class="col-2">
+					<div id="logo_albay" class="text-center">
+						<img class="w-90" src="{{ server_base_url }}/public/img/albay_logo.jpg" alt="PGO Albay Logo" />
+					</div>
+				</div>
+				<div class="col-8">
+					<h5 class="font-times font-weight-bold text-center">Republic of the Philippines</h5>
+					<h5 class="font-times font-weight-bold text-center mb-5">PROVINCE OF ALBAY</h5>
+					<h2 class="font-times font-weight-bold font-30 text-center">TAX DECLARATION OF REAL PROPERTY</h2>
+				</div>
+				<div class="col-2" class="text-center">
+					<div id="logo_lgu">
+						<img class="w-90" src="{{ server_base_url }}/public/img/lgu_malilipot.png" alt="LGU Malilipot Logo" />
+					</div>
+				</div>
+			</div>
+			<div class="row mb-1">
+				<div class="col-6">
+					<div class="row align-items-end">
+						<div class="col-2">
+							<p class="font-times mb-0">TD No.</p>
+						</div>
+						<div class="col-10">
+							<p class="font-times mb-0 border-bottom-form">{{ data.td_no.year.no }}-{{ data.td_no.mun_code }}-{{ data.td_no.brgy_code.code }}-{{ data.td_no.td_code }}</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-6">
+					<div class="row align-items-end">
+						<div class="col-6">
+							<p class="font-times mb-0">Property Identification No.</p>
+						</div>
+						<div class="col-6">
+							<p class="font-times mb-0 border-bottom-form">{{ data.pin.prov_code }}-{{ data.pin.mun_code }}-{{ data.pin.brgy_code.code }}-{{ data.pin.section }}-{{ data.pin.prop_no }}-{{ data.pin.bldg_no }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-1">
+				<div class="col-9">
+					<div class="row align-items-end">
+						<div class="col-2">
+							<p class="font-times mb-0">Owner:</p>
+						</div>
+						<div class="col-10">
+							<p class="font-times mb-0 border-bottom-form">{{ data.owner }}</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="row align-items-end">
+						<div class="col-2">
+							<p class="font-times mb-0">TIN</p>
+						</div>
+						<div class="col-10">
+							<p class="font-times mb-0 border-bottom-form">{{ data.owner_tin }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-1">
+				<div class="col-9">
+					<div class="row align-items-end">
+						<div class="col-2">
+							<p class="font-times mb-0">Address:</p>
+						</div>
+						<div class="col-10">
+							<p class="font-times mb-0 border-bottom-form">{{ data.address }}</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-3"></div>
+			</div>
+			<div class="row mb-1">
+				<div class="col-9">
+					<div class="row align-items-end">
+						<div class="col-5">
+							<p class="font-times mb-0">Administrator/Beneficial User:</p>
+						</div>
+						<div class="col-7">
+							<p class="font-times mb-0 border-bottom-form">{{ data.admin_user }}</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="row align-items-end">
+						<div class="col-2">
+							<p class="font-times mb-0">TIN</p>
+						</div>
+						<div class="col-10">
+							<p class="font-times mb-0 border-bottom-form">{{ data.admin_user_tin }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-1">
+				<div class="col-8">
+					<div class="row align-items-end">
+						<div class="col-2">
+							<p class="font-times mb-0">Address:</p>
+						</div>
+						<div class="col-10">
+							<p class="font-times mb-0 border-bottom-form">{{ data.address }}</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-4">
+					<div class="row align-items-end">
+						<div class="col-6">
+							<p class="font-times mb-0">Telephone No.:</p>
+						</div>
+						<div class="col-6">
+							<p class="font-times mb-0 border-bottom-form">{{ data.admin_user_tel }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-0">
+				<div class="col-12">
+					<div class="row align-items-end">
+						<div class="col-3">
+							<p class="font-times font-19 mb-0">Location of Property:</p>
+						</div>
+						<div class="col-9">
+							<div class="border-bottom-form">
+								<div class="row">
+									<div class="col-4">
+										<p class="font-times font-19 mb-0 text-center">{{ data.loc.no_street }}</p>
+									</div>
+									<div class="col-4">
+										<p class="font-times font-19 mb-0 text-center">{{ data.loc.brgy.name }}</p>
+									</div>
+									<div class="col-4">
+										<p class="font-times font-19 mb-0 text-center">Malilipot, Albay</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-4">
+				<div class="col-12">
+					<div class="row align-items-end">
+						<div class="col-3"></div>
+						<div class="col-9">
+							<div class="row">
+								<div class="col-4">
+									<p class="font-times font-18 mb-0 text-center font-italic">(Number and Street)</p>
+								</div>
+								<div class="col-4">
+									<p class="font-times font-18 mb-0 text-center font-italic">(Barangay)</p>
+								</div>
+								<div class="col-4">
+									<p class="font-times font-18 mb-0 text-center font-italic">(Municipality/Province)</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mb-1">
+				<div class="col-7">
+					<div class="row align-items-end">
+						<div class="col-5">
+							<p class="font-times mb-0">OCT/TCT/CLOA No.</p>
+						</div>
+						<div class="col-7">
+							<p class="font-times mb-0 border-bottom-form">{{ data.oct_no }}</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-5">
+					<div class="row align-items-end">
+						<div class="col-4">
+							<p class="font-times mb-0">Survey No.</p>
+						</div>
+						<div class="col-8">
+							<p class="font-times mb-0 border-bottom-form">{{ data.survey_no }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-1">
+				<div class="col-7">
+					<div class="row align-items-end">
+						<div class="col-2">
+							<p class="font-times mb-0">CCT</p>
+						</div>
+						<div class="col-10">
+							<p class="font-times mb-0 border-bottom-form">{{ data.cct }}</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-5">
+					<div class="row align-items-end">
+						<div class="col-3">
+							<p class="font-times mb-0">Lot No.</p>
+						</div>
+						<div class="col-9">
+							<p class="font-times mb-0 border-bottom-form">{{ data.lot_no }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-1">
+				<div class="col-7">
+					<div class="row align-items-end">
+						<div class="col-2">
+							<p class="font-times mb-0">Dated</p>
+						</div>
+						<div class="col-10">
+							<p class="font-times mb-0 border-bottom-form">{{ data.dated }}</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-5">
+					<div class="row align-items-end">
+						<div class="col-3">
+							<p class="font-times mb-0">Blk No.</p>
+						</div>
+						<div class="col-9">
+							<p class="font-times mb-0 border-bottom-form">{{ data.blk_no }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer bordered">
+			<button type="submit" class="btn btn-default bg-crimson-red" ng-click="print()">
+				<span>PRINT</span>
+			</button>
+			<button type="button" class="btn btn-default" ng-click="closeModal()">
+				<span>CLOSE</span>
+			</button>
+		</div>
+    </div>
+</script>

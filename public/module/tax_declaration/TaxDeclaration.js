@@ -23,7 +23,8 @@ define([
             Factory.templates = [
                 'module/tax_declaration/modals/add_tax_declaration.html',
                 'module/tax_declaration/modals/advance_search.html',
-                // 'module/tax_declaration/modals/edit_tax_declaration.html',
+                'module/tax_declaration/modals/edit_tax_declaration.html',
+                'module/tax_declaration/modals/view_tax_declaration.html',
             ];
 
             Factory.dtOptions = function () {
@@ -71,7 +72,7 @@ define([
                             "orderable": true,
                             "className": "text-center",
                             "render": function(data, type, full, meta) {
-                                return `${data.year}-${data.mun_code}-${data.brgy_code}-${data.td_code}`
+                                return `${data.year.no}-${data.mun_code}-${data.brgy_code.code}-${data.td_code}`
                             }
                         },
                         {
@@ -80,7 +81,7 @@ define([
                             "orderable": true,
                             "className": "text-center",
                             "render": function(data, type, full, meta) {
-                                return `${data.prov_code}-${data.mun_code}-${data.brgy_code}-${data.section}-${data.prop_no}-${data.bldg_no}`
+                                return `${data.prov_code}-${data.mun_code}-${data.brgy_code.code}-${data.section}-${data.prop_no}-${data.bldg_no}`
                             }
                         },
                         {
@@ -137,16 +138,27 @@ define([
                 {
                     id: 1,
                     td_no: {
-                        year: '2017',
+                        year: {
+                            id: 2,
+                            no: 2020,
+                        },
                         mun_code: '09',
-                        brgy_code: '0015',
+                        brgy_code: {
+                            id: 15,
+                            code: '015',
+                            name: 'San Jose',
+                        },
                         td_code: '00170',
                         td_code_2: '000',
                     },
                     pin: {
                         prov_code: '031',
                         mun_code: '09',
-                        brgy_code: '0015',
+                        brgy_code: {
+                            id: 15,
+                            code: '015',
+                            name: 'San Jose',
+                        },
                         section: '003',
                         prop_no: '29',
                         bldg_no: '1001',
@@ -379,36 +391,66 @@ define([
                 });
             }
 
-            // $scope.editBarangay = function (data, index) {
-            //     var paramData, modalInstance;
+            $scope.editTaxDec = function (data, index) {
+                var paramData, modalInstance;
 
-            //     paramData = {
-            //         data,
-            //     }
+                paramData = {
+                    data,
+                }
 
-            //     modalInstance = $uibModal.open({
-            //         animation       : true,
-            //         keyboard        : false,
-            //         backdrop        : 'static',
-            //         ariaLabelledBy  : 'modal-title',
-            //         ariaDescribedBy : 'modal-body',
-            //         templateUrl     : 'edit_barangay.html',
-            //         controller      : 'EditBarangayController',
-            //         size            : 'md',
-            //         resolve         : {
-            //             paramData : function () {
-            //                 return paramData;
-            //             }
-            //         }
-            //     });
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'edit_tax_declaration.html',
+                    controller      : 'EditTaxDeclarationController',
+                    size            : 'xxlg',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
 
-            //     modalInstance.result.then(function (res) {
-            //     }, function (res) {
-            //         // Result when modal is dismissed
-            //     });
-            // }
+                modalInstance.result.then(function (res) {
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+            }
 
-            // $scope.deleteBarangay = function(data, index) {
+            $scope.viewTaxDec = function (data, index) {
+                var paramData, modalInstance;
+
+                paramData = {
+                    data,
+                    server_base_url: $scope.server.base_url,
+                }
+
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'view_tax_declaration.html',
+                    controller      : 'ViewTaxDeclarationController',
+                    size            : 'xlg',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (res) {
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+            }
+
+            // $scope.deletTaxDeclaration = function(data, index) {
             //     Alertify.confirm("Are you sure you want to delete the selected barangay?",
             //         function (res) {
             //             if (res) {
