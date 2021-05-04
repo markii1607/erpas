@@ -592,28 +592,33 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
 
 .font-times {
     font-family: 'Times New Roman', serif;
-    font-size: 20px;
+    font-size: 19px;
     color: black;
+    line-height: 1.5rem;
 }
 
-.font-17 {
+.font-12 {
+    font-size: 13px;
+}
+
+.font-15 {
+    font-size: 16px;
+}
+
+.font-16 {
     font-size: 17px;
 }
 
-.font-18 {
+.font-17 {
     font-size: 18px;
 }
 
-.font-19 {
-    font-size: 19px;
-}
-
-.font-22 {
+.font-20 {
     font-size: 22px;
 }
 
-.font-30 {
-    font-size: 30px;
+.font-25 {
+    font-size: 27px;
 }
 
 .inline {

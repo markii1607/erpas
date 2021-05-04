@@ -17,16 +17,16 @@
 		<div class="modal-body" id="print-identifier" style="padding-left: 30px; padding-right: 30px;">
 			<div class="row mb-4 align-items-center">
 				<div class="col-2">
-					<div id="logo_albay" class="text-center">
+					<div id="logo_albay" class="text-right">
 						<img class="w-90" src="{{ server_base_url }}/public/img/albay_logo.jpg" alt="PGO Albay Logo" />
 					</div>
 				</div>
 				<div class="col-8">
 					<h5 class="font-times font-weight-bold text-center">Republic of the Philippines</h5>
 					<h5 class="font-times font-weight-bold text-center mb-5">PROVINCE OF ALBAY</h5>
-					<h2 class="font-times font-weight-bold font-30 text-center">TAX DECLARATION OF REAL PROPERTY</h2>
+					<h2 class="font-times font-weight-bold font-25 text-center">TAX DECLARATION OF REAL PROPERTY</h2>
 				</div>
-				<div class="col-2" class="text-center">
+				<div class="col-2" class="text-left">
 					<div id="logo_lgu">
 						<img class="w-90" src="{{ server_base_url }}/public/img/lgu_malilipot.png" alt="LGU Malilipot Logo" />
 					</div>
@@ -137,19 +137,19 @@
 				<div class="col-12">
 					<div class="row align-items-end">
 						<div class="col-3">
-							<p class="font-times font-19 mb-0">Location of Property:</p>
+							<p class="font-times font-17 mb-0">Location of Property:</p>
 						</div>
 						<div class="col-9">
 							<div class="border-bottom-form">
 								<div class="row">
 									<div class="col-4">
-										<p class="font-times font-19 mb-0 text-center">{{ data.loc.no_street }}</p>
+										<p class="font-times font-17 mb-0 text-center">{{ data.loc.no_street }}</p>
 									</div>
 									<div class="col-4">
-										<p class="font-times font-19 mb-0 text-center">{{ data.loc.brgy.name }}</p>
+										<p class="font-times font-17 mb-0 text-center">{{ data.loc.brgy.name }}</p>
 									</div>
 									<div class="col-4">
-										<p class="font-times font-19 mb-0 text-center">Malilipot, Albay</p>
+										<p class="font-times font-17 mb-0 text-center">Malilipot, Albay</p>
 									</div>
 								</div>
 							</div>
@@ -164,13 +164,13 @@
 						<div class="col-9">
 							<div class="row">
 								<div class="col-4">
-									<p class="font-times font-18 mb-0 text-center font-italic">(Number and Street)</p>
+									<p class="font-times font-16 mb-0 text-center font-italic">(Number and Street)</p>
 								</div>
 								<div class="col-4">
-									<p class="font-times font-18 mb-0 text-center font-italic">(Barangay)</p>
+									<p class="font-times font-16 mb-0 text-center font-italic">(Barangay)</p>
 								</div>
 								<div class="col-4">
-									<p class="font-times font-18 mb-0 text-center font-italic">(Municipality/Province)</p>
+									<p class="font-times font-16 mb-0 text-center font-italic">(Municipality/Province)</p>
 								</div>
 							</div>
 						</div>
@@ -242,6 +242,348 @@
 							<p class="font-times mb-0 border-bottom-form">{{ data.blk_no }}</p>
 						</div>
 					</div>
+				</div>
+			</div>
+			<div class="row mb-1">
+				<div class="col-12">
+					<div class="row align-items-end">
+						<div class="col-2">
+							<p class="font-times mb-0">Boundaries:</p>
+						</div>
+						<div class="col-10">
+							<p class="font-times mb-0">{{ data.boundaries.text }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-1">
+				<div class="col-2"></div>
+				<div class="col-5">
+					<div class="row align-items-start">
+						<div class="col-2">
+							<p class="font-times mb-0">North</p>
+						</div>
+						<div class="col-10">
+							<p class="font-times mt-4 mb-0 border-bottom-form">{{ data.boundaries.north }}</p>
+							<p class="font-times mt-4 mb-0 border-bottom-form"></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-5">
+					<div class="row align-items-start">
+						<div class="col-2">
+							<p class="font-times mb-0">South</p>
+						</div>
+						<div class="col-10">
+							<p class="font-times mt-4 mb-0 border-bottom-form">{{ data.boundaries.south }}</p>
+							<p class="font-times mt-4 mb-0 border-bottom-form"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-4">
+				<div class="col-2"></div>
+				<div class="col-5">
+					<div class="row align-items-start">
+						<div class="col-2">
+							<p class="font-times mb-0">East</p>
+						</div>
+						<div class="col-10">
+							<p class="font-times mt-4 mb-0 border-bottom-form">{{ data.boundaries.east }}</p>
+							<p class="font-times mt-4 mb-0 border-bottom-form"></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-5">
+					<div class="row align-items-start">
+						<div class="col-2">
+							<p class="font-times mb-0">West</p>
+						</div>
+						<div class="col-10">
+							<p class="font-times mt-4 mb-0 border-bottom-form">{{ data.boundaries.west }}</p>
+							<p class="font-times mt-4 mb-0 border-bottom-form"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<div class="col-12">
+					<p class="mb-0 border-bottom-form"></p>
+				</div>
+			</div>
+
+			<div class="row mb-1">
+				<div class="col-12">
+					<p class="font-times mb-1">KIND OF PROPERTY ASSESSED</p>
+				</div>
+			</div>
+			<div class="row mb-1">
+				<div class="col-6">
+					<p class="font-times mb-0">
+						<span ng-if="data.type.name == 'Land'">[&nbsp;&nbsp;X&nbsp;&nbsp;]</span>
+						<span ng-if="data.type.name != 'Land'">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
+						&nbsp;LAND
+					</p>
+				</div>
+				<div class="col-6">
+					<p class="font-times mb-0">
+						<span ng-if="data.type.name == 'Machinery'">[&nbsp;&nbsp;X&nbsp;&nbsp;]</span>
+						<span ng-if="data.type.name != 'Machinery'">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
+						&nbsp;MACHINERY
+					</p>
+				</div>
+			</div>
+			<div class="row mb-1">
+				<div class="col-6"></div>
+				<div class="col-6">
+					<div class="row align-items-end">
+						<div class="col-1"></div>
+						<div class="col-4">
+							<p class="font-times mb-0">Brief Description:</p>
+						</div>
+						<div class="col-7">
+							<p class="font-times mb-0 border-bottom-form text-center" ng-if="data.type.name == 'Machinery'">{{ data.type.desc }}</p>
+							<p class="font-times mb-0 border-bottom-form" ng-if="data.type.name != 'Machinery'"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-1">
+				<div class="col-6">
+					<p class="font-times mb-0">
+						<span ng-if="data.type.name == 'Building'">[&nbsp;&nbsp;X&nbsp;&nbsp;]</span>
+						<span ng-if="data.type.name != 'Building'">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
+						&nbsp;BUILDING
+					</p>
+				</div>
+				<div class="col-6">
+					<p class="font-times mb-0">
+						<span ng-if="data.type.name == 'Others'">[&nbsp;&nbsp;X&nbsp;&nbsp;]</span>
+						<span ng-if="data.type.name != 'Others'">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
+						&nbsp;Others
+					</p>
+				</div>
+			</div>
+			<div class="row mb-4">
+				<div class="col-6">
+					<div class="row align-items-end">
+						<div class="col-1"></div>
+						<div class="col-4">
+							<p class="font-times mb-0">No. of Storeys</p>
+							<p class="font-times mb-0">Brief Description</p>
+						</div>
+						<div class="col-7">
+							<p class="font-times mb-0 border-bottom-form text-center" ng-if="data.type.name == 'Building'">{{ data.type.floors }}</p>
+							<p class="font-times mt-4 mb-0 border-bottom-form" ng-if="data.type.name != 'Building'"></p>
+							<p class="font-times mt-4 mb-0 border-bottom-form text-center" ng-if="data.type.name == 'Building'">{{ data.type.desc }}</p>
+							<p class="font-times mt-4 mb-0 border-bottom-form" ng-if="data.type.name != 'Building'"></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-6">
+					<div class="row align-items-end">
+						<div class="col-1"></div>
+						<div class="col-2">
+							<p class="font-times mb-0">Specify:</p>
+						</div>
+						<div class="col-9">
+							<p class="font-times mb-0 border-bottom-form text-center" ng-if="data.type.name == 'Others'">{{ data.type.specify }}</p>
+							<p class="font-times mb-0 border-bottom-form" ng-if="data.type.name != 'Others'"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-row mb-1">
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold">Classification</p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold">Area</p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold">Market Value</p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold">Actual Use</p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold">Assessment</p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold">Assessed Value</p>
+				</div>
+			</div>
+			<div class="form-row mb-1" ng-repeat="det in data.details">
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ det.classification.name }}</p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ det.area | number : 2 }} {{ det.unit.name }}</p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ det.market_value | number : 2 }}</p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ det.actual_use }}</p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ det.assessment_level.display_rate }}</p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ det.assessed_value | number : 2 }}</p>
+				</div>
+			</div>
+			<!-- Additional column lang. Pwedeng iremove -->
+			<div class="form-row mb-1" ng-repeat="det in data.details">
+				<div class="col-2">
+					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
+				</div>
+			</div>
+			<!-- End -->
+			<div class="form-row mb-1">
+				<div class="col-2">
+					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0 text-center">Php</p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ data.total_market_value | number : 2 }}</p>
+				</div>
+				<div class="col-2"></div>
+				<div class="col-2"></div>
+				<div class="col-2">
+					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ data.total_assessed_value | number : 2 }}</p>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<div class="col-2">
+					<p class="font-times mb-0">Assessed Value:</p>
+				</div>
+				<div class="col-10">
+					<p class="font-times mb-0 border-bottom-form font-weight-bold text-center">{{ data.assessed_val_words }}</p>
+				</div>
+			</div>
+
+			<div class="row mb-0">
+				<div class="col-2">
+					<p class="font-times mb-0" ng-if="data.tax_exempt == 'taxable'">Taxable&nbsp;&nbsp;[&nbsp;&nbsp;X&nbsp;&nbsp;]</p>
+					<p class="font-times mb-0" ng-if="data.tax_exempt != 'taxable'">Taxable&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;]</p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0" ng-if="data.tax_exempt == 'exempt'">Exempt&nbsp;&nbsp;[&nbsp;&nbsp;X&nbsp;&nbsp;]</p>
+					<p class="font-times mb-0" ng-if="data.tax_exempt != 'exempt'">Exempt&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;]</p>
+				</div>
+				<div class="col-6">
+					<p class="font-times mb-0 text-right">Effectivity of Assessment/Reassessment</p>
+				</div>
+				<div class="col-2">
+					<p class="font-times mb-0 font-weight-bold text-center border-bottom-form">{{ data.effectivity }}</p>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-2"></div>
+				<div class="col-2"></div>
+				<div class="col-6"></div>
+				<div class="col-2">
+					<p class="font-times font-15 mx-0 font-weight-bold text-center">Year</p>
+				</div>
+			</div>
+			
+			<div class="row mb-0">
+				<div class="col-2">
+					<p class="font-times mb-0 font-weight-bold">APPROVED BY:</p>
+				</div>
+				<div class="col-5">
+					<p class="font-times mb-0 font-weight-bold border-bottom-form text-center">REN B. DEL ROSARIO, REA</p>
+				</div>
+				<div class="col-5">
+					<p class="font-times mb-0 font-weight-bold border-bottom-form text-center">NATIVIDAD C. KRISHNAN, REA,REB</p>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-2"></div>
+				<div class="col-5">
+					<p class="font-times font-16 mb-0 text-center">OIC Provincial Assessor</p>
+				</div>
+				<div class="col-5">
+					<p class="font-times font-16 mb-0 text-center">LAOO III</p>
+				</div>
+			</div>
+
+			<div class="row mb-3 align-items-end">
+				<div class="col-5">
+					<div class="form-row align-items-end">
+						<div class="col-8">
+							<p class="font-times font-17 mb-0">This declaration cancels TD. No</p>
+						</div>
+						<div class="col-4">
+							<p class="font-times font-17 mb-0 text-center border-bottom-form" ng-if="data.prev_declaration.hasOwnProperty('td_no')">{{ data.prev_declaration.td_no.no }}</p>
+							<p class="font-times font-17 mt-4 mb-0 text-center border-bottom-form" ng-if="!data.prev_declaration.hasOwnProperty('td_no')"></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-4">
+					<div class="form-row align-items-end">
+						<div class="col-3">
+							<p class="font-times font-17 mb-0">Owner:</p>
+						</div>
+						<div class="col-9">
+							<p class="font-times font-17 mb-0 text-center border-bottom-form" ng-if="data.prev_declaration.hasOwnProperty('owner')">{{ data.prev_declaration.owner }}</p>
+							<p class="font-times font-17 mt-4 mb-0 text-center border-bottom-form" ng-if="!data.prev_declaration.hasOwnProperty('owner')"></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="form-row align-items-end">
+						<div class="col-6">
+							<p class="font-times font-17 mb-0">Previous A.V</p>
+						</div>
+						<div class="col-6">
+							<p class="font-times font-17 mb-0 text-center border-bottom-form" ng-if="data.prev_declaration.hasOwnProperty('prev_av')">{{ data.prev_declaration.prev_av | number: 2 }}</p>
+							<p class="font-times font-17 mt-4 mb-0 text-center border-bottom-form" ng-if="!data.prev_declaration.hasOwnProperty('prev_av')"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row mb-1 align-items-end">
+				<div class="col-2">
+					<p class="font-times font-17 mb-0 font-weight-bold">Memoranda:</p>
+				</div>
+				<div class="col-10">
+					<p class="font-times font-17 mb-0 border-bottom-form">{{ data.memoranda }}</p>
+				</div>
+			</div>
+
+			<div class="form-row mb-1 align-items-start">
+				<div class="col-1">
+					<p class="font-times font-12 mb-0">Notes:</p>
+				</div>
+				<div class="col-11">
+					<p class="font-times font-12 mb-0">
+						This declaration is for real property taxation purposes only and the valuation indicated herein are based on the schedule of unit market
+						values prepared for the purpose and duly enacted into an Ordinance by the Sangguniang Panlalawigan ng Albay under Ordinance No.
+						<u>006-2016</u> dated <u>December 006-2016</u>. It does not and cannot by itself alone confer any ownership or legal title to the property.
+					</p>
 				</div>
 			</div>
 		</div>

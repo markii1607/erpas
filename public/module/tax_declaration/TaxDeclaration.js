@@ -199,7 +199,7 @@ define([
                                 display_rate: '35%'
                             },
                             assessed_value: 385730.00,
-                        }
+                        },
                     ],
                     total_market_value: 1102080.00,
                     total_assessed_value: 385730.00,
@@ -209,7 +209,7 @@ define([
                     prev_declaration: {
                         td_no: {
                             id: 1,
-                            no: '00294',
+                            no: '2017-0015-00294',
                         },
                         owner: 'Same',
                         prev_av: 606800.00
