@@ -67,7 +67,19 @@ define([
                         "data" : function (data) {
                             var temp = {
                                 'advanced_search' : {
-                                    'sample' : ''
+                                    'status'        : '',
+                                    'rev_id'        : '',
+                                    'td_no'         : '',
+                                    'pin'           : '',
+                                    'owner'         : '',
+                                    'lot_no'        : '',
+                                    'brgy_id'       : '',
+                                    'type'          : '',
+                                    'category'      : '',
+                                    'class_id'      : '',
+                                    'actual_use'    : '',
+                                    'date_from'     : '',
+                                    'date_to'       : '',
                                 }
                             };
 
@@ -90,17 +102,35 @@ define([
                             "className"  : "text-center"
                         },
                         {
-                            "targets": 6,
+                            "targets"   : 1,
+                            "searchable": false,
+                            "orderable" : false,
+                            "className" : "text-center",
+                            "render"    : function(data, type, full, meta) {
+                                var str = '';
+                                str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-md mr-2 text-white"><i class="fas fa-eye"></i></button>';
+                                str += '<p style="margin-bottom:5px;"></p>';
+                                str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-info btn-md mr-2 text-white"><i class="fas fa-edit"></i></button>';
+                                str += '<p style="margin-bottom:5px;"></p>';
+                                str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Retire" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-ban"></i></button>';
+                                str += '<p style="margin-bottom:5px;"></p>';
+                                str += '<button type="submit" id="fourthButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-md mr-2 text-white"><i class="fas fa-trash"></i></button>';
+
+                                return str;
+                            }
+                        },
+                        {
+                            "targets"   : 7,
                             "searchable": true,
-                            "orderable": true,
-                            "className": "text-left",
-                            "render": function(data, type, full, meta) {
+                            "orderable" : true,
+                            "className" : "text-left",
+                            "render"    : function(data, type, full, meta) {
                                 var strStreet = (data != '') ? data : '';
                                 return strStreet + ', ' + full.barangay.name;
                             }
                         },
                         {
-                            "targets": 7,
+                            "targets"   : 8,
                             "searchable": false,
                             "orderable" : false,
                             "className" : "text-center",
@@ -113,24 +143,13 @@ define([
                                     return '<span style="display: inline; padding: .2em .6em .3em; background-color:#d9534f; color: white; border-radius: 25px; font-size: 12px; font-weight: 500">CANCELED</span>';
                                 }
                             }
-                        },
-                        {
-                            "targets": 8,
-                            "searchable": false,
-                            "orderable": false,
-                            "className": "text-left",
-                            "render": function(data, type, full, meta) {
-                                var str = '';
-                                str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-sm mr-2 text-white"><i class="fas fa-eye"></i></button>';
-                                str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-info btn-sm mr-2 text-white"><i class="fas fa-edit"></i></button>';
-                                str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Retire" class="btn btn-default bg-warning btn-sm mr-2 text-white"><i class="fas fa-ban"></i></button>';
-                                str += '<button type="submit" id="fourthButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-sm mr-2 text-white"><i class="fas fa-trash"></i></button>';
-
-                                return str;
-                            }
                         }
                     ],
-                    "columns"      : [
+                    "columns"      : 
+                    [
+                        { 
+                            "data" : null 
+                        },
                         { 
                             "data" : null 
                         },
@@ -155,9 +174,6 @@ define([
                         { 
                             "data" : "status"
                         },
-                        { 
-                            "data" : null,
-                        },
                     ]
                 };
 
@@ -178,7 +194,7 @@ define([
              * @return {[route]}
              */
             _this.getDetails = function () {
-                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/TaxDeclarationService.php/getDetails');
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/TaxDeclarationService.php/getTDCount');
             };
 
             _this.retire = function (data) {
@@ -211,14 +227,19 @@ define([
                 $scope.jqDataTableOptions         = Factory.dtOptions();
                 $scope.jqDataTableOptions.buttons = _btnFunc();
 
-                /* blocker.start();
+                blocker.start();
                 Service.getDetails().then( function (res) {
-                    $scope.jqDataTableOptions         = Factory.dtOptions();
-                    $scope.jqDataTableOptions.buttons = _btnFunc();
-                    $scope.jqDataTableOptions.data    = res.data.tax_declarations;
+                    if (res.data.allTdCount != undefined) {
+                        $scope.allTdCount = res.data.allTdCount;
+                        $scope.actTdCount = res.data.actTdCount;
+                        $scope.rtdTdCount = res.data.rtdTdCount;
+                        $scope.cldTdCount = res.data.cldTdCount;
+                    } else {
+                        Alertify.error("Back-end error! Please notify the administrator.");
+                    }
 
                     blocker.stop();
-                }); */
+                });
             };
 
             /**
@@ -324,6 +345,9 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
+                    console.log(res);
+                    $scope.filters.status = '';
+                    $scope.filterTaxDec(res);
                 }, function (res) {
                     // Result when modal is dismissed
                 });
@@ -434,6 +458,49 @@ define([
                 );
             }
 
+            $scope.setFilterStatus = function(filter){
+                $scope.filters.status = filter;
+
+                $scope.filterTaxDec();
+            }
+
+            $scope.filterTaxDec = function (params = []) {
+
+                console.log('params: ', params);
+                var paramData;
+
+                paramData = {
+                    'status'        : $scope.filters.status,
+                    'rev_id'        : params.rev_id,
+                    'td_no'         : params.td_no,
+                    'pin'           : params.pin,
+                    'owner'         : params.owner,
+                    'lot_no'        : params.lot_no,
+                    'brgy_id'       : params.brgy_id,
+                    'type'          : params.type,
+                    'category'      : params.category,
+                    'class_id'      : params.class_id,
+                    'actual_use'    : params.actual_use,
+                    'date_from'     : params.date_from,
+                    'date_to'       : params.date_to,
+                };
+                
+
+                $timeout( function () {
+                    _softConfig().dt.data('dt_params', angular.copy(paramData)); // parse dynamic data
+                    _softConfig().dt.DataTable().draw();           // reload datatable
+                }, 100);
+            };
+
+            _softConfig = function(){
+                var temp = {
+                    'rowCount' : table.DataTable().data().count(),
+                    'dt'       : table
+                };
+
+                return temp;
+            }
+
             /**
              * `_init` Initialize first things first
              * @return {mixed}
@@ -449,7 +516,9 @@ define([
 
                 $scope.templates = Factory.templates;
 
-                $scope.filters = {}
+                $scope.filters = {
+                    status : ''
+                }
 
                 _loadDetails();
             };

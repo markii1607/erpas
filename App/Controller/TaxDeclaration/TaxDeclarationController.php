@@ -64,10 +64,15 @@
 
         public function getDetails($input)
         {
-            // print_r($input);
+            // print_r($input['advanced_search']);
             // die();
-            $rows       = $this->getTaxDeclarations('', $input['advanced_search'], $input['search']['value'], '', true);
-            $rowData    = $this->getTaxDeclarations('', $input['advanced_search'], $input['search']['value'], $this->limit($input));
+            if (!empty($input['advanced_search']['class_id']) || !empty($input['advanced_search']['actual_use'])) {
+                $tdIDs = $this->filterIDs($this->getFilteredTDClassifications($input['advanced_search']['class_id'], $input['advanced_search']['actual_use']));
+            } else {
+                $tdIDs = [];
+            }
+            $rows       = $this->getTaxDeclarations('', '', $input['advanced_search'], $tdIDs, $input['search']['value'], '', true);
+            $rowData    = $this->getTaxDeclarations('', '', $input['advanced_search'], $tdIDs, $input['search']['value'], $this->limit($input));
 
             $output = array(
                 'draw'            => isset ($input['draw']) ? intval($input['draw']) : 0,
@@ -75,6 +80,58 @@
                 'recordsFiltered' => !empty($rows) ? intval($rows[0]['td_count']) : 0,
                 'data'            => $this->arrayToObject($rowData),
             );
+
+            return $output;
+        }
+
+        public function getTDCount()
+        {
+            $output = [
+                'allTdCount' => $this->getTaxDeclarations('', '', '', '', '', '', true)[0]['td_count'],
+                'actTdCount' => $this->getTaxDeclarations('', '1', '', '', '', '', true)[0]['td_count'],
+                'rtdTdCount' => $this->getTaxDeclarations('', '2', '', '', '', '', true)[0]['td_count'],
+                'cldTdCount' => $this->getTaxDeclarations('', '3', '', '', '', '', true)[0]['td_count'],
+            ];
+
+            return $output;
+        }
+
+        public function getAdvSearchSelectionDetails()
+        {
+            $output = [
+                'revision_years'    => $this->getRevisionYears(),
+                'classifications'   => $this->getClassifications(),
+                'barangays'         => $this->getBarangays()
+            ];
+
+            return $output;
+        }
+
+        public function setDataSearchFormat($input)
+        {
+            if (isset($input->date_range)) {
+                $dateExploded = explode(' - ', $input->date_range);
+                $date_from = date('Y-m-d', strtotime($dateExploded[0]));
+                $date_to   = date('Y-m-d', strtotime($dateExploded[1]));
+            } else {
+                $date_from = '';
+                $date_to   = '';
+            }
+            
+            $output = [
+                'rev_id'            => isset($input->revision->id) ? $input->revision->id : '',
+                'td_no'             => isset($input->td_no) ? $input->td_no : '',
+                'pin'               => isset($input->pin) ? $input->pin : '',
+                'owner'             => isset($input->owner) ? $input->owner : '',
+                'lot_no'            => isset($input->lot_no) ? $input->lot_no : '',
+                'brgy_id'           => isset($input->barangay->id) ? $input->barangay->id : '',
+                'type'              => isset($input->type) ? $input->type : '',
+                'category'          => isset($input->tax_exempt) ? $input->tax_exempt : '',
+                'class_id'          => isset($input->classification->id) ? $input->classification->id : '',
+                'actual_use'        => isset($input->actual_use) ? $input->actual_use : '',
+                'date_from'         => $date_from,
+                'date_to'           => $date_to,
+            ];
 
             return $output;
         }
@@ -140,19 +197,44 @@
             
         }
 
-        public function getTaxDeclarations($id = '', $advancedSearch = [], $filterVal = '', $limit = '', $total = '')
+        public function getTaxDeclarations($id = '', $manualEntryStatus = '', $advancedSearch = [], $tdIDs = [], $filterVal = '', $limit = '', $total = '')
         {
-            $hasId      = empty($id) ? false : true;
-            $hasTotal   = empty($total) ? false : true;
+            $statusFilter   = isset($advancedSearch['status']) ? $advancedSearch['status'] : $manualEntryStatus;
+
+            $hasId          = empty($id)                            ? false : true;
+            $hasStatus      = empty($statusFilter)                  ? false : true;
+            $hasRevId       = empty($advancedSearch['rev_id'])      ? false : true;
+            $hasTdNo        = empty($advancedSearch['td_no'])       ? false : true;
+            $hasPin         = empty($advancedSearch['pin'])         ? false : true;
+            $hasOwner       = empty($advancedSearch['owner'])       ? false : true;
+            $hasLotNo       = empty($advancedSearch['lot_no'])      ? false : true;
+            $hasBrgyId      = empty($advancedSearch['brgy_id'])     ? false : true;
+            $hasType        = empty($advancedSearch['type'])        ? false : true;
+            $hasCategory    = empty($advancedSearch['category'])    ? false : true;
+            $hasDateFrom    = empty($advancedSearch['date_from'])   ? false : true;
+            $hasDateTo      = empty($advancedSearch['date_to'])     ? false : true;
+            $hasTotal       = empty($total)                         ? false : true;
 
             $data = [
                 'is_active'     => 1,
                 'filter_val'    => ($filterVal != '' ) ? '%'.$filterVal.'%' : '%%'
             ];
 
-            ($hasId) ? $data['id'] = $id : '';
+            ($hasId)        ? $data['id'] = $id : '';
+            ($hasStatus)    ? $data['status'] = $statusFilter : '';
+            ($hasRevId)     ? $data['rev_id'] = $advancedSearch['rev_id'] : '';
+            ($hasTdNo)      ? $data['td_no'] = $this->formatStr($advancedSearch['td_no']) : '';
+            ($hasPin)       ? $data['pin'] = $this->formatStr($advancedSearch['pin']) : '';
+            ($hasOwner)     ? $data['owner'] = $this->formatStr($advancedSearch['owner']) : '';
+            ($hasLotNo)     ? $data['lot_no'] = $this->formatStr($advancedSearch['lot_no']) : '';
+            ($hasBrgyId)    ? $data['brgy_id'] = $advancedSearch['brgy_id'] : '';
+            ($hasType)      ? $data['type'] = $this->formatStr($advancedSearch['type']) : '';
+            ($hasDateFrom)  ? $data['date_from'] = $advancedSearch['date_from'] : '';
+            ($hasDateTo)    ? $data['date_to'] = $advancedSearch['date_to'] : '';
 
-            $query = $this->queryHandler->selectTaxDeclarations($hasId, $hasTotal)->orderBy('RY.year', 'DESC')->end();
+            $tdCategory = ($hasCategory) ? $advancedSearch['category'] : '';
+
+            $query = $this->queryHandler->selectTaxDeclarations($hasId, $hasStatus, $hasRevId, $hasTdNo, $hasPin, $hasOwner, $hasLotNo, $hasBrgyId, $hasType, $hasDateFrom, $hasDateTo, $tdCategory, $tdIDs, $hasTotal)->orderBy('RY.year', 'DESC')->end();
             $tax_declarations = $this->dbCon->prepare($query.' '.$limit);
             $tax_declarations->execute($data);
 
@@ -197,6 +279,24 @@
             }
 
             return $result;
+        }
+
+        public function getFilteredTDClassifications($class_id = '', $actual_use = '')
+        {
+            $hasClassId     = empty($class_id)      ? false : true;
+            $hasActualUse   = empty($actual_use)    ? false : true;
+
+            $data = [
+                'is_active' => 1
+            ];
+
+            ($hasClassId)   ? $data['class_id'] = $class_id : '';
+            ($hasActualUse) ? $data['actual_use'] = $this->formatStr($actual_use) : '';
+
+            $td_classifications = $this->dbCon->prepare($this->queryHandler->selectFilteredTDClassifications($hasClassId, $hasActualUse)->groupBy('TDC.tax_declaration_id')->end());
+            $td_classifications->execute($data);
+
+            return $td_classifications->fetchAll(\PDO::FETCH_ASSOC);
         }
 
         public function getClassifications($id = '')
@@ -314,4 +414,25 @@
             return $market_values->fetchAll(\PDO::FETCH_ASSOC);
         }
 
+        public function formatStr($str)
+        {
+            $strExplode = explode(" ", $str);
+            $outputStr = '%';
+            foreach ($strExplode as $value) {
+                $outputStr .= $value.'%';
+            }
+            
+            return $outputStr;
+        }
+
+        public function filterIDs($arrayData = [])
+        {
+            $output = [];
+
+            foreach ($arrayData as $key => $value) {
+                if(!empty($value)) array_push($output, $value['id']);
+            }
+
+            return $output;
+        }
     }

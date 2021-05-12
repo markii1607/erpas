@@ -7,7 +7,7 @@
 
     class TaxDeclarationQueryHandler extends QueryHandler {
 
-        public function selectTaxDeclarations($id = false, $total = false)
+        public function selectTaxDeclarations($id = false, $status = false, $rev_id = false, $td_no = false, $pin = false, $owner = false, $lot_no = false, $brgy_id = false, $type = false, $date_from = false, $date_to = false, $tdCategory = '', $tdIDs = [], $total = false)
         {
             $fields = [
                 'TD.id',
@@ -80,7 +80,22 @@
                               ->logicEx('AND')
                               ->orWhereLike($orWhereCondition);
 
-            $initQuery = ($id) ? $initQuery->andWhere(['TD.id' => ':id']) : $initQuery;
+            $initQuery = ($id)      ? $initQuery->andWhere(['TD.id' => ':id'])           : $initQuery;
+            $initQuery = ($status)  ? $initQuery->andWhere(['TD.status' => ':status'])   : $initQuery;
+            $initQuery = ($rev_id)  ? $initQuery->andWhere(['RY.id' => ':rev_id'])       : $initQuery;
+            $initQuery = ($td_no)   ? $initQuery->andWhereLike(['TD.td_no' => ':td_no']) : $initQuery;
+            $initQuery = ($pin)     ? $initQuery->andWhereLike(['TD.pin' => ':pin'])     : $initQuery;
+            $initQuery = ($owner)   ? $initQuery->andWhereLike(['TD.owner' => ':owner']) : $initQuery;
+            $initQuery = ($lot_no)  ? $initQuery->andWhereLike(['TD.lot_no' => ':lot_no'])  : $initQuery;
+            $initQuery = ($brgy_id) ? $initQuery->andWhere(['B.id' => ':brgy_id'])          : $initQuery;
+            $initQuery = ($type)    ? $initQuery->andWhereLike(['TD.property_kind' => ':type']) : $initQuery;
+            $initQuery = ($date_from && $date_to) ? $initQuery->andWhereRange('TD.created_at', [':date_from', ':date_to']) : $initQuery;
+            $initQuery = !empty($tdIDs) ? $initQuery->andWhereIn('TD.id', $tdIDs) : $initQuery;
+            if ($tdCategory == 'taxable') {
+                $initQuery = $initQuery->andWhereNotNull(['TD.is_taxable']);
+            } else if ($tdCategory == 'exempt') {
+                $initQuery = $initQuery->andWhereNotNull(['TD.is_exempt']);
+            }
 
             return $initQuery;
         }
@@ -107,7 +122,36 @@
                               ->from('tax_declaration_classifications TDC')
                               ->where(['TDC.is_active' => ':is_active']);
 
-            $initQuery = ($td_id) ? $initQuery->andWhere(['TDC.tax_declaration_id' => ':td_id']) : $initQuery;
+            $initQuery = ($td_id) ? $initQuery->andWhere(['TDC.tax_declaration_id' => ':td_id'])    : $initQuery;
+
+            return $initQuery;
+        }
+
+        public function selectFilteredTDClassifications($class_id = false, $actual_use = false)
+        {
+            $fields = [
+                'TDC.id',
+                'TDC.tax_declaration_id',
+                'TDC.classification_id',
+                'TDC.market_value_id',
+                'TDC.area',
+                'TDC.unit_measurement',
+                'TDC.area_in_sqm',
+                'TDC.area_in_ha',
+                'TDC.market_value',
+                'TDC.actual_use',
+                'TDC.assessment_level',
+                'TDC.assessed_value',
+                '"saved" as data_type'
+            ];
+
+            $initQuery = $this->select($fields)
+                              ->from('tax_declaration_classifications TDC')
+                              ->join(['tax_declarations TD' => 'TD.id = TDC.tax_declaration_id'])
+                              ->where(['TDC.is_active' => ':is_active', 'TD.is_active' => ':is_active']);
+
+            $initQuery = ($class_id)    ? $initQuery->andWhere(['TDC.classification_id' => ':class_id'])  : $initQuery;
+            $initQuery = ($actual_use)  ? $initQuery->andWhereLike(['TDC.actual_use' => ':actual_use'])   : $initQuery;
 
             return $initQuery;
         }
