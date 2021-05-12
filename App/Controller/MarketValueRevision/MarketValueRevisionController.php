@@ -6,6 +6,7 @@
 
     use App\Config\BaseController as BaseController;
     use App\Model\MarketValueRevision\MarketValueRevisionQueryHandler as QueryHandler;
+    use Exception;
 
     class MarketValueRevisionController extends BaseController {
         /**
@@ -158,6 +159,7 @@
                     'sub_classification_id' => $input->subclassification->id,
                     'revision_year_id'      => $input->revision_year->id,
                     'market_value'          => $input->market_value,
+                    'unit_measurement'      => $input->unit->name,
                     'description'           => isset($input->description) ? (!empty($input->description) ? $input->description : null) : null,
                     'created_by'            => $_SESSION['user_id'],
                     'created_at'            => date('Y-m-d H:i:s'),
@@ -195,6 +197,7 @@
                     'sub_classification_id' => $input->subclassification->id,
                     'revision_year_id'      => $input->revision_year->id,
                     'market_value'          => $input->market_value,
+                    'unit_measurement'      => $input->unit->name,
                     'description'           => isset($input->description) ? (!empty($input->description) ? $input->description : null) : null,
                     'updated_by'            => $_SESSION['user_id'],
                     'updated_at'            => date('Y-m-d H:i:s')

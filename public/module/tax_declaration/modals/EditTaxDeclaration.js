@@ -17,168 +17,6 @@ define([
                 alertify.theme('')
             };
 
-            Factory.revNo = [
-                {
-                    id: 1,
-                    no: 2019,
-                },
-                {
-                    id: 2,
-                    no: 2020,
-                },
-                {
-                    id: 3,
-                    no: 2021,
-                },
-            ]
-
-            Factory.brgys = [
-                {
-                    id: 1,
-                    code: '01',
-                    name: 'Barangay 01 Poblacion',
-                },
-                {
-                    id: 2,
-                    code: '02',
-                    name: 'Barangay 02 Poblacion',
-                },
-                {
-                    id: 3,
-                    code: '03',
-                    name: 'Barangay 03 Poblacion',
-                },
-                {
-                    id: 4,
-                    code: '04',
-                    name: 'Barangay 04 Poblacion',
-                },
-                {
-                    id: 5,
-                    code: '05',
-                    name: 'Barangay 05 Poblacion',
-                },
-                {
-                    id: 6,
-                    code: '06',
-                    name: 'Binitayan',
-                },
-                {
-                    id: 7,
-                    code: '07',
-                    name: 'Calbayog',
-                },
-                {
-                    id: 8,
-                    code: '08',
-                    name: 'Canaway',
-                },
-                {
-                    id: 9,
-                    code: '09',
-                    name: 'Salvacion',
-                },
-                {
-                    id: 1,
-                    code: '010',
-                    name: 'San Antonio - Santicon',
-                },
-                {
-                    id: 11,
-                    code: '011',
-                    name: 'San Antonio - Sulong',
-                },
-                {
-                    id: 12,
-                    code: '012',
-                    name: 'San Francisco',
-                },
-                {
-                    id: 13,
-                    code: '013',
-                    name: 'San Isidro Ilawod',
-                },
-                {
-                    id: 14,
-                    code: '014',
-                    name: 'San Isidro Iraya',
-                },
-                {
-                    id: 15,
-                    code: '015',
-                    name: 'San Jose',
-                },
-                {
-                    id: 16,
-                    code: '016',
-                    name: 'San Roque',
-                },
-                {
-                    id: 17,
-                    code: '017',
-                    name: 'Sta. Cruz',
-                },
-                {
-                    id: 18,
-                    code: '018',
-                    name: 'Sta. Teresa',
-                },
-            ]
-
-            Factory.classifications = [
-                {
-                    id: 1,
-                    name: 'Residential',
-                },
-                {
-                    id: 2,
-                    name: 'Commercial',
-                },
-                {
-                    id: 3,
-                    name: 'Industrial',
-                },
-                {
-                    id: 4,
-                    name: 'Improvement',
-                },
-            ];
-
-            Factory.units = [
-                {
-                    id: 1,
-                    name: 'ha',
-                },
-                {
-                    id: 2,
-                    name: 'sq.m',
-                },
-            ]
-
-            Factory.assessment_rates = [
-                {
-                    id: 1,
-                    rate: 0.35,
-                    display_rate: '35%',
-                },
-                {
-                    id: 2,
-                    rate: 0.40,
-                    display_rate: '40%',
-                },
-            ]
-
-            Factory.td_nos = [
-                {
-                    id: 1,
-                    no: '00293',
-                },
-                {
-                    id: 2,
-                    no: '00294',
-                }
-            ]
-
             return Factory;
         }
     ]);
@@ -188,23 +26,25 @@ define([
         function ($http) {
             var _this = this;
 
-            /**
-             * `getDetails` Query string that will get first needed details.
-             * @param  {[type]} id
-             * @return {[type]}
-             */
-            // _this.getDetails = function (id) {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/ViewAccessService.php/getDetails?id=' + id);
-            // }
+            _this.getDetails = function (id) {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/EditTaxDeclarationService.php/getTDDetails?id=' + id);
+            }
 
-            /**
-             * `archive` Query string that will archive information.
-             * @param  {[string]} id
-             * @return {[route]}
-             */
-            // _this.archive = function (id) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/ViewAccessService.php/archiveAccess', {'id' : id});
-            // }
+            _this.getMarketValues = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/AddTaxDeclarationService.php/getMvOfSelectedClassification', data);
+            }
+
+            _this.getNewTDNumber = function (rev_id) {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/AddTaxDeclarationService.php/getIncrementingTDNumber?rev_id=' + rev_id);
+            }
+
+            _this.archive = function (id) {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/EditTaxDeclarationService.php/archiveTdClassification?id=' + id);
+            }
+
+            _this.save = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/EditTaxDeclarationService.php/updateTaxDeclaration', data);
+            }
         }
     ]);
 
@@ -227,40 +67,113 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
-                // blocker.start();
+                blocker.start();
 
-            	// Service.getDetails(ParamData.id).then( function (res) {
-            	// 	$scope.accessList = angular.copy(res.data.access);
+            	Service.getDetails(ParamData.data.id).then( function (res) {
+                    if (res.data.td_classifications != undefined) {
+                        $scope.editTaxDec.details   = res.data.td_classifications;
+                        $scope.revision_nos         = res.data.revision_years;
+                        $scope.brgys                = res.data.barangays;
+                        $scope.classifications      = res.data.classifications;
+                        $scope.td_nos               = res.data.td_nos;
+                        $scope.approvers            = res.data.approvers;
+                        $scope.units = [
+                            { 'name' : 'sq.m' },
+                            { 'name' : 'ha.' }
+                        ]
 
-                //     $scope.jqDataTableOptions         = Factory.dtOptions();
-                //     $scope.jqDataTableOptions.buttons = _btnFunc();
-                //     $scope.jqDataTableOptions.data    = _formatAccess(res.data.access);
-            	// });
+                        _formatTdData($scope.editTaxDec.details);
 
-                $scope.revision_nos = Factory.revNo
-                $scope.brgys = Factory.brgys
-                $scope.classifications = Factory.classifications
-                $scope.units = Factory.units
-                $scope.assessment_rates = Factory.assessment_rates
-                $scope.td_nos = Factory.td_nos
+                        blocker.stop();
+                    } else {
+                        Alertify.error("An error occurred while fetching data. Please contact the administrator.");
+                        blocker.stop();
+                    }
+            	});
+            }
+
+            _formatTdData = function(data){
+                angular.forEach(data, (value, key) => {
+                    $scope.editTaxDec.details[key].unit = $filter('filter')($scope.units, {
+                        'name' : value.unit_measurement
+                    }, true)[0];
+                    $scope.getMarketValues(key, 'init');
+                });
+
+                $scope.editTaxDec.td_no = {
+                    'rev'       : $scope.editTaxDec.revision_year,
+                    'mun_code'  : $scope.editTaxDec.td_number[1],
+                    'brgy'      : $filter('filter')($scope.brgys, {
+                        'code'  : $scope.editTaxDec.td_number[2]
+                    }, true)[0],
+                    'td_code'   : $scope.editTaxDec.td_number[3]
+                }
+                if($scope.editTaxDec.td_number[4] != undefined) $scope.editTaxDec.td_no.td_code2 = $scope.editTaxDec.td_number[4];
+
+                $scope.editTaxDec.pin = {
+                    'prov_code'  : $scope.editTaxDec.pi_number[0],
+                    'mun_code'  : $scope.editTaxDec.pi_number[1],
+                    'brgy_code'      : $filter('filter')($scope.brgys, {
+                        'code'  : $scope.editTaxDec.pi_number[2]
+                    }, true)[0],
+                    'prop_no'   : $scope.editTaxDec.pi_number[4],
+                }
+                $scope.editTaxDec.pin.brgy_code.no_of_sections = $scope.editTaxDec.pi_number[3];
+                if($scope.editTaxDec.pi_number[5] != undefined) $scope.editTaxDec.pin.bldg_no = $scope.editTaxDec.pi_number[5];
             }
 
             $scope.addRow = function() {
                 $scope.editTaxDec.details.push({
-                    classification: null,
-                    area: null,
-                    unit: null,
-                    market_value: null,
-                    actual_use: null,
+                    classification  : null,
+                    area            : null,
+                    unit            : null,
+                    market_value    : null,
+                    actual_use      : null,
                     assessment_level: null,
-                    assessed_value: null,
+                    assessed_value  : null,
+                    data_type       : 'new'
                 })
             }
 
             $scope.removeRow = function(index) {
-                $scope.editTaxDec.details.splice(index, 1)
-                $scope.computeTotalMarketValue()
-                $scope.computeTotalAssessedValue()
+                if ($scope.editTaxDec.details[index].data_type == 'saved') {
+                    Alertify
+                    .okBtn("Yes")
+                    .cancelBtn("No")
+                    .confirm("Are you sure you want to delete the selected row from the database?", function(){
+                        blocker.start();
+                        Service.archive($scope.editTaxDec.details[index].id).then(res => {
+                            if (res.data.status) {
+                                Alertify.success("Successfully deleted row!");
+                                $scope.editTaxDec.details.splice(index, 1);
+                                $scope.computeTotalMarketValue();
+                                $scope.computeTotalAssessedValue();
+
+                                blocker.stop();
+                            } else {
+                                Alertify.error("An error occurred while saving. Please contact the administrator.");
+                                blocker.stop();
+                            }
+                        });
+                    });
+                } else if ($scope.editTaxDec.details[index].data_type == 'new') {
+                    $scope.editTaxDec.details.splice(index, 1)
+                    $scope.computeTotalMarketValue()
+                    $scope.computeTotalAssessedValue()
+                }
+            }
+
+            $scope.getNewTDNumber = function(rev_id){
+                blocker.start();
+                Service.getNewTDNumber(rev_id).then(res => {
+                    if (res.data.new_td_no != undefined) {
+                        $scope.editTaxDec.td_no.td_code  = res.data.new_td_no;
+                        blocker.stop();
+                    } else {
+                        Alertify.error("ERROR! Failed to auto-generate TD No.");
+                        blocker.stop();
+                    }
+                });
             }
 
             $scope.computeTotalMarketValue = function() {
@@ -283,6 +196,60 @@ define([
                 $scope.editTaxDec.total_assessed_value = angular.copy(total.toFixed(2))
             }
 
+            $scope.getMarketValues = function(index, fnc = ''){
+                if($scope.editTaxDec.details[index].sub_classification != undefined && fnc == '') delete $scope.editTaxDec.details[index].sub_classification;
+                blocker.start();
+                var tempData = {
+                    'classification'    : $scope.editTaxDec.details[index].classification,
+                    'revision_year'     : $scope.editTaxDec.revision_year,
+                };
+                Service.getMarketValues(tempData).then(res => {
+                    if (res.data.market_values != undefined) {
+                        $scope.market_values[index] = res.data.market_values;
+                        if (res.data.market_values.length == 0) Alertify.alert('No data found for the Rev. Year ' + $scope.editTaxDec.td_no.rev.year + ' and ' + $scope.editTaxDec.details[index].classification.name + ' classification.');
+                        blocker.stop();
+                    } else {
+                        Alertify.error('Failed to fetch MARKET VALUES data. Please contact the administrator.');
+                        blocker.stop();
+                    }
+                });
+            }
+
+            $scope.computeMarketValue = function(index){
+                console.log('type:', $scope.editTaxDec.property_kind);
+                console.log('inputUnit:', $scope.editTaxDec.details[index].unit.name);
+                console.log('mvUnit:', $scope.editTaxDec.details[index].sub_classification.unit);
+
+                // delete $scope.editTaxDec.details[index].assessment_level;
+                // delete $scope.editTaxDec.details[index].assessed_value;
+                if ($scope.editTaxDec.property_kind != 'Machinery') {
+                    if ($scope.editTaxDec.details[index].unit.name == $scope.editTaxDec.details[index].sub_classification.unit) {
+                        console.log('same unit');
+                        $scope.editTaxDec.details[index].market_value = $scope.editTaxDec.details[index].area * $scope.editTaxDec.details[index].sub_classification.market_value;
+                    } else {
+                        console.log('!same unit');
+                        if (($scope.editTaxDec.details[index].unit.name == 'ha.') && ($scope.editTaxDec.details[index].sub_classification.unit == 'sq.m')) {
+                            console.log('ha.');
+                            var convertedValue = $scope.editTaxDec.details[index].area * 10000;     // convert area to ha.
+                            $scope.editTaxDec.details[index].market_value = convertedValue * $scope.editTaxDec.details[index].sub_classification.market_value;
+                        } else if (($scope.editTaxDec.details[index].unit.name == 'sq.m') && ($scope.editTaxDec.details[index].sub_classification.unit == 'ha.')) {
+                            console.log('sq.m');
+                            var convertedValue = $scope.editTaxDec.details[index].area * 0.0001;     // convert area to sq.m
+                            $scope.editTaxDec.details[index].market_value = convertedValue * $scope.editTaxDec.details[index].sub_classification.market_value;
+                        }
+                    }
+
+                    $scope.computeTotalMarketValue();
+                    $scope.computeAssessedValue(index);
+                }
+            }
+
+            $scope.computeAssessedValue = function(index){
+                $scope.editTaxDec.details[index].assessed_value = $scope.editTaxDec.details[index].market_value * ($scope.editTaxDec.details[index].assessment_level/100);
+
+                $scope.computeTotalAssessedValue();
+            }
+
             /**
              * `closeModal` Closing of modal.
              * @return {[void]}
@@ -299,28 +266,24 @@ define([
             $scope.update = function (isValid) {
                 if (isValid) {
                     Alertify.confirm("Are you sure you want to add this tax declaration?",
-                        function (res) {
-                            if (res) {
-                                // blocker.start();
+                        function () {
+                            blocker.start();
 
-                                // $timeout( function () {
-                                //     Service.save($scope.addBrgy).then( function (res) {
-                                //         if (res.data.status == true) {
-                                //             Alertify.success("Classification successfully added!");
+                            Service.save($scope.editTaxDec).then( function (res) {
+                                if (res.data.status) {
+                                    Alertify.success("Tax Declaration successfully edited!");
 
-                                //             $uibModalInstance.close($scope.addBrgy);
-                                //             blocker.stop();
-                                //         } else {
-                                //             Alertify.error("Classification already exist!");
-                                //             blocker.stop();
-                                //         }
-                                //     });
-                                // }, 1000);
-                            }
+                                    $uibModalInstance.close(res.data.rowData);
+                                    blocker.stop();
+                                } else {
+                                    Alertify.error("An error occurred while saving! Please contact the administrator.");
+                                    blocker.stop();
+                                }
+                            });
                         }
                     );
                 } else {
-                    Alertify.error("All fields are required!");
+                    Alertify.error("All fields marked with * are required!");
                 }
             };
 
@@ -333,6 +296,11 @@ define([
                 Factory.autoloadSettings();
                 
                 $scope.editTaxDec = ParamData.data;
+                $scope.editTaxDec.tax_exempt = ($scope.editTaxDec.is_exempt == 1) ? 'exempt' : 'taxable';
+                $scope.editTaxDec.prev_td    = $scope.editTaxDec.canceled_td;
+
+                $scope.market_values = [];
+                console.log($scope.editTaxDec);
 
                 $timeout(function() {
                     angular.element('#dated').datepicker({
@@ -342,6 +310,15 @@ define([
                         maxDate: new Date(), 
                         onSelect: function(formattedDate, date, inst) {
                             $scope.editTaxDec.dated = angular.copy(formattedDate);
+                        }
+                    });
+                    angular.element('#ordinance_date').datepicker({
+                        language: 'en',
+                        autoClose: true,
+                        position: 'top center',
+                        maxDate: new Date(), 
+                        onSelect: function(formattedDate, date, inst) {
+                            $scope.editTaxDec.ordinance_date = angular.copy(formattedDate);
                         }
                     });
                 }, 500);

@@ -6,7 +6,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-3">
+                    <!-- <div class="col-3">
                         <div class="form-group mb-3">
                             <ui-select ng-model="addRev.subclassification" id="rev_no_filter" theme="bootstrap" reset-search-input="true" append-to-body="true">
                                 <ui-select-match placeholder="Select Revision No.">
@@ -17,7 +17,7 @@
                                 </ui-select-choices>
                             </ui-select>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-3">
                         <button class="btn btn-info" ng-click="showAdvSearch()">
                             <i class="fas fa-search"></i> Show Advance Search
@@ -31,10 +31,13 @@
                         <thead>
                             <tr class="text-uppercase" style="letter-spacing: 1px;">
                                 <th class="text-center" style="width: 5%; vertical-align: middle;">#</th>
+                                <th class="text-center" style="vertical-align: middle;">Revision Year</th>
                                 <th class="text-center" style="vertical-align: middle;">TD No.</th>
                                 <th class="text-center" style="vertical-align: middle;">PIN</th>
+                                <th class="text-center" style="vertical-align: middle;">Kind of Property</th>
                                 <th class="text-center" style="vertical-align: middle;">Owner</th>
                                 <th class="text-center" style="vertical-align: middle;">Location</th>
+                                <th class="text-center" style="vertical-align: middle;">Status</th>
                                 <th class="text-center" style="vertical-align: middle;">Actions</th>
                             </tr>
                         </thead>

@@ -14,6 +14,7 @@
                 'MV.sub_classification_id',
                 'MV.revision_year_id',
                 'MV.market_value',
+                'MV.unit_measurement',
                 'MV.description',
                 'MV.created_by',
                 'MV.created_at',

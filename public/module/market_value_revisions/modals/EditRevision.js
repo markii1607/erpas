@@ -136,7 +136,16 @@ define([
                 $scope.editRev = ParamData.data;
                 $scope.editRev.classification    = ParamData.data.sub_classification.classification;
                 $scope.editRev.subclassification = ParamData.data.sub_classification;
-                $scope.editRev.disableSubClass = true
+                $scope.editRev.disableSubClass = true;
+
+                $scope.units = [
+                    { 'name' : 'sq.m' },
+                    { 'name' : 'ha.' }
+                ]
+
+                $scope.editRev.unit = $filter('filter')($scope.units, {
+                    'name' : $scope.editRev.unit_measurement
+                },true)[0];
 
                 _loadDetails();
             };

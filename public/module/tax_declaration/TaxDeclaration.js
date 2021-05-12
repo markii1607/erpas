@@ -34,7 +34,7 @@ define([
                     "dom": 'Bfrtip',
                     "paging": true,
                     "lengthChange": true,
-                    "pageLength": 10,
+                    "pageLength": 15,
                     "searching": true,
                     "ordering": true,
                     "info": true,
@@ -59,6 +59,29 @@ define([
                             "asc"
                         ]
                     ],
+                    "processing"     : true,
+                    "serverSide"     : true,
+                    "ajax"           : 
+                    {
+                        "url"  : APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/TaxDeclarationService.php/getDetails',
+                        "data" : function (data) {
+                            var temp = {
+                                'advanced_search' : {
+                                    'sample' : ''
+                                }
+                            };
+
+                            // Retrieve dynamic parameters
+                            var dt_params = angular.element('#tax_declarations').data('dt_params');
+                            // console.log('dt_params: ', dt_params);
+                            // Add dynamic parameters to the data object sent to the server
+                            if (dt_params) {
+                                temp.advanced_search = dt_params;
+                            }
+
+                            angular.extend(data, temp);
+                        }
+                    },
                     "columnDefs"   : [ 
                         {
                             "targets"    : 0,
@@ -67,51 +90,52 @@ define([
                             "className"  : "text-center"
                         },
                         {
-                            "targets": 1,
+                            "targets": 6,
                             "searchable": true,
                             "orderable": true,
-                            "className": "text-center",
+                            "className": "text-left",
                             "render": function(data, type, full, meta) {
-                                return `${data.year.no}-${data.mun_code}-${data.brgy_code.code}-${data.td_code}`
+                                var strStreet = (data != '') ? data : '';
+                                return strStreet + ', ' + full.barangay.name;
                             }
                         },
                         {
-                            "targets": 2,
-                            "searchable": true,
-                            "orderable": true,
-                            "className": "text-center",
-                            "render": function(data, type, full, meta) {
-                                return `${data.prov_code}-${data.mun_code}-${data.brgy_code.code}-${data.section}-${data.prop_no}-${data.bldg_no}`
+                            "targets": 7,
+                            "searchable": false,
+                            "orderable" : false,
+                            "className" : "text-center",
+                            "render"    : function(data, type, full, meta) {
+                                if (data == '1') {
+                                    return '<span style="display: inline; padding: .2em .6em .3em; background-color:#5cb85c; color: white; border-radius: 25px; font-size: 12px; font-weight: 500">ACTIVE</span>';
+                                } else if (data == '2') {
+                                    return '<span style="display: inline; padding: .2em .6em .3em; background-color:#f0ad4e; color: white; border-radius: 25px; font-size: 12px; font-weight: 500">RETIRED</span>';
+                                } else if (data == '3') {
+                                    return '<span style="display: inline; padding: .2em .6em .3em; background-color:#d9534f; color: white; border-radius: 25px; font-size: 12px; font-weight: 500">CANCELED</span>';
+                                }
                             }
                         },
                         {
-                            "targets": 4,
-                            "searchable": true,
-                            "orderable": true,
-                            "className": "text-center",
-                            "render": function(data, type, full, meta) {
-                                return `${data.brgy.name}, ${data.mun_prov}`
-                            }
-                        },
-                        {
-                            "targets": 5,
+                            "targets": 8,
                             "searchable": false,
                             "orderable": false,
-                            "className": "text-center",
+                            "className": "text-left",
                             "render": function(data, type, full, meta) {
                                 var str = '';
                                 str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-sm mr-2 text-white"><i class="fas fa-eye"></i></button>';
                                 str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-info btn-sm mr-2 text-white"><i class="fas fa-edit"></i></button>';
-                                str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Revise" class="btn btn-default bg-warning btn-sm mr-2 text-white"><i class="fas fa-sync-alt"></i></button>';
-                                str += '<button type="submit" id="fourthButton" data-toggle="tooltip" title="Cancel" class="btn btn-default bg-danger btn-sm mr-2 text-white"><i class="fas fa-ban"></i></button>';
+                                str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Retire" class="btn btn-default bg-warning btn-sm mr-2 text-white"><i class="fas fa-ban"></i></button>';
+                                str += '<button type="submit" id="fourthButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-sm mr-2 text-white"><i class="fas fa-trash"></i></button>';
 
                                 return str;
                             }
-                        },
+                        }
                     ],
                     "columns"      : [
                         { 
-                            "data" : "id" 
+                            "data" : null 
+                        },
+                        { 
+                            "data" : "rev_year"
                         },
                         { 
                             "data" : "td_no"
@@ -120,10 +144,16 @@ define([
                             "data" : "pin"
                         },
                         { 
+                            "data" : "property_kind"
+                        },
+                        { 
                             "data" : "owner"
                         },
                         { 
-                            "data" : "loc"
+                            "data" : "prop_location_street"
+                        },
+                        { 
+                            "data" : "status"
                         },
                         { 
                             "data" : null,
@@ -133,105 +163,6 @@ define([
 
                 return options;
             };
-
-            Factory.dummyData = [
-                {
-                    id: 1,
-                    td_no: {
-                        year: {
-                            id: 2,
-                            no: 2020,
-                        },
-                        mun_code: '09',
-                        brgy_code: {
-                            id: 15,
-                            code: '015',
-                            name: 'San Jose',
-                        },
-                        td_code: '00170',
-                        td_code_2: '000',
-                    },
-                    pin: {
-                        prov_code: '031',
-                        mun_code: '09',
-                        brgy_code: {
-                            id: 15,
-                            code: '015',
-                            name: 'San Jose',
-                        },
-                        section: '003',
-                        prop_no: '29',
-                        bldg_no: '1001',
-                    },
-                    owner: 'Bilasa, Ricardo',
-                    address: 'P2, San Francisco, Malilipot, Albay',
-                    loc: {
-                        brgy: {
-                            id: 15,
-                            code: '015',
-                            name: 'San Jose'
-                        },
-                        mun_prov: 'Malilipot, Albay'
-                    },
-                    boundaries: {
-                        text: 'Boarding house constructed on Lot No. 197-B, owned by the same declarant.',
-                    },
-                    type: {
-                        name: 'Building',
-                        floors: 2,
-                    },
-                    details: [
-                        {
-                            classification: {
-                                id: 1, 
-                                name: 'Improvement',
-                            },
-                            area: 192.00,
-                            unit: {
-                                id: 1,
-                                name: 'sq.m'
-                            },
-                            market_value: 1102080.00,
-                            actual_use: 'Boarding House',
-                            assessment_level: {
-                                id: 1,
-                                rate: 0.35,
-                                display_rate: '35%'
-                            },
-                            assessed_value: 385730.00,
-                        }
-                    ],
-                    total_market_value: 1102080.00,
-                    total_assessed_value: 385730.00,
-                    assessed_val_words: 'Three Hundred Eighty Five Thousand Seven Hundred Thirty Pesos',
-                    tax_exempt: 'taxable',
-                    effectivity: 2021,
-                    prev_declaration: {
-                        td_no: {
-                            id: 1,
-                            no: '00294',
-                        },
-                        owner: 'Same',
-                        prev_av: 606800.00
-                    },
-                    memoranda: 'Reassessment: Per letter request, ocular inspection conducted based on the actual floor area of the structures. Taxes paid until 2020 under O.R #7731618 7/30/2020, MTO-Malilipot, Albay',
-                },
-            ];
-
-            Factory.revNo = [
-                {
-                    id: 1,
-                    no: 2019,
-                },
-                {
-                    id: 2,
-                    no: 2020,
-                },
-                {
-                    id: 3,
-                    no: 2021,
-                },
-            ]
 
             return Factory;
         }
@@ -246,9 +177,17 @@ define([
              * `getDetails` Query string that will get first needed details.
              * @return {[route]}
              */
-            // _this.getDetails = function () {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/UserAccessConfigurationService.php/getDetails');
-            // };
+            _this.getDetails = function () {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/TaxDeclarationService.php/getDetails');
+            };
+
+            _this.retire = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/TaxDeclarationService.php/retireTaxDeclaration', data);
+            };
+
+            _this.archive = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/TaxDeclarationService.php/archiveTaxDeclaration', data);
+            };
         }
     ]);
 
@@ -268,17 +207,18 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
-                blocker.start();
 
-                // Service.getDetails().then( function (res) {
+                $scope.jqDataTableOptions         = Factory.dtOptions();
+                $scope.jqDataTableOptions.buttons = _btnFunc();
+
+                /* blocker.start();
+                Service.getDetails().then( function (res) {
                     $scope.jqDataTableOptions         = Factory.dtOptions();
                     $scope.jqDataTableOptions.buttons = _btnFunc();
-                    $scope.jqDataTableOptions.data    = Factory.dummyData;
-
-                    $scope.revision_nos = Factory.revNo
+                    $scope.jqDataTableOptions.data    = res.data.tax_declarations;
 
                     blocker.stop();
-                // });
+                }); */
             };
 
             /**
@@ -320,20 +260,15 @@ define([
                     $scope.editTaxDec(data, index)
                 },
                 "thirdButton": function(data, index) {
-                    $scope.reviseTaxDec(data, index)
+                    $scope.retireTaxDec(data, index)
                 },
                 "fourthButton": function(data, index) {
-                    $scope.cancelTaxDec(data, index)
+                    $scope.deleteTaxDec(data, index)
                 },
             };
 
             $scope.addTaxDec = function () {
                 var paramData, modalInstance;
-
-                // paramData = {
-                //     'id'        : table.DataTable().rows('.selected').data()[0].id,
-                //     'full_name' : table.DataTable().rows('.selected').data()[0].full_name
-                // };
 
                 paramData = {}
 
@@ -354,6 +289,9 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
+                    console.log('addREsult: ', res);
+                    table.DataTable().row.add(res).draw();
+                    table.find('tbody tr').css('cursor', 'pointer');
                 }, function (res) {
                     // Result when modal is dismissed
                 });
@@ -415,6 +353,8 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
+                    console.log("editResult: ", res);
+                    table.DataTable().row(index).data(res).draw();
                 }, function (res) {
                     // Result when modal is dismissed
                 });
@@ -450,16 +390,49 @@ define([
                 });
             }
 
-            // $scope.deletTaxDeclaration = function(data, index) {
-            //     Alertify.confirm("Are you sure you want to delete the selected barangay?",
-            //         function (res) {
-            //             if (res) {
-            //                 table.DataTable().row('.selected').remove().draw(true);
-            //                 Alertify.log('Deleted!');
-            //             }
-            //         }
-            //     );
-            // }
+            $scope.retireTaxDec = function(data, index){
+                Alertify
+                .okBtn("Yes")
+                .cancelBtn("Cancel")
+                .confirm("Are you sure you want to retire Tax Declaration#<b><u>" + data.td_no + "</u></b>?",
+                function () {
+                    blocker.start();
+                    Service.retire(data).then(res => {
+                        if (res.data.status) {
+                            table.DataTable().row(index).data(res.data.rowData).draw();
+                            Alertify.log('Successfully marked Tax Declaration as RETIRED!');
+                            
+                            blocker.stop();
+                        } else {
+                            Alertify.error("ERROR! Please contact the administrator.");
+                            blocker.stop();
+                        }
+                    });
+                }
+            );
+            }
+
+            $scope.deleteTaxDec = function(data, index){
+                Alertify
+                .okBtn("Yes")
+                .cancelBtn("Cancel")
+                .confirm("Are you sure you want to delete Tax Declaration#<b><u>" + data.td_no + "</u></b>?",
+                    function () {
+                        blocker.start();
+                        Service.archive(data).then(res => {
+                            if (res.data.status) {
+                                table.DataTable().row('.selected').remove().draw(true);
+                                Alertify.log('Deleted!');
+                                
+                                blocker.stop();
+                            } else {
+                                Alertify.error("ERROR! Please contact the administrator.");
+                                blocker.stop();
+                            }
+                        });
+                    }
+                );
+            }
 
             /**
              * `_init` Initialize first things first
