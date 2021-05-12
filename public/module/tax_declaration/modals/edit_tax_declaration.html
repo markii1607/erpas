@@ -17,21 +17,24 @@
             </div>
             <div class="modal-body" id="modal-body">
 				<div class="row mb-3">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-10">
 						<p class="font-weight-bold mb-1">TD No.:<i class="text-danger">*</i></p>
 						<div class="row">
-							<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 w-hyphen">
-								<ui-select ng-model="editTaxDec.td_no.year" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+							<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 w-hyphen">
+								<ui-select ng-model="editTaxDec.td_no.rev" data-toggle="tooltip" data-placement="top" title="Revision Year" ng-change="getNewTDNumber(editTaxDec.td_no.rev.id)" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
 									<ui-select-match placeholder="Select Revision Yr.">
-										{{ $select.selected.no }}
+										{{ $select.selected.year }}
 									</ui-select-match>
 									<ui-select-choices style="font-size: 12px;" repeat="rev_no in revision_nos | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
-										<span>{{rev_no.no}}</span>
+										<span>{{rev_no.year}}</span>
 									</ui-select-choices>
 								</ui-select>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 w-hyphen">
-								<ui-select ng-model="editTaxDec.td_no.brgy_code" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+							<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 w-hyphen">
+								<input type="text" ng-model="editTaxDec.td_no.mun_code" data-toggle="tooltip" data-placement="top" title="Municipal Code" class="form-control" placeholder="Enter Mun. Code" autocomplete="off" required />
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 w-hyphen">
+								<ui-select ng-model="editTaxDec.td_no.brgy" theme="bootstrap" reset-search-input="true" data-toggle="tooltip" data-placement="top" title="Brgy Code" append-to-body="true" required>
 									<ui-select-match placeholder="Select Brgy. Code">
 										{{ $select.selected.code }}
 									</ui-select-match>
@@ -41,11 +44,11 @@
 									</ui-select-choices>
 								</ui-select>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 w-hyphen">
-								<input type="text" ng-model="editTaxDec.td_no.td_code" class="form-control" placeholder="Enter TD Code #1" autocomplete="off" required />
+							<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 w-hyphen">
+								<input type="text" ng-model="editTaxDec.td_no.td_code" class="form-control" placeholder="TD Code #1" data-toggle="tooltip" data-placement="top" title="TD Code" autocomplete="off" required />
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-								<input type="text" ng-model="editTaxDec.td_no.td_code_2" class="form-control" placeholder="Enter TD Code #2" autocomplete="off" required />
+							<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+								<input type="text" ng-model="editTaxDec.td_no.td_code_2" class="form-control" placeholder="TD Code#2" data-toggle="tooltip" data-placement="top" title="Additional Code (Optional)" autocomplete="off" />
 							</div>
 						</div>
 					</div>
@@ -54,8 +57,14 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<p class="font-weight-bold mb-1">Property Identification No.:<i class="text-danger">*</i></p>
 						<div class="row">
-							<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 w-hyphen">
-								<ui-select ng-model="editTaxDec.pin.brgy_code" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+							<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 w-hyphen">
+								<input type="text" ng-model="editTaxDec.pin.prov_code" class="form-control" data-toggle="tooltip" data-placement="top" title="Province Code" placeholder="Enter Prov. Code" autocomplete="off" required />
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 w-hyphen">
+								<input type="text" ng-model="editTaxDec.pin.mun_code" class="form-control" data-toggle="tooltip" data-placement="top" title="Municipal Code" placeholder="Enter Mun. Code" autocomplete="off" required />
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 w-hyphen">
+								<ui-select ng-model="editTaxDec.pin.brgy_code" theme="bootstrap" reset-search-input="true" data-toggle="tooltip" data-placement="top" title="Brgy Code" append-to-body="true" required>
 									<ui-select-match placeholder="Select Brgy. Code">
 										{{ $select.selected.code }}
 									</ui-select-match>
@@ -65,14 +74,14 @@
 									</ui-select-choices>
 								</ui-select>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 w-hyphen">
-								<input type="text" ng-model="editTaxDec.pin.section" class="form-control" placeholder="Enter Section Code" autocomplete="off" required />
+							<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 w-hyphen">
+								<input type="text" ng-model="editTaxDec.pin.brgy_code.no_of_sections" class="form-control" placeholder="Enter Section Code" data-toggle="tooltip" data-placement="top" title="Section Code" autocomplete="off" required />
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 w-hyphen">
-								<input type="text" ng-model="editTaxDec.pin.prop_no" class="form-control" placeholder="Enter Property No." autocomplete="off" required />
+							<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 w-hyphen">
+								<input type="text" ng-model="editTaxDec.pin.prop_no" class="form-control" placeholder="Enter PIN" data-toggle="tooltip" data-placement="top" title="PIN" autocomplete="off" required />
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-								<input type="text" ng-model="editTaxDec.pin.bldg_no" class="form-control" placeholder="Enter Building No." autocomplete="off" required />
+							<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+								<input type="text" ng-model="editTaxDec.pin.bldg_no" class="form-control" placeholder="Classification Code" data-toggle="tooltip" data-placement="top" title="Classification Code (Optional)" autocomplete="off" />
 							</div>
 						</div>
 					</div>
@@ -88,27 +97,25 @@
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
 						<label for="owner_addr" class="font-weight-bold">Owner's Address:<i class="text-danger">*</i></label>
-                        <input type="text" ng-model="editTaxDec.owner_addr" class="form-control" id="owner_addr" placeholder="Enter Owner's Address" autocomplete="off" required />
+                        <input type="text" ng-model="editTaxDec.owner_address" class="form-control" id="owner_addr" placeholder="Enter Owner's Address" autocomplete="off" required />
 					</div>
 				</div>
 				<div class="row mb-3">
-					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+					<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
 						<label for="admin_user" class="font-weight-bold">Administrator/Beneficial User:</label>
-                        <input type="text" ng-model="editTaxDec.admin_user" class="form-control" id="admin_user" placeholder="Enter Name" autocomplete="off" />
+                        <input type="text" ng-model="editTaxDec.beneficiary" class="form-control" id="admin_user" placeholder="Enter Name" autocomplete="off" />
 					</div>
-					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-						<label for="admin_user_tin" class="font-weight-bold">User's TIN:</label>
-                        <input type="text" ng-model="editTaxDec.admin_user_tin" class="form-control" id="admin_user_tin" placeholder="Enter TIN" autocomplete="off" />
+					<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+						<label for="admin_user_tin" class="font-weight-bold">Administrator's TIN:</label>
+                        <input type="text" ng-model="editTaxDec.beneficiary_tin" class="form-control" id="admin_user_tin" placeholder="Enter TIN" autocomplete="off" />
 					</div>
-					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-						<label for="admin_user_tel" class="font-weight-bold">User's Tel. No.:</label>
-                        <input type="text" ng-model="editTaxDec.admin_user_tel" class="form-control" id="admin_user_tel" placeholder="Enter Tel. No." autocomplete="off" />
+					<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+						<label for="admin_user_tel" class="font-weight-bold">Administrator's Tel. No.:</label>
+                        <input type="text" ng-model="editTaxDec.beneficiary_tel_no" class="form-control" id="admin_user_tel" placeholder="Enter Tel. No." autocomplete="off" />
 					</div>
-				</div>
-				<div class="row mb-3">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<label for="admin_user_addr" class="font-weight-bold">User's Address:</label>
-                        <input type="text" ng-model="editTaxDec.admin_user_addr" class="form-control" id="admin_user_addr" placeholder="Enter Address" autocomplete="off" />
+					<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+						<label for="admin_user_addr" class="font-weight-bold">Administrator's Address:</label>
+                        <input type="text" ng-model="editTaxDec.beneficiary_address" class="form-control" id="admin_user_addr" placeholder="Enter Address" autocomplete="off" />
 					</div>
 				</div>
 				<div class="row mb-3">
@@ -116,14 +123,14 @@
 						<p class="font-weight-bold mb-1">Location of Property:<i class="text-danger">*</i></p>
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-								<input type="text" ng-model="editTaxDec.loc.no_street" class="form-control" placeholder="Enter Number and Street" autocomplete="off" />
+								<input type="text" ng-model="editTaxDec.prop_location_street" class="form-control" data-toggle="tooltip" data-placement="top" title="Number and Street" placeholder="Enter Number and Street" autocomplete="off" required />
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-								<ui-select ng-model="editTaxDec.loc.brgy" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+								<ui-select ng-model="editTaxDec.barangay" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
 									<ui-select-match placeholder="Select Brgy.">
 										{{ $select.selected.name }}
 									</ui-select-match>
-									<ui-select-choices style="font-size: 12px;" repeat="brgy in brgys | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+									<ui-select-choices style="font-size: 12px;" repeat="brgy in brgys | filter: $select.search | limitTo: infiniteScroll.currentItems" data-toggle="tooltip" data-placement="top" title="Barangay" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
 										<p class="mb-1"><b>{{brgy.code}}</b></p>
 										<p class="mb-1 font-italic"><small>{{ brgy.name }}</small></p>
 									</ui-select-choices>
@@ -136,7 +143,7 @@
 				<div class="row mb-3">
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 						<label for="oct_no" class="font-weight-bold">OCT/TCT/CLOA No.</label>
-                        <input type="text" ng-model="editTaxDec.oct_no" class="form-control" id="oct_no" placeholder="Enter OCT/TCT/CLOA No." autocomplete="off" />
+                        <input type="text" ng-model="editTaxDec.oct_tct_cloa_no" class="form-control" id="oct_no" placeholder="Enter OCT/TCT/CLOA No." autocomplete="off" />
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 						<label for="survey_no" class="font-weight-bold">Survey No.:</label>
@@ -160,34 +167,34 @@
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 						<label for="blk_no" class="font-weight-bold">Blk No.:</label>
-                        <input type="text" ng-model="editTaxDec.blk_no" class="form-control" id="blk_no" placeholder="Enter Blk No." autocomplete="off" />
+                        <input type="text" ng-model="editTaxDec.block_no" class="form-control" id="blk_no" placeholder="Enter Blk No." autocomplete="off" />
 					</div>
 				</div>
 				<hr />
 				<div class="row mb-3">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<label for="text" class="font-weight-bold">Boundaries:<i class="text-danger">*</i></label>
-						<textarea ng-model="editTaxDec.boundaries.text" rows="2" class="form-control resize-none" id="text" placeholder="Enter Remarks..." required></textarea>
+						<label for="text" class="font-weight-bold">Boundaries:</label>
+						<textarea ng-model="editTaxDec.boundaries" rows="2" class="form-control resize-none" id="text" placeholder="Enter Boundaries.."></textarea>
 					</div>
 				</div>
 				<div class="row mb-3">
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 						<label for="north" class="font-weight-bold">North:</label>
-                        <input type="text" ng-model="editTaxDec.boundaries.north" class="form-control" id="north" placeholder="Enter North Boundaries" autocomplete="off" />
+                        <input type="text" ng-model="editTaxDec.boundaries_north" class="form-control" id="north" placeholder="Enter North Boundaries" autocomplete="off" />
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 						<label for="south" class="font-weight-bold">South:</label>
-                        <input type="text" ng-model="editTaxDec.boundaries.south" class="form-control" id="south" placeholder="Enter South Boundaries" autocomplete="off" />
+                        <input type="text" ng-model="editTaxDec.boundaries_south" class="form-control" id="south" placeholder="Enter South Boundaries" autocomplete="off" />
 					</div>
 				</div>
 				<div class="row mb-3">
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 						<label for="east" class="font-weight-bold">East:</label>
-                        <input type="text" ng-model="editTaxDec.boundaries.east" class="form-control" id="east" placeholder="Enter East Boundaries" autocomplete="off" />
+                        <input type="text" ng-model="editTaxDec.boundaries_east" class="form-control" id="east" placeholder="Enter East Boundaries" autocomplete="off" />
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 						<label for="west" class="font-weight-bold">West:</label>
-                        <input type="text" ng-model="editTaxDec.boundaries.west" class="form-control" id="west" placeholder="Enter West Boundaries" autocomplete="off" />
+                        <input type="text" ng-model="editTaxDec.boundaries_west" class="form-control" id="west" placeholder="Enter West Boundaries" autocomplete="off" />
 					</div>
 				</div>
 				<hr />
@@ -196,44 +203,44 @@
 						<p class="font-weight-bold mb-1">Kind of Property Assessed:<i class="text-danger">*</i></p>
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-								<input type="radio" id="type1" class="custom-radio" ng-model="editTaxDec.type.name" name="type_property" value="Land" required />
+								<input type="radio" id="type1" class="custom-radio" ng-model="editTaxDec.property_kind" name="type_property" value="Land" required />
 								<label for="type1">Land</label>
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-								<input type="radio" id="type2" class="custom-radio" ng-model="editTaxDec.type.name" name="type_property" value="Building" required />
+								<input type="radio" id="type2" class="custom-radio" ng-model="editTaxDec.property_kind" name="type_property" value="Building" required />
 								<label for="type2">Building</label>
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-								<input type="radio" id="type3" class="custom-radio" ng-model="editTaxDec.type.name" name="type_property" value="Machinery" required />
+								<input type="radio" id="type3" class="custom-radio" ng-model="editTaxDec.property_kind" name="type_property" value="Machinery" required />
 								<label for="type3">Machinery</label>
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-								<input type="radio" id="type4" class="custom-radio" ng-model="editTaxDec.type.name" name="type_property" value="Others" required />
+								<input type="radio" id="type4" class="custom-radio" ng-model="editTaxDec.property_kind" name="type_property" value="Others" required />
 								<label for="type4">Others</label>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="row mb-3" ng-if="editTaxDec.type.name == 'Building'">
+				<div class="row mb-3" ng-if="editTaxDec.property_kind == 'Building'">
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 						<label for="floors" class="font-weight-bold">No. of Storeys:<i class="text-danger">*</i></label>
-                        <input type="text" ng-model="editTaxDec.type.floors" class="form-control" id="floors" placeholder="Enter No. of Storeys" autocomplete="off" required />
+                        <input type="text" ng-model="editTaxDec.no_of_storey" class="form-control" id="floors" placeholder="Enter No. of Storeys" autocomplete="off" required />
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 						<label for="desc" class="font-weight-bold">Brief Description:</label>
-                        <input type="text" ng-model="editTaxDec.type.desc" class="form-control" id="desc" placeholder="Enter Brief Description" autocomplete="off" />
+                        <input type="text" ng-model="editTaxDec.description" class="form-control" id="desc" placeholder="Enter Brief Description" autocomplete="off" />
 					</div>
 				</div>
-				<div class="row mb-3" ng-if="editTaxDec.type.name == 'Machinery'">
+				<div class="row mb-3" ng-if="editTaxDec.property_kind == 'Machinery'">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<label for="desc" class="font-weight-bold">Brief Description:</label>
-                        <input type="text" ng-model="editTaxDec.type.desc" class="form-control" id="desc" placeholder="Enter Brief Description" autocomplete="off" />
+                        <input type="text" ng-model="editTaxDec.description" class="form-control" id="desc" placeholder="Enter Brief Description" autocomplete="off" />
 					</div>
 				</div>
-				<div class="row mb-3" ng-if="editTaxDec.type.name == 'Others'">
+				<div class="row mb-3" ng-if="editTaxDec.property_kind == 'Others'">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<label for="desc" class="font-weight-bold">Please Specify:<i class="text-danger">*</i></label>
-                        <input type="text" ng-model="editTaxDec.type.specify" class="form-control" id="desc" placeholder="Enter Kind of Property" autocomplete="off" required />
+                        <input type="text" ng-model="editTaxDec.others_specified" class="form-control" id="desc" placeholder="Enter Kind of Property" autocomplete="off" required />
 					</div>
 				</div>
 				<hr />
@@ -243,17 +250,19 @@
 							<table class="table table-striped">
 								<thead>
 									<tr>
-										<th class="text-center">
+										<th class="text-center align-middle">
 											<button class="btn btn-success" type="button" title="Add Row" ng-click="addRow()">
 												<i class="fas fa-plus"></i>
 											</button>
 										</th>
-										<th class="text-center">Classification<i class="text-danger">*<i></th>
-										<th class="text-center">Area<i class="text-danger">*<i></th>
-										<th class="text-center">Market Value<i class="text-danger">*<i></th>
-										<th class="text-center">Actual Use<i class="text-danger">*<i></th>
-										<th class="text-center">Assessment<i class="text-danger">*<i></th>
-										<th class="text-center">Assessed Value<i class="text-danger">*<i></th>
+										<th class="text-center align-middle">Classification<i class="text-danger">*<i></th>
+										<th class="text-center align-middle" ng-if="editTaxDec.property_kind != 'Machinery'">Sub-Classification<i class="text-danger">*<i></th>
+										<th class="text-center align-middle">Area<i class="text-danger">*<i></th>
+										<th class="text-center align-middle">Market Value<i class="text-danger">*<i></th>
+										<th class="text-center align-middle">Actual Use<i class="text-danger">*<i></th>
+										<th class="text-center align-middle">Assessment<i class="text-danger">*<i></th>
+										<th class="text-center align-middle">Assessed Value<i class="text-danger">*<i></th>
+										<!-- <th class="text-center align-middle">Adjustment %<br><i>(if any)</i></th> -->
 									</tr>
 								</thead>
 								<tbody>
@@ -264,7 +273,7 @@
 											</button>
 										</td>
 										<td>
-											<ui-select ng-model="editTaxDec.details[key].classification" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+											<ui-select ng-model="editTaxDec.details[key].classification" theme="bootstrap" ng-change="getMarketValues(key)" reset-search-input="true" append-to-body="true" required>
 												<ui-select-match placeholder="Classification">
 													{{ $select.selected.name }}
 												</ui-select-match>
@@ -273,13 +282,48 @@
 												</ui-select-choices>
 											</ui-select>
 										</td>
+										<td ng-if="editTaxDec.property_kind != 'Machinery'">
+											<ui-select ng-model="editTaxDec.details[key].sub_classification" ng-change="computeMarketValue(key)" style="width: 250px;" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+												<ui-select-match placeholder="Sub-Class">
+													{{ $select.selected.sub_classification }}
+												</ui-select-match>
+												<ui-select-choices style="font-size: 12px;" repeat="mv in market_values[key] | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+													<table>
+														<tr>
+															<th>Classification</th>
+															<td> : {{mv.classification}}</td>
+														</tr>
+														<tr>
+															<th>Sub-Classification</th>
+															<td> : {{mv.sub_classification}}</td>
+														</tr>
+														<tr>
+															<th>Revision Year</th>
+															<td> : {{mv.revision_year}}</td>
+														</tr>
+														<tr>
+															<th>Market Value</th>
+															<td> : Php {{mv.market_value | number}}</td>
+														</tr>
+														<tr>
+															<th>Unit</th>
+															<td> : {{mv.unit}}</td>
+														</tr>
+														<tr>
+															<th>Description</th>
+															<td> : {{mv.description}}</td>
+														</tr>
+													</table>
+												</ui-select-choices>
+											</ui-select>
+										</td>
 										<td>
 											<div class="form-row align-items-center">
 												<div class="col-8">
-													<input type="number" ng-model="editTaxDec.details[key].area" step="0.01" min="0.00" class="form-control" placeholder="Enter Area" autocomplete="off" required />
+													<input type="number" ng-model="editTaxDec.details[key].area" step="0.01" min="0.00" class="form-control" ng-change="computeMarketValue(key)" placeholder="Enter Area" autocomplete="off" required />
 												</div>
 												<div class="col-4">
-													<ui-select ng-model="editTaxDec.details[key].unit" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+													<ui-select ng-model="editTaxDec.details[key].unit" theme="bootstrap" ng-disabled="editTaxDec.details[key].area == undefined" ng-change="computeMarketValue(key)" reset-search-input="true" append-to-body="true" required>
 														<ui-select-match placeholder="Unit">
 															{{ $select.selected.name }}
 														</ui-select-match>
@@ -291,36 +335,49 @@
 											</div>
 										</td>
 										<td>
-											<input type="number" ng-model="editTaxDec.details[key].market_value" step="0.01" min="0.00" class="form-control" placeholder="Enter Market Value" ng-keyup="computeTotalMarketValue()" autocomplete="off" required />
+											<input type="number" ng-model="editTaxDec.details[key].market_value" ng-disabled="editTaxDec.details[key].area == undefined || editTaxDec.details[key].unit == undefined" step="0.01" min="0.00" class="form-control" placeholder="Enter Market Value" ng-keyup="computeTotalMarketValue()" autocomplete="off" required />
 										</td>
 										<td>
 											<input type="text" ng-model="editTaxDec.details[key].actual_use" class="form-control" placeholder="Enter Actual Use" autocomplete="off" required />
 										</td>
 										<td>
-											<ui-select ng-model="editTaxDec.details[key].assessment_level" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
-												<ui-select-match placeholder="Level">
-													{{ $select.selected.display_rate }}
-												</ui-select-match>
-												<ui-select-choices style="font-size: 12px;" repeat="asl in assessment_rates | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
-													<span>{{asl.display_rate}}</span>
-												</ui-select-choices>
-											</ui-select>
+											<div class="form-row align-items-center">
+												<div class="col-10">
+													<input type="number" ng-model="editTaxDec.details[key].assessment_level" ng-disabled="editTaxDec.details[key].market_value == undefined" ng-change="computeAssessedValue(key)" class="form-control" placeholder="Level" autocomplete="off" required />
+												</div>
+												<div class="col-2">
+													<b>%</b>
+												</div>
+											</div>
 										</td>
 										<td>
-											<input type="number" ng-model="editTaxDec.details[key].assessed_value" step="0.01" min="0.00" class="form-control" placeholder="Enter Assessed Value" ng-keyup="computeTotalAssessedValue()" autocomplete="off" required />
+											<input type="number" ng-model="editTaxDec.details[key].assessed_value" ng-disabled="editTaxDec.details[key].market_value == undefined || editTaxDec.details[key].assessment_level == undefined" step="0.01" min="0.00" class="form-control" placeholder="Enter Assessed Value" ng-keyup="computeTotalAssessedValue()" autocomplete="off" required />
 										</td>
+										<!-- <td>
+											<div class="form-row align-items-center">
+												<div class="col-10">
+													<input type="number" ng-model="editTaxDec.details[key].assessment_level" class="form-control" style="width:95px;" placeholder="Adjustment" autocomplete="off" />
+												</div>
+												<div class="col-2">
+													<b>%</b>
+												</div>
+											</div>
+										</td> -->
 									</tr>
+								</tbody>
+								<tfoot>
 									<tr>
-										<td colspan="3" class="text-right">Php</td>
+										<td colspan="4" class="text-right">Php</td>
 										<td>
-											<input type="text" ng-model="editTaxDec.total_market_value" class="form-control" placeholder="Total Market Value" disabled />
+											<input type="text" ng-model="editTaxDec.total_market_value | number" class="form-control" placeholder="Total Market Value" disabled />
 										</td>
 										<td colspan="2" class="text-right">Php</td>
 										<td>
-											<input type="text" ng-model="editTaxDec.total_assessed_value" class="form-control" placeholder="Total Assessed Value" disabled />
+											<input type="text" ng-model="editTaxDec.total_assessed_value | number" class="form-control" placeholder="Total Assessed Value" disabled />
 										</td>
 									</tr>
-								</tbody>
+
+								</tfoot>
 							</table>
 						</div>
 					</div>
@@ -328,7 +385,7 @@
 				<div class="row mb-3">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<label for="assessed_val_words" class="font-weight-bold">Assessed Value (in words):<i class="text-danger">*</i></label>
-                        <input type="text" ng-model="editTaxDec.assessed_val_words" class="form-control" id="assessed_val_words" placeholder="Enter Value in Words" autocomplete="off" required />
+                        <input type="text" ng-model="editTaxDec.total_assessed_value_words" class="form-control" id="assessed_val_words" placeholder="Enter Value in Words" autocomplete="off" required />
 					</div>
 				</div>
 				<div class="row mb-3">
@@ -358,28 +415,60 @@
 						<p class="font-weight-bold mb-1">Overriding/Cancelling Previously Declared Real Property:</p>
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-								<ui-select ng-model="editTaxDec.prev_declaration.td_no" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+								<ui-select ng-model="editTaxDec.prev_td" theme="bootstrap" data-toggle="tooltip" data-placement="top" title="Previous TD No." reset-search-input="true" append-to-body="true">
 									<ui-select-match placeholder="Select TD No.">
-										{{ $select.selected.no }}
+										{{ $select.selected.td_no }}
 									</ui-select-match>
 									<ui-select-choices style="font-size: 12px;" repeat="td in td_nos | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
-										<span>{{td.no}}</span>
+										<span>{{td.td_no}}</span>
 									</ui-select-choices>
 								</ui-select>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-								<input type="text" ng-model="editTaxDec.prev_declaration.owner" class="form-control" placeholder="Enter Year" autocomplete="off" required />
+							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" ng-if="editTaxDec.prev_td != undefined && editTaxDec.prev_td != ''">
+								<input type="text" ng-model="editTaxDec.prev_td.revision_year" class="form-control" data-toggle="tooltip" data-placement="top" title="Previous Revision Year" placeholder="Enter Year" autocomplete="off" />
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-								<input type="number" ng-model="editTaxDec.prev_declaration.prev_av" step="0.01" min="0.00" class="form-control" placeholder="Enter Previous Assessed Value" autocomplete="off" />
+							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" ng-if="editTaxDec.prev_td != undefined && editTaxDec.prev_td != ''">
+								<input type="text" ng-model="editTaxDec.prev_td.total_assessed_value | number" step="0.01" min="0.00" class="form-control" data-toggle="tooltip" data-placement="top" title="Previous Assessed Value" placeholder="Enter Previous Assessed Value" autocomplete="off" />
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="row mb-3">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<label for="text" class="font-weight-bold">Memoranda:<i class="text-danger">*</i></label>
-						<textarea ng-model="editTaxDec.memoranda" rows="5" class="form-control resize-none" id="text" placeholder="Enter Memoranda..." required></textarea>
+						<label for="text" class="font-weight-bold">Memoranda:</label>
+						<textarea ng-model="editTaxDec.memoranda" rows="5" class="form-control resize-none" id="text" placeholder="Enter Memoranda..."></textarea>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+						<label for="text" class="font-weight-bold">Ordinance No.:<i class="text-danger">*</i></label>
+						<input type="text" ng-model="editTaxDec.ordinance_no" class="form-control" placeholder="Enter Ordinance No." autocomplete="off" required />
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+						<label for="ordinance_date" class="font-weight-bold">Ordinance Date:<i class="text-danger">*</i></label>
+						<input type="text" id="ordinance_date" ng-model="editTaxDec.ordinance_date" data-language='en' placeholder="Enter Ordinance Date" class="form-control date" autocomplete="off" />
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<label for="signatories" class="font-weight-bold">Signatories:<i class="text-danger">*</i></label>
+						<ui-select ng-model="editTaxDec.approvers" id="signatories" theme="bootstrap" reset-search-input="true" append-to-body="true">
+							<ui-select-match placeholder="Select Signatories">
+								<span><b>{{ $select.selected.approvers.prov.name + ' | ' }}</b><small>{{ $select.selected.approvers.prov.position }}</small> & <b>{{ $select.selected.approvers.mun.name + ' | ' }}</b><small>{{ $select.selected.approvers.mun.position }}</small></span>
+							</ui-select-match>
+							<ui-select-choices style="font-size: 12px;" repeat="approver in approvers | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+								<table>
+									<tr>
+										<th>PROV.</th>
+										<td> : <span class="text-uppercase">{{approver.approvers.prov.name}}</span> | <small><i>{{approver.approvers.prov.position | titleCase}}</i></small></td>
+									</tr>
+									<tr>
+										<th>MUN.</th>
+										<td> : <span class="text-uppercase">{{approver.approvers.mun.name}}</span> | <small><i>{{approver.approvers.mun.position | titleCase}}</i></small></td>
+									</tr>
+								</table>
+							</ui-select-choices>
+						</ui-select>
 					</div>
 				</div>
 				<hr />

@@ -66,6 +66,15 @@ define([
                             "className"  : "text-center"
                         },
                         {
+                            "targets"    : 4,
+                            "searchable" : true,
+                            "orderable"  : true,
+                            "className"  : "text-left",
+                            "render"     : function(data, type, full, meta){
+                                                return data.toLocaleString() + " " + full.unit_measurement;
+                            }
+                        },
+                        {
                             "targets": 6,
                             "searchable": false,
                             "orderable": false,

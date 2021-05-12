@@ -142,6 +142,11 @@ define([
                     disableSubClass: true,
                 };
 
+                $scope.units = [
+                    { 'name' : 'sq.m' },
+                    { 'name' : 'ha.' }
+                ]
+
                 _loadDetails();
             };
 

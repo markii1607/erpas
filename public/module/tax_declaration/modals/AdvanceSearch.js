@@ -17,25 +17,6 @@ define([
                 alertify.theme('')
             };
 
-            Factory.classifications = [
-                {
-                    id: 1,
-                    name: 'Residential',
-                },
-                {
-                    id: 2,
-                    name: 'Commercial',
-                },
-                {
-                    id: 3,
-                    name: 'Industrial',
-                },
-                {
-                    id: 4,
-                    name: 'Improvement',
-                },
-            ];
-
             return Factory;
         }
     ]);
@@ -50,9 +31,13 @@ define([
              * @param  {[type]} id
              * @return {[type]}
              */
-            // _this.getDetails = function (id) {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/ViewAccessService.php/getDetails?id=' + id);
-            // }
+            _this.getDetails = function () {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/TaxDeclarationService.php/getAdvSearchSelectionDetails');
+            }
+
+            _this.formatEntries = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/TaxDeclarationService.php/setDataSearchFormat', data);
+            }
 
             /**
              * `archive` Query string that will archive information.
@@ -77,23 +62,27 @@ define([
         'AdvanceSearchFactory',
         'AdvanceSearchService',
         function ($scope, $uibModal, $uibModalInstance, $timeout, $filter, BlockUI, Alertify, ParamData, Factory, Service) {
-            var _init, _loadDetails, blocker = BlockUI.instances.get('blockAddTaxDec');
+            var _init, _loadDetails, blocker = BlockUI.instances.get('blockAdvancedSearch');
 
             /**
              * `_loadDetails` Load first Needed details.
              * @return {[mixed]}
              */
             _loadDetails = function () {
-                // blocker.start();
+                blocker.start();
 
-            	// Service.getDetails(ParamData.id).then( function (res) {
-            	// 	$scope.accessList = angular.copy(res.data.access);
+            	Service.getDetails().then( function (res) {
+            		if (res.data.revision_years != undefined) {
+                        $scope.revision_nos     = res.data.revision_years;
+                        $scope.classifications  = res.data.classifications;
+                        $scope.barangays        = res.data.barangays;
 
-                //     $scope.jqDataTableOptions         = Factory.dtOptions();
-                //     $scope.jqDataTableOptions.buttons = _btnFunc();
-                //     $scope.jqDataTableOptions.data    = _formatAccess(res.data.access);
-            	// });
-                $scope.classifications = Factory.classifications
+                        blocker.stop();
+                    } else {
+                        Alertify.error('Failed to fetch data for selection. Please notify the administrator.');
+                        blocker.stop();
+                    }
+            	});
             }
 
             /**
@@ -104,22 +93,17 @@ define([
                 $uibModalInstance.dismiss();
             };
 
-            $scope.search = function () {
-                // blocker.start();
-
-                // $timeout( function () {
-                //     Service.save($scope.addBrgy).then( function (res) {
-                //         if (res.data.status == true) {
-                //             Alertify.success("Classification successfully added!");
-
-                //             $uibModalInstance.close($scope.addBrgy);
-                //             blocker.stop();
-                //         } else {
-                //             Alertify.error("Classification already exist!");
-                //             blocker.stop();
-                //         }
-                //     });
-                // }, 1000);
+            $scope.saveSearch = function () {
+                blocker.start();
+                Service.formatEntries($scope.search).then(res => {
+                    if (res.data.rev_id != undefined) {
+                        $uibModalInstance.close(res.data);
+                        blocker.stop();
+                    } else {
+                        Alertify.error('An error occurred while filtering data. Please contact the administrator.');
+                        blocker.stop();
+                    }
+                });
             };
 
             /**
