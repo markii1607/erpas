@@ -13,7 +13,9 @@
                 'TD.id',
                 'TD.revision_year_id',
                 'TD.td_no',
+                'TD.td_no as tdn',
                 'TD.pin',
+                'TD.pin as pin_1',
                 'TD.owner',
                 'TD.owner_tin',
                 'TD.owner_address',
@@ -229,6 +231,7 @@
                 'TD.id',
                 'TD.revision_year_id',
                 'TD.td_no',
+                'TD.owner',
                 'TD.pin',
                 'TD.total_assessed_value',
                 'RY.year as revision_year'

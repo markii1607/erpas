@@ -31,9 +31,9 @@ define([
              * `getDetails` Query string that will get first needed details.
              * @return {[query]}
              */
-            // _this.getDetails = function(parentId) {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/Dashboard/AddIIRService.php/getDetails?parent_id=' + parentId);
-            // };
+            _this.getDetails = function(parentId) {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/TaxDeclarationService.php/getTDViewDetails?id=' + parentId);
+            };
         }
     ]);
 
@@ -56,11 +56,17 @@ define([
              * @return {[type]} [description]
              */
             _loadDetails = function() {
-                if ($scope.data.loc.hasOwnProperty('no_street')) {
-                    $scope.data.loc.full = `${$scope.data.loc.no_street}\t\t\t\t${$scope.data.loc.brgy.name}\t\t\t\tMalilipot, Albay`
-                } else {
-                    $scope.data.loc.full = `\t\t\t\t\t\t\t\t${$scope.data.loc.brgy.name}\t\t\t\tMalilipot, Albay`
-                }
+                blocker.start();
+                Service.getDetails(paramData.data.id).then(res => {
+                    if (res.data.details != undefined) {
+                        $scope.data.details = res.data.details;
+                        $scope.data.ordinance_date = moment().format('LL');
+                        blocker.stop();
+                    } else {
+                        Alertify.error("An error occurred while fetching data. Please contact the administrator.");
+                        blocker.stop();
+                    }
+                });
             };
 
             $scope.print = function() {
@@ -97,6 +103,7 @@ define([
 
                 $scope.data = paramData.data
                 $scope.server_base_url = paramData.server_base_url;
+                console.log(paramData);
 
                 _loadDetails();
             };

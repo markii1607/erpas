@@ -84,6 +84,15 @@
             return $output;
         }
 
+        public function getTDViewDetails($data)
+        {
+            $output = [
+                'details' => $this->getTaxDeclarationClassifications($data['id'])
+            ];
+
+            return $output;
+        }
+
         public function getTDCount()
         {
             $output = [

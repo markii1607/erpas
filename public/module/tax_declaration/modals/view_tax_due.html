@@ -1,0 +1,59 @@
+<script type="text/ng-template" id="view_tax_due.html">
+    <div block-ui="blockViewTaxDue">
+        <div class="modal-header align-items-center">
+            <span class="fa-stack fa-lg">
+                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+                <i class="fas fa-money-bill fa-stack-1x fa-inverse"></i>
+            </span>
+
+            <h5 class="modal-title" style="letter-spacing: 1px;">TAX DUE</h5>
+
+            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+                <span aria-hidden="true">
+                    <i class="fas fa-times"></i>
+                </span>
+            </button>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="row">
+                <div class="col-12">
+                    <dl class="row">
+                        <dt class="col-md-3">TD No.<span class="pull-right">:</span></dt>
+                        <dd class="col-md-9"><p class="font-times mb-0 border-bottom-form">{{ data.tdn }}</p></dd>
+
+                        <dt class="col-md-3">Owner<span class="pull-right">:</span></dt>
+                        <dd class="col-md-9"><p class="font-times mb-0 border-bottom-form">{{ data.owner }}</p></dd>
+
+                        <dt class="col-md-3">Property Location<span class="pull-right">:</span></dt>
+                        <dd class="col-md-9"><p class="font-times mb-0 border-bottom-form">{{ data.prop_location_street + ' ' + data.brgy + ', Malilipot, Albay' }}</p></dd>
+
+                        <dt class="col-md-3">Total Assessed Value<span class="pull-right">:</span></dt>
+                        <dd class="col-md-9"><p class="font-times mb-0 border-bottom-form">Php&nbsp;{{ data.total_assessed_value | number:2 }}</p></dd>
+                    </dl>
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-body" style="padding-left: 0px; padding-right: 0px;">
+                                    <center>
+                                        <p class="font-weight-bold">
+                                            <span style="font-size: 16px;">TAX DUE</span> : <i style="font-size: 24px;">Php {{ data.tax_due | number:2 }}</i>
+                                        </p>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3"></div>
+                    </div>
+                </div>
+            </div>            	
+        </div>
+        <div class="modal-footer bordered">
+            <button type="button" class="btn btn-default" ng-click="closeModal()">
+                <span>CLOSE</span>
+            </button>
+        </div>
+    </div>
+</script>

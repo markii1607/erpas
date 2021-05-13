@@ -39,7 +39,7 @@
 							<p class="font-times mb-0">TD No.</p>
 						</div>
 						<div class="col-10">
-							<p class="font-times mb-0 border-bottom-form">{{ data.td_no.year.no }}-{{ data.td_no.mun_code }}-{{ data.td_no.brgy_code.code }}-{{ data.td_no.td_code }}</p>
+							<p class="font-times mb-0 border-bottom-form">{{ data.tdn }}</p>
 						</div>
 					</div>
 				</div>
@@ -49,7 +49,7 @@
 							<p class="font-times mb-0">Property Identification No.</p>
 						</div>
 						<div class="col-6">
-							<p class="font-times mb-0 border-bottom-form">{{ data.pin.prov_code }}-{{ data.pin.mun_code }}-{{ data.pin.brgy_code.code }}-{{ data.pin.section }}-{{ data.pin.prop_no }}-{{ data.pin.bldg_no }}</p>
+							<p class="font-times mb-0 border-bottom-form">{{ data.pin_1 }}</p>
 						</div>
 					</div>
 				</div>
@@ -83,7 +83,7 @@
 							<p class="font-times mb-0">Address:</p>
 						</div>
 						<div class="col-10">
-							<p class="font-times mb-0 border-bottom-form">{{ data.address }}</p>
+							<p class="font-times mb-0 border-bottom-form">{{ data.owner_address }}</p>
 						</div>
 					</div>
 				</div>
@@ -96,7 +96,7 @@
 							<p class="font-times mb-0">Administrator/Beneficial User:</p>
 						</div>
 						<div class="col-7">
-							<p class="font-times mb-0 border-bottom-form">{{ data.admin_user }}</p>
+							<p class="font-times mb-0 border-bottom-form">{{ data.beneficiary }}</p>
 						</div>
 					</div>
 				</div>
@@ -106,7 +106,7 @@
 							<p class="font-times mb-0">TIN</p>
 						</div>
 						<div class="col-10">
-							<p class="font-times mb-0 border-bottom-form">{{ data.admin_user_tin }}</p>
+							<p class="font-times mb-0 border-bottom-form">{{ data.beneficiary_tin }}</p>
 						</div>
 					</div>
 				</div>
@@ -118,7 +118,7 @@
 							<p class="font-times mb-0">Address:</p>
 						</div>
 						<div class="col-10">
-							<p class="font-times mb-0 border-bottom-form">{{ data.address }}</p>
+							<p class="font-times mb-0 border-bottom-form">{{ data.beneficiary_address }}</p>
 						</div>
 					</div>
 				</div>
@@ -128,7 +128,7 @@
 							<p class="font-times mb-0">Telephone No.:</p>
 						</div>
 						<div class="col-6">
-							<p class="font-times mb-0 border-bottom-form">{{ data.admin_user_tel }}</p>
+							<p class="font-times mb-0 border-bottom-form">{{ data.beneficiary_tel_no }}</p>
 						</div>
 					</div>
 				</div>
@@ -143,10 +143,10 @@
 							<div class="border-bottom-form">
 								<div class="row">
 									<div class="col-4">
-										<p class="font-times font-17 mb-0 text-center">{{ data.loc.no_street }}</p>
+										<p class="font-times font-17 mb-0 text-center">{{ data.prop_location_street }}</p>
 									</div>
 									<div class="col-4">
-										<p class="font-times font-17 mb-0 text-center">{{ data.loc.brgy.name }}</p>
+										<p class="font-times font-17 mb-0 text-center">{{ data.brgy }}</p>
 									</div>
 									<div class="col-4">
 										<p class="font-times font-17 mb-0 text-center">Malilipot, Albay</p>
@@ -185,7 +185,7 @@
 							<p class="font-times mb-0">OCT/TCT/CLOA No.</p>
 						</div>
 						<div class="col-7">
-							<p class="font-times mb-0 border-bottom-form">{{ data.oct_no }}</p>
+							<p class="font-times mb-0 border-bottom-form">{{ data.oct_tct_cloa_no }}</p>
 						</div>
 					</div>
 				</div>
@@ -239,7 +239,7 @@
 							<p class="font-times mb-0">Blk No.</p>
 						</div>
 						<div class="col-9">
-							<p class="font-times mb-0 border-bottom-form">{{ data.blk_no }}</p>
+							<p class="font-times mb-0 border-bottom-form">{{ data.block_no }}</p>
 						</div>
 					</div>
 				</div>
@@ -251,7 +251,7 @@
 							<p class="font-times mb-0">Boundaries:</p>
 						</div>
 						<div class="col-10">
-							<p class="font-times mb-0">{{ data.boundaries.text }}</p>
+							<p class="font-times mb-0">{{ data.boundaries }}</p>
 						</div>
 					</div>
 				</div>
@@ -264,7 +264,7 @@
 							<p class="font-times mb-0">North</p>
 						</div>
 						<div class="col-10">
-							<p class="font-times mt-4 mb-0 border-bottom-form">{{ data.boundaries.north }}</p>
+							<p class="font-times mt-4 mb-0 border-bottom-form">{{ data.boundaries_north }}</p>
 							<p class="font-times mt-4 mb-0 border-bottom-form"></p>
 						</div>
 					</div>
@@ -275,7 +275,7 @@
 							<p class="font-times mb-0">South</p>
 						</div>
 						<div class="col-10">
-							<p class="font-times mt-4 mb-0 border-bottom-form">{{ data.boundaries.south }}</p>
+							<p class="font-times mt-4 mb-0 border-bottom-form">{{ data.boundaries_south }}</p>
 							<p class="font-times mt-4 mb-0 border-bottom-form"></p>
 						</div>
 					</div>
@@ -289,7 +289,7 @@
 							<p class="font-times mb-0">East</p>
 						</div>
 						<div class="col-10">
-							<p class="font-times mt-4 mb-0 border-bottom-form">{{ data.boundaries.east }}</p>
+							<p class="font-times mt-4 mb-0 border-bottom-form">{{ data.boundaries_east }}</p>
 							<p class="font-times mt-4 mb-0 border-bottom-form"></p>
 						</div>
 					</div>
@@ -300,7 +300,7 @@
 							<p class="font-times mb-0">West</p>
 						</div>
 						<div class="col-10">
-							<p class="font-times mt-4 mb-0 border-bottom-form">{{ data.boundaries.west }}</p>
+							<p class="font-times mt-4 mb-0 border-bottom-form">{{ data.boundaries_west }}</p>
 							<p class="font-times mt-4 mb-0 border-bottom-form"></p>
 						</div>
 					</div>
@@ -321,15 +321,15 @@
 			<div class="row mb-1">
 				<div class="col-6">
 					<p class="font-times mb-0">
-						<span ng-if="data.type.name == 'Land'">[&nbsp;&nbsp;X&nbsp;&nbsp;]</span>
-						<span ng-if="data.type.name != 'Land'">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
+						<span ng-if="data.property_kind == 'Land'">[&nbsp;&nbsp;X&nbsp;&nbsp;]</span>
+						<span ng-if="data.property_kind != 'Land'">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
 						&nbsp;LAND
 					</p>
 				</div>
 				<div class="col-6">
 					<p class="font-times mb-0">
-						<span ng-if="data.type.name == 'Machinery'">[&nbsp;&nbsp;X&nbsp;&nbsp;]</span>
-						<span ng-if="data.type.name != 'Machinery'">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
+						<span ng-if="data.property_kind == 'Machinery'">[&nbsp;&nbsp;X&nbsp;&nbsp;]</span>
+						<span ng-if="data.property_kind != 'Machinery'">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
 						&nbsp;MACHINERY
 					</p>
 				</div>
@@ -343,8 +343,8 @@
 							<p class="font-times mb-0">Brief Description:</p>
 						</div>
 						<div class="col-7">
-							<p class="font-times mb-0 border-bottom-form text-center" ng-if="data.type.name == 'Machinery'">{{ data.type.desc }}</p>
-							<p class="font-times mb-0 border-bottom-form" ng-if="data.type.name != 'Machinery'"></p>
+							<p class="font-times mb-0 border-bottom-form text-center" ng-if="data.property_kind == 'Machinery'">{{ data.type.desc }}</p>
+							<p class="font-times mb-0 border-bottom-form" ng-if="data.property_kind != 'Machinery'"></p>
 						</div>
 					</div>
 				</div>
@@ -352,15 +352,15 @@
 			<div class="row mb-1">
 				<div class="col-6">
 					<p class="font-times mb-0">
-						<span ng-if="data.type.name == 'Building'">[&nbsp;&nbsp;X&nbsp;&nbsp;]</span>
-						<span ng-if="data.type.name != 'Building'">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
+						<span ng-if="data.property_kind == 'Building'">[&nbsp;&nbsp;X&nbsp;&nbsp;]</span>
+						<span ng-if="data.property_kind != 'Building'">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
 						&nbsp;BUILDING
 					</p>
 				</div>
 				<div class="col-6">
 					<p class="font-times mb-0">
-						<span ng-if="data.type.name == 'Others'">[&nbsp;&nbsp;X&nbsp;&nbsp;]</span>
-						<span ng-if="data.type.name != 'Others'">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
+						<span ng-if="data.property_kind == 'Others'">[&nbsp;&nbsp;X&nbsp;&nbsp;]</span>
+						<span ng-if="data.property_kind != 'Others'">[&nbsp;&nbsp;&nbsp;&nbsp;]</span>
 						&nbsp;Others
 					</p>
 				</div>
@@ -374,10 +374,10 @@
 							<p class="font-times mb-0">Brief Description</p>
 						</div>
 						<div class="col-7">
-							<p class="font-times mb-0 border-bottom-form text-center" ng-if="data.type.name == 'Building'">{{ data.type.floors }}</p>
-							<p class="font-times mt-4 mb-0 border-bottom-form" ng-if="data.type.name != 'Building'"></p>
-							<p class="font-times mt-4 mb-0 border-bottom-form text-center" ng-if="data.type.name == 'Building'">{{ data.type.desc }}</p>
-							<p class="font-times mt-4 mb-0 border-bottom-form" ng-if="data.type.name != 'Building'"></p>
+							<p class="font-times mb-0 border-bottom-form text-center" ng-if="data.property_kind == 'Building'">{{ data.no_of_storey }}</p>
+							<p class="font-times mt-4 mb-0 border-bottom-form" ng-if="data.property_kind != 'Building'"></p>
+							<p class="font-times mt-4 mb-0 border-bottom-form text-center" ng-if="data.property_kind == 'Building'">{{ data.description }}</p>
+							<p class="font-times mt-4 mb-0 border-bottom-form" ng-if="data.property_kind != 'Building'"></p>
 						</div>
 					</div>
 				</div>
@@ -388,8 +388,8 @@
 							<p class="font-times mb-0">Specify:</p>
 						</div>
 						<div class="col-9">
-							<p class="font-times mb-0 border-bottom-form text-center" ng-if="data.type.name == 'Others'">{{ data.type.specify }}</p>
-							<p class="font-times mb-0 border-bottom-form" ng-if="data.type.name != 'Others'"></p>
+							<p class="font-times mb-0 border-bottom-form text-center" ng-if="data.property_kind == 'Others'">{{ data.others_specified }}</p>
+							<p class="font-times mb-0 border-bottom-form" ng-if="data.property_kind != 'Others'"></p>
 						</div>
 					</div>
 				</div>
@@ -417,43 +417,43 @@
 			</div>
 			<div class="form-row mb-1" ng-repeat="det in data.details">
 				<div class="col-2">
-					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ det.classification.name }}</p>
+					<p class="font-times mb-0 text-center border-bottom-form">{{ det.classification.name }}</p>
 				</div>
 				<div class="col-2">
-					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ det.area | number : 2 }} {{ det.unit.name }}</p>
+					<p class="font-times mb-0 text-center border-bottom-form">{{ det.area | number : 2 }} {{ det.unit_measurement }}</p>
 				</div>
 				<div class="col-2">
-					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ det.market_value | number : 2 }}</p>
+					<p class="font-times mb-0 text-center border-bottom-form">{{ det.market_value | number : 2 }}</p>
 				</div>
 				<div class="col-2">
-					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ det.actual_use }}</p>
+					<p class="font-times mb-0 text-center border-bottom-form">{{ det.actual_use }}</p>
 				</div>
 				<div class="col-2">
-					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ det.assessment_level.display_rate }}</p>
+					<p class="font-times mb-0 text-center border-bottom-form">{{ det.assessment_level }} %</p>
 				</div>
 				<div class="col-2">
-					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ det.assessed_value | number : 2 }}</p>
+					<p class="font-times mb-0 text-center border-bottom-form">{{ det.assessed_value | number : 2 }}</p>
 				</div>
 			</div>
 			<!-- Additional column lang. Pwedeng iremove -->
 			<div class="form-row mb-1" ng-repeat="det in data.details">
 				<div class="col-2">
-					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
+					<p class="font-times mt-4 mb-0 text-center border-bottom-form"></p>
 				</div>
 				<div class="col-2">
-					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
+					<p class="font-times mt-4 mb-0 text-center border-bottom-form"></p>
 				</div>
 				<div class="col-2">
-					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
+					<p class="font-times mt-4 mb-0 text-center border-bottom-form"></p>
 				</div>
 				<div class="col-2">
-					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
+					<p class="font-times mt-4 mb-0 text-center border-bottom-form"></p>
 				</div>
 				<div class="col-2">
-					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
+					<p class="font-times mt-4 mb-0 text-center border-bottom-form"></p>
 				</div>
 				<div class="col-2">
-					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
+					<p class="font-times mt-4 mb-0 text-center border-bottom-form"></p>
 				</div>
 			</div>
 			<!-- End -->
@@ -479,18 +479,18 @@
 					<p class="font-times mb-0">Assessed Value:</p>
 				</div>
 				<div class="col-10">
-					<p class="font-times mb-0 border-bottom-form font-weight-bold text-center">{{ data.assessed_val_words }}</p>
+					<p class="font-times mb-0 border-bottom-form font-weight-bold text-center">{{ data.total_assessed_value_words }}</p>
 				</div>
 			</div>
 
 			<div class="row mb-0">
 				<div class="col-2">
-					<p class="font-times mb-0" ng-if="data.tax_exempt == 'taxable'">Taxable&nbsp;&nbsp;[&nbsp;&nbsp;X&nbsp;&nbsp;]</p>
-					<p class="font-times mb-0" ng-if="data.tax_exempt != 'taxable'">Taxable&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;]</p>
+					<p class="font-times mb-0" ng-if="data.is_taxable == 1">Taxable&nbsp;&nbsp;[&nbsp;&nbsp;X&nbsp;&nbsp;]</p>
+					<p class="font-times mb-0" ng-if="data.is_taxable != 1">Taxable&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;]</p>
 				</div>
 				<div class="col-2">
-					<p class="font-times mb-0" ng-if="data.tax_exempt == 'exempt'">Exempt&nbsp;&nbsp;[&nbsp;&nbsp;X&nbsp;&nbsp;]</p>
-					<p class="font-times mb-0" ng-if="data.tax_exempt != 'exempt'">Exempt&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;]</p>
+					<p class="font-times mb-0" ng-if="data.is_exempt == 1">Exempt&nbsp;&nbsp;[&nbsp;&nbsp;X&nbsp;&nbsp;]</p>
+					<p class="font-times mb-0" ng-if="data.is_exempt != 1">Exempt&nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;&nbsp;]</p>
 				</div>
 				<div class="col-6">
 					<p class="font-times mb-0 text-right">Effectivity of Assessment/Reassessment</p>
@@ -513,19 +513,19 @@
 					<p class="font-times mb-0 font-weight-bold">APPROVED BY:</p>
 				</div>
 				<div class="col-5">
-					<p class="font-times mb-0 font-weight-bold border-bottom-form text-center">REN B. DEL ROSARIO, REA</p>
+					<p class="font-times mb-0 font-weight-bold border-bottom-form text-center">{{ data.approvers.approvers.prov.name }}</p>
 				</div>
 				<div class="col-5">
-					<p class="font-times mb-0 font-weight-bold border-bottom-form text-center">NATIVIDAD C. KRISHNAN, REA,REB</p>
+					<p class="font-times mb-0 font-weight-bold border-bottom-form text-center">{{ data.approvers.approvers.mun.name }}</p>
 				</div>
 			</div>
 			<div class="row mb-3">
 				<div class="col-2"></div>
 				<div class="col-5">
-					<p class="font-times font-16 mb-0 text-center">OIC Provincial Assessor</p>
+					<p class="font-times font-16 mb-0 text-center">{{ data.approvers.approvers.prov.position }}</p>
 				</div>
 				<div class="col-5">
-					<p class="font-times font-16 mb-0 text-center">LAOO III</p>
+					<p class="font-times font-16 mb-0 text-center">{{ data.approvers.approvers.mun.position }}</p>
 				</div>
 			</div>
 
@@ -536,8 +536,8 @@
 							<p class="font-times font-17 mb-0">This declaration cancels TD. No</p>
 						</div>
 						<div class="col-4">
-							<p class="font-times font-17 mb-0 text-center border-bottom-form" ng-if="data.prev_declaration.hasOwnProperty('td_no')">{{ data.prev_declaration.td_no.no }}</p>
-							<p class="font-times font-17 mt-4 mb-0 text-center border-bottom-form" ng-if="!data.prev_declaration.hasOwnProperty('td_no')"></p>
+							<p class="font-times font-17 mb-0 border-bottom-form" ng-if="data.canceled_td.length != 0">{{ data.canceled_td.td_no }}</p>
+							<p class="font-times font-17 mt-4 mb-0 text-center border-bottom-form" ng-if="data.canceled_td.length == 0"></p>
 						</div>
 					</div>
 				</div>
@@ -547,8 +547,8 @@
 							<p class="font-times font-17 mb-0">Owner:</p>
 						</div>
 						<div class="col-9">
-							<p class="font-times font-17 mb-0 text-center border-bottom-form" ng-if="data.prev_declaration.hasOwnProperty('owner')">{{ data.prev_declaration.owner }}</p>
-							<p class="font-times font-17 mt-4 mb-0 text-center border-bottom-form" ng-if="!data.prev_declaration.hasOwnProperty('owner')"></p>
+							<p class="font-times font-17 mb-0 border-bottom-form" ng-if="data.canceled_td.length != 0">{{ data.canceled_td.owner }}</p>
+							<p class="font-times font-17 mt-4 mb-0 text-center border-bottom-form" ng-if="data.canceled_td.length == 0"></p>
 						</div>
 					</div>
 				</div>
@@ -558,8 +558,8 @@
 							<p class="font-times font-17 mb-0">Previous A.V</p>
 						</div>
 						<div class="col-6">
-							<p class="font-times font-17 mb-0 text-center border-bottom-form" ng-if="data.prev_declaration.hasOwnProperty('prev_av')">{{ data.prev_declaration.prev_av | number: 2 }}</p>
-							<p class="font-times font-17 mt-4 mb-0 text-center border-bottom-form" ng-if="!data.prev_declaration.hasOwnProperty('prev_av')"></p>
+							<p class="font-times font-17 mb-0 border-bottom-form" ng-if="data.canceled_td.length != 0">{{ data.canceled_td.total_assessed_value | number: 2 }}</p>
+							<p class="font-times font-17 mt-4 mb-0 text-center border-bottom-form" ng-if="data.canceled_td.length == 0"></p>
 						</div>
 					</div>
 				</div>
@@ -582,7 +582,7 @@
 					<p class="font-times font-12 mb-0">
 						This declaration is for real property taxation purposes only and the valuation indicated herein are based on the schedule of unit market
 						values prepared for the purpose and duly enacted into an Ordinance by the Sangguniang Panlalawigan ng Albay under Ordinance No.
-						<u>006-2016</u> dated <u>December 006-2016</u>. It does not and cannot by itself alone confer any ownership or legal title to the property.
+						<u>{{ data.ordinance_no }}</u> dated <u>{{ data.ordinance_date }}</u>. It does not and cannot by itself alone confer any ownership or legal title to the property.
 					</p>
 				</div>
 			</div>

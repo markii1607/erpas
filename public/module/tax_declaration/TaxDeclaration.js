@@ -25,6 +25,7 @@ define([
                 'module/tax_declaration/modals/advance_search.html',
                 'module/tax_declaration/modals/edit_tax_declaration.html',
                 'module/tax_declaration/modals/view_tax_declaration.html',
+                'module/tax_declaration/modals/view_tax_due.html',
             ];
 
             Factory.dtOptions = function () {
@@ -115,6 +116,8 @@ define([
                                 str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Retire" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-ban"></i></button>';
                                 str += '<p style="margin-bottom:5px;"></p>';
                                 str += '<button type="submit" id="fourthButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-md mr-2 text-white"><i class="fas fa-trash"></i></button>';
+                                str += '<p style="margin-bottom:5px;"></p>';
+                                str += '<button type="submit" id="fifthButton" data-toggle="tooltip" title="Tax Due" class="btn btn-default btn-md mr-2 text-white" style="background-color:#605ca8 !important;"><i class="fas fa-money-bill"></i></button>';
 
                                 return str;
                             }
@@ -286,6 +289,9 @@ define([
                 "fourthButton": function(data, index) {
                     $scope.deleteTaxDec(data, index)
                 },
+                "fifthButton": function(data, index) {
+                    $scope.viewTaxDue(data, index)
+                },
             };
 
             $scope.addTaxDec = function () {
@@ -401,6 +407,35 @@ define([
                     templateUrl     : 'view_tax_declaration.html',
                     controller      : 'ViewTaxDeclarationController',
                     size            : 'xlg',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (res) {
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+            }
+
+            $scope.viewTaxDue = function (data, index) {
+                var paramData, modalInstance;
+
+                paramData = {
+                    data,
+                }
+
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'view_tax_due.html',
+                    controller      : 'ViewTaxDueController',
+                    size            : 'md',
                     resolve         : {
                         paramData : function () {
                             return paramData;
