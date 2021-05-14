@@ -1,0 +1,57 @@
+<script type="text/ng-template" id="edit_no_property_dec.html">
+    <div block-ui="blockEditNoPropertyDec">
+        <form name="form.editNoPropertyDec" ng-submit="update(form.editNoPropertyDec.$valid)" novalidate>
+            <div class="modal-header align-items-center">
+				<span class="fa-stack fa-lg">
+	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+	                <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+	            </span>
+
+				<h5 class="modal-title" style="letter-spacing: 1px;">ADD NEW CERTIFICATION</h5>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+	                <span aria-hidden="true">
+	                    <i class="fas fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="form-group">
+							<label for="or_no" class="font-weight-bold">OR No.<i class="text-danger">*</i></label>
+							<input type="text" ng-model="editNoPropDec.or_no" class="form-control" id="or_no" placeholder="Enter OR No..." autocomplete="off" required />
+						</div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="form-group">
+							<label for="requestor" class="font-weight-bold">Requestor Complete Name<i class="text-danger">*</i></label>
+							<input type="text" ng-model="editNoPropDec.requestor" class="form-control" id="requestor" placeholder="Enter Requestor Name..." autofocus autocomplete="off" required />
+						</div>
+                    </div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="form-group">
+							<label for="declarees" class="font-weight-bold">Declaree/s Complete Name/s<i class="text-danger">*</i></label>
+							<input type="text" ng-model="editNoPropDec.declarees" class="form-control" id="declarees" placeholder="Enter Declaree/s Name/s..." autocomplete="off" required />
+							<small>If multiple names, separate it with '&'</small>
+						</div>
+                    </div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="form-group">
+							<label for="purpose" class="font-weight-bold">Purpose<i class="text-danger">*</i></label>
+							<input type="text" ng-model="editNoPropDec.purpose" class="form-control" id="purpose" placeholder="Enter Purpose..." autocomplete="off" required />
+						</div>
+                    </div>
+                </div>            	
+            </div>
+            <div class="modal-footer bordered">
+				<button type="submit" class="btn btn-default bg-crimson-red" ng-disabled="form.editNoPropertyDec.$invalid">
+					<span>UPDATE</span>
+				</button>
+				<button type="button" class="btn btn-default" ng-click="closeModal()">
+					<span>CLOSE</span>
+				</button>
+			</div>
+        </form>
+    </div>
+</script>

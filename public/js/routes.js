@@ -65,6 +65,13 @@ define(function() {
             "templateUrl": "/public/module/tax_declaration/tax_declaration.html",
             "deps": "/public/module/tax_declaration/index.js"
         },
+        {
+            "name": "main.no_property_dec",
+            "url": "/no_property_dec",
+            "controller": "NoPropertyDecController",
+            "templateUrl": "/public/module/no_property_dec/no_property_dec.html",
+            "deps": "/public/module/no_property_dec/index.js"
+        },
     ];
 
     return routes;
