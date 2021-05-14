@@ -251,6 +251,11 @@ a.text-crimson:focus,a.text-crimson:hover {
     resize: none;
 }
 
+.w-50 {
+    width: 50%;
+    margin: auto;
+}
+
 .w-80 {
     width: 80%;
     margin: auto;
@@ -597,6 +602,13 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
     line-height: 1.5rem;
 }
 
+.font-arial {
+    font-family: 'Arial', serif;
+    font-size: 19px;
+    color: black;
+    line-height: 1.8rem;
+}
+
 .font-12 {
     font-size: 13px;
 }
@@ -619,6 +631,10 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
 
 .font-25 {
     font-size: 27px;
+}
+
+.font-30 {
+    font-size: 30px;
 }
 
 .inline {

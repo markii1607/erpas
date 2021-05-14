@@ -24,7 +24,7 @@ define([
             Factory.templates = [
                 'module/no_property_dec/modals/add_no_property_dec.html',
                 'module/no_property_dec/modals/edit_no_property_dec.html',
-                // 'module/no_property_dec/modals/view_no_property_dec.html',
+                'module/no_property_dec/modals/view_no_property_dec.html',
             ];
 
             Factory.dtOptions = function () {
@@ -132,6 +132,17 @@ define([
                     requestor: 'Mark Philip C. Bernardo',
                     declarees: 'SPS. DR. CLEODOSIL R. COPE & RENEE ESTANISLAO',
                     purpose: 'BIR'
+                },
+                {
+                    date: {
+                        day: 16,
+                        month: 'November',
+                        year: 2020
+                    },
+                    or_no: '5186868',
+                    requestor: 'Helen De Lima',
+                    declarees: 'JOSEPAT N. CLIMACOSA',
+                    purpose: 'DAR Clearance'
                 }
             ]
 
@@ -289,35 +300,35 @@ define([
                 });
             }
 
-            // $scope.viewNoPropertyDec = function (data, index) {
-            //     var paramData, modalInstance;
+            $scope.viewNoPropertyDec = function (data, index) {
+                var paramData, modalInstance;
 
-            //     paramData = {
-            //         data,
-            //         server_base_url: $scope.server.base_url,
-            //     }
+                paramData = {
+                    data,
+                    server_base_url: $scope.server.base_url,
+                }
 
-            //     modalInstance = $uibModal.open({
-            //         animation       : true,
-            //         keyboard        : false,
-            //         backdrop        : 'static',
-            //         ariaLabelledBy  : 'modal-title',
-            //         ariaDescribedBy : 'modal-body',
-            //         templateUrl     : 'view_tax_declaration.html',
-            //         controller      : 'ViewTaxDeclarationController',
-            //         size            : 'xlg',
-            //         resolve         : {
-            //             paramData : function () {
-            //                 return paramData;
-            //             }
-            //         }
-            //     });
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'view_no_property_dec.html',
+                    controller      : 'ViewNoPropertyDecController',
+                    size            : 'xlg',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
 
-            //     modalInstance.result.then(function (res) {
-            //     }, function (res) {
-            //         // Result when modal is dismissed
-            //     });
-            // }
+                modalInstance.result.then(function (res) {
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+            }
 
             $scope.deleteNoPropertyDec = function(data, index){
                 Alertify
