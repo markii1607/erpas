@@ -68,11 +68,19 @@
             // die();
             if (!empty($input['advanced_search']['class_id']) || !empty($input['advanced_search']['actual_use'])) {
                 $tdIDs = $this->filterIDs($this->getFilteredTDClassifications($input['advanced_search']['class_id'], $input['advanced_search']['actual_use']));
+                if (!empty($tdIDs)) {
+                    $rows       = $this->getTaxDeclarations('', '', $input['advanced_search'], $tdIDs, $input['search']['value'], '', true);
+                    $rowData    = $this->getTaxDeclarations('', '', $input['advanced_search'], $tdIDs, $input['search']['value'], $this->limit($input));
+                } else {
+                    $rows    = [];
+                    $rowData = [];
+                }
+                
             } else {
-                $tdIDs = [];
+                $rows       = $this->getTaxDeclarations('', '', $input['advanced_search'], '', $input['search']['value'], '', true);
+                $rowData    = $this->getTaxDeclarations('', '', $input['advanced_search'], '', $input['search']['value'], $this->limit($input));
             }
-            $rows       = $this->getTaxDeclarations('', '', $input['advanced_search'], $tdIDs, $input['search']['value'], '', true);
-            $rowData    = $this->getTaxDeclarations('', '', $input['advanced_search'], $tdIDs, $input['search']['value'], $this->limit($input));
+            
 
             $output = array(
                 'draw'            => isset ($input['draw']) ? intval($input['draw']) : 0,
@@ -80,6 +88,15 @@
                 'recordsFiltered' => !empty($rows) ? intval($rows[0]['td_count']) : 0,
                 'data'            => $this->arrayToObject($rowData),
             );
+
+            return $output;
+        }
+
+        public function getTDViewDetails($data)
+        {
+            $output = [
+                'details' => $this->getTaxDeclarationClassifications($data['id'])
+            ];
 
             return $output;
         }
@@ -234,7 +251,7 @@
 
             $tdCategory = ($hasCategory) ? $advancedSearch['category'] : '';
 
-            $query = $this->queryHandler->selectTaxDeclarations($hasId, $hasStatus, $hasRevId, $hasTdNo, $hasPin, $hasOwner, $hasLotNo, $hasBrgyId, $hasType, $hasDateFrom, $hasDateTo, $tdCategory, $tdIDs, $hasTotal)->orderBy('RY.year', 'DESC')->end();
+            $query = $this->queryHandler->selectTaxDeclarations($hasId, $hasStatus, $hasRevId, $hasTdNo, $hasPin, $hasOwner, $hasLotNo, $hasBrgyId, $hasType, $hasDateFrom, $hasDateTo, $tdCategory, $tdIDs, $hasTotal)->orderBy('RY.year, TD.created_at', 'DESC')->end();
             $tax_declarations = $this->dbCon->prepare($query.' '.$limit);
             $tax_declarations->execute($data);
 
@@ -430,7 +447,7 @@
             $output = [];
 
             foreach ($arrayData as $key => $value) {
-                if(!empty($value)) array_push($output, $value['id']);
+                if(!empty($value)) array_push($output, $value['tax_declaration_id']);
             }
 
             return $output;

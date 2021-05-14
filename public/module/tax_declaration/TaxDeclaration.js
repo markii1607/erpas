@@ -25,6 +25,7 @@ define([
                 'module/tax_declaration/modals/advance_search.html',
                 'module/tax_declaration/modals/edit_tax_declaration.html',
                 'module/tax_declaration/modals/view_tax_declaration.html',
+                'module/tax_declaration/modals/view_tax_due.html',
             ];
 
             Factory.dtOptions = function () {
@@ -115,6 +116,8 @@ define([
                                 str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Retire" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-ban"></i></button>';
                                 str += '<p style="margin-bottom:5px;"></p>';
                                 str += '<button type="submit" id="fourthButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-md mr-2 text-white"><i class="fas fa-trash"></i></button>';
+                                str += '<p style="margin-bottom:5px;"></p>';
+                                str += '<button type="submit" id="fifthButton" data-toggle="tooltip" title="Tax Due" class="btn btn-default btn-md mr-2 text-white" style="background-color:#605ca8 !important;"><i class="fas fa-money-bill"></i></button>';
 
                                 return str;
                             }
@@ -125,8 +128,8 @@ define([
                             "orderable" : true,
                             "className" : "text-left",
                             "render"    : function(data, type, full, meta) {
-                                var strStreet = (data != '') ? data : '';
-                                return strStreet + ', ' + full.barangay.name;
+                                var strStreet = (data != '' && data != null) ? data + ', ' : '';
+                                return strStreet + full.barangay.name + ', Malilipot, Albay';
                             }
                         },
                         {
@@ -230,10 +233,10 @@ define([
                 blocker.start();
                 Service.getDetails().then( function (res) {
                     if (res.data.allTdCount != undefined) {
-                        $scope.allTdCount = res.data.allTdCount;
-                        $scope.actTdCount = res.data.actTdCount;
-                        $scope.rtdTdCount = res.data.rtdTdCount;
-                        $scope.cldTdCount = res.data.cldTdCount;
+                        $scope.allTdCount = parseInt(res.data.allTdCount);
+                        $scope.actTdCount = parseInt(res.data.actTdCount);
+                        $scope.rtdTdCount = parseInt(res.data.rtdTdCount);
+                        $scope.cldTdCount = parseInt(res.data.cldTdCount);
                     } else {
                         Alertify.error("Back-end error! Please notify the administrator.");
                     }
@@ -286,6 +289,9 @@ define([
                 "fourthButton": function(data, index) {
                     $scope.deleteTaxDec(data, index)
                 },
+                "fifthButton": function(data, index) {
+                    $scope.viewTaxDue(data, index)
+                },
             };
 
             $scope.addTaxDec = function () {
@@ -313,6 +319,13 @@ define([
                     console.log('addREsult: ', res);
                     table.DataTable().row.add(res).draw();
                     table.find('tbody tr').css('cursor', 'pointer');
+                    $scope.allTdCount += 1;
+                    $scope.actTdCount += 1;
+
+                    if (res.canceled_td.length != 0) {
+                        $scope.actTdCount -= 1;
+                        $scope.cldTdCount += 1;
+                    }
                 }, function (res) {
                     // Result when modal is dismissed
                 });
@@ -414,6 +427,35 @@ define([
                 });
             }
 
+            $scope.viewTaxDue = function (data, index) {
+                var paramData, modalInstance;
+
+                paramData = {
+                    data,
+                }
+
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'view_tax_due.html',
+                    controller      : 'ViewTaxDueController',
+                    size            : 'md',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (res) {
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+            }
+
             $scope.retireTaxDec = function(data, index){
                 Alertify
                 .okBtn("Yes")
@@ -447,7 +489,7 @@ define([
                             if (res.data.status) {
                                 table.DataTable().row('.selected').remove().draw(true);
                                 Alertify.log('Deleted!');
-                                
+                                $scope.allTdCount -= 1;
                                 blocker.stop();
                             } else {
                                 Alertify.error("ERROR! Please contact the administrator.");

@@ -123,7 +123,7 @@
 						<p class="font-weight-bold mb-1">Location of Property:<i class="text-danger">*</i></p>
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-								<input type="text" ng-model="addTaxDec.loc.no_street" class="form-control" data-toggle="tooltip" data-placement="top" title="Number and Street" placeholder="Enter Number and Street" autocomplete="off" required />
+								<input type="text" ng-model="addTaxDec.loc.no_street" class="form-control" data-toggle="tooltip" data-placement="top" title="Number and Street" placeholder="Enter Number and Street" autocomplete="off" />
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 								<ui-select ng-model="addTaxDec.loc.brgy" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
@@ -367,7 +367,7 @@
 								</tbody>
 								<tfoot>
 									<tr>
-										<td colspan="4" class="text-right">Php</td>
+										<td colspan="{{(addTaxDec.type.name != 'Machinery') ? 4 : 3}}" class="text-right">Php</td>
 										<td>
 											<input type="text" ng-model="addTaxDec.total_market_value | number" class="form-control" placeholder="Total Market Value" disabled />
 										</td>
@@ -425,7 +425,7 @@
 								</ui-select>
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" ng-if="addTaxDec.prev_declaration.td_no != undefined && addTaxDec.prev_declaration.td_no != ''">
-								<input type="text" ng-model="addTaxDec.prev_declaration.td_no.revision_year" class="form-control" data-toggle="tooltip" data-placement="top" title="Previous Revision Year" placeholder="Enter Year" autocomplete="off" />
+								<input type="text" ng-model="addTaxDec.prev_declaration.td_no.owner" class="form-control" data-toggle="tooltip" data-placement="top" title="Previous Owner" placeholder="Enter Prev Owner" autocomplete="off" />
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" ng-if="addTaxDec.prev_declaration.td_no != undefined && addTaxDec.prev_declaration.td_no != ''">
 								<input type="text" ng-model="addTaxDec.prev_declaration.td_no.total_assessed_value | number" step="0.01" min="0.00" class="form-control" data-toggle="tooltip" data-placement="top" title="Previous Assessed Value" placeholder="Enter Previous Assessed Value" autocomplete="off" />

@@ -77,7 +77,8 @@
                 $updateTaxDec->execute($tdEntryData);
                 $this->systemLogs($input->id, 'tax_declarations', 'Tax Declaration of Real Property - EDIT', 'update');
 
-                $this->updateCanceledTd($input->prev_td, $input->canceled_td);
+                $prevTD = isset($input->prev_td) ? $input->prev_td : [];
+                $this->updateCanceledTd($prevTD, $input->canceled_td);
 
                 foreach ($input->details as $key => $value) {
                     if ($value->data_type == 'new') {
