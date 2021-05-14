@@ -31,6 +31,7 @@
                 'TD.lot_no',
                 'TD.block_no',
                 'DATE_FORMAT(TD.dated, "%m/%d/%Y") as dated',
+                'DATE_FORMAT(TD.dated, "%M %d, %Y") as dated_view',
                 'TD.boundaries',
                 'TD.boundaries_north',
                 'TD.boundaries_south',

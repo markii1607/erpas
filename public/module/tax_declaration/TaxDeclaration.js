@@ -128,8 +128,8 @@ define([
                             "orderable" : true,
                             "className" : "text-left",
                             "render"    : function(data, type, full, meta) {
-                                var strStreet = (data != '') ? data : '';
-                                return strStreet + ', ' + full.barangay.name;
+                                var strStreet = (data != '' && data != null) ? data + ', ' : '';
+                                return strStreet + full.barangay.name + ', Malilipot, Albay';
                             }
                         },
                         {
@@ -233,10 +233,10 @@ define([
                 blocker.start();
                 Service.getDetails().then( function (res) {
                     if (res.data.allTdCount != undefined) {
-                        $scope.allTdCount = res.data.allTdCount;
-                        $scope.actTdCount = res.data.actTdCount;
-                        $scope.rtdTdCount = res.data.rtdTdCount;
-                        $scope.cldTdCount = res.data.cldTdCount;
+                        $scope.allTdCount = parseInt(res.data.allTdCount);
+                        $scope.actTdCount = parseInt(res.data.actTdCount);
+                        $scope.rtdTdCount = parseInt(res.data.rtdTdCount);
+                        $scope.cldTdCount = parseInt(res.data.cldTdCount);
                     } else {
                         Alertify.error("Back-end error! Please notify the administrator.");
                     }
@@ -319,6 +319,13 @@ define([
                     console.log('addREsult: ', res);
                     table.DataTable().row.add(res).draw();
                     table.find('tbody tr').css('cursor', 'pointer');
+                    $scope.allTdCount += 1;
+                    $scope.actTdCount += 1;
+
+                    if (res.canceled_td.length != 0) {
+                        $scope.actTdCount -= 1;
+                        $scope.cldTdCount += 1;
+                    }
                 }, function (res) {
                     // Result when modal is dismissed
                 });
@@ -482,7 +489,7 @@ define([
                             if (res.data.status) {
                                 table.DataTable().row('.selected').remove().draw(true);
                                 Alertify.log('Deleted!');
-                                
+                                $scope.allTdCount -= 1;
                                 blocker.stop();
                             } else {
                                 Alertify.error("ERROR! Please contact the administrator.");

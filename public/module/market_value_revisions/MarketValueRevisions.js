@@ -202,7 +202,7 @@ define([
                     init        : function(api, node, config) {
                         $(node).removeClass('btn-default btn-secondary');
                         $(node).addClass('btn bg-success text-white btn-sm add'); 
-                        $(node).append('<i class="fas fa-plus"></i>&nbsp;<span class="hidden-xs hidden-sm">ADD NEW MARKET VALUE DATA</span>');
+                        $(node).append('<i class="fas fa-plus"></i>&nbsp;<span class="hidden-xs hidden-sm">ADD NEW SCHEDULE</span>');
                     },
                     text        : '', 
                     titleAttr   : 'Add Market Value Data', 

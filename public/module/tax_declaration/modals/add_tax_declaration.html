@@ -123,7 +123,7 @@
 						<p class="font-weight-bold mb-1">Location of Property:<i class="text-danger">*</i></p>
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-								<input type="text" ng-model="addTaxDec.loc.no_street" class="form-control" data-toggle="tooltip" data-placement="top" title="Number and Street" placeholder="Enter Number and Street" autocomplete="off" required />
+								<input type="text" ng-model="addTaxDec.loc.no_street" class="form-control" data-toggle="tooltip" data-placement="top" title="Number and Street" placeholder="Enter Number and Street" autocomplete="off" />
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 								<ui-select ng-model="addTaxDec.loc.brgy" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
@@ -367,7 +367,7 @@
 								</tbody>
 								<tfoot>
 									<tr>
-										<td colspan="4" class="text-right">Php</td>
+										<td colspan="{{(addTaxDec.type.name != 'Machinery') ? 4 : 3}}" class="text-right">Php</td>
 										<td>
 											<input type="text" ng-model="addTaxDec.total_market_value | number" class="form-control" placeholder="Total Market Value" disabled />
 										</td>

@@ -229,7 +229,7 @@
 							<p class="font-times mb-0">Dated</p>
 						</div>
 						<div class="col-10">
-							<p class="font-times mb-0 border-bottom-form">{{ data.dated }}</p>
+							<p class="font-times mb-0 border-bottom-form">{{ data.dated_view }}</p>
 						</div>
 					</div>
 				</div>
@@ -343,7 +343,7 @@
 							<p class="font-times mb-0">Brief Description:</p>
 						</div>
 						<div class="col-7">
-							<p class="font-times mb-0 border-bottom-form text-center" ng-if="data.property_kind == 'Machinery'">{{ data.type.desc }}</p>
+							<p class="font-times mb-0 border-bottom-form text-center" ng-if="data.property_kind == 'Machinery'">{{ data.description }}</p>
 							<p class="font-times mb-0 border-bottom-form" ng-if="data.property_kind != 'Machinery'"></p>
 						</div>
 					</div>
@@ -432,11 +432,14 @@
 					<p class="font-times mb-0 text-center border-bottom-form">{{ det.assessment_level }} %</p>
 				</div>
 				<div class="col-2">
-					<p class="font-times mb-0 text-center border-bottom-form">{{ det.assessed_value | number : 2 }}</p>
+					<p class="font-times mb-0 text-center border-bottom-form">
+						<span class="pull-left">P</span>
+						{{ det.assessed_value | number : 2 }}
+					</p>
 				</div>
 			</div>
 			<!-- Additional column lang. Pwedeng iremove -->
-			<div class="form-row mb-1" ng-repeat="det in data.details">
+			<div class="form-row mb-1">
 				<div class="col-2">
 					<p class="font-times mt-4 mb-0 text-center border-bottom-form"></p>
 				</div>
@@ -462,7 +465,7 @@
 					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
 				</div>
 				<div class="col-2">
-					<p class="font-times mb-0 text-center">Php</p>
+					<p class="font-times mt-4 mb-0 text-center font-weight-bold border-bottom-form"></p>
 				</div>
 				<div class="col-2">
 					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ data.total_market_value | number : 2 }}</p>
@@ -470,7 +473,10 @@
 				<div class="col-2"></div>
 				<div class="col-2"></div>
 				<div class="col-2">
-					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">{{ data.total_assessed_value | number : 2 }}</p>
+					<p class="font-times mb-0 text-center font-weight-bold border-bottom-form">
+						<span class="pull-left">P</span>
+						{{ data.total_assessed_value | number : 2 }}
+					</p>
 				</div>
 			</div>
 
@@ -479,7 +485,7 @@
 					<p class="font-times mb-0">Assessed Value:</p>
 				</div>
 				<div class="col-10">
-					<p class="font-times mb-0 border-bottom-form font-weight-bold text-center">{{ data.total_assessed_value_words }}</p>
+					<p class="font-times mb-0 border-bottom-form font-weight-bold text-left">{{ data.total_assessed_value_words }}</p>
 				</div>
 			</div>
 

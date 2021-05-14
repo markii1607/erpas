@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2021 at 10:15 AM
+-- Generation Time: May 14, 2021 at 08:07 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -68,6 +68,7 @@ CREATE TABLE `tax_declarations` (
   `ordinance_date` date DEFAULT NULL,
   `approvers` text NOT NULL,
   `memoranda` text DEFAULT NULL,
+  `status` int(5) DEFAULT 1 COMMENT '1-active | 2-retired | 3-canceled',
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `created_by` int(5) UNSIGNED NOT NULL,
   `created_at` datetime NOT NULL,
