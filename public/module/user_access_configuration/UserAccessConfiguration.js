@@ -21,13 +21,8 @@ define([
              * @type {Array}
              */
             Factory.templates = [
-                'module/user_access_configuration/modals/view_access.html',
-                'module/user_access_configuration/modals/view_project_accesses.html',
-                'module/user_access_configuration/modals/view_deputy_config.html',
-                'module/user_access_configuration/modals/sub_modals/access.html',
-                'module/user_access_configuration/modals/sub_modals/project_access.html',
-                'module/user_access_configuration/modals/sub_modals/add_deputy.html',
-                'module/user_access_configuration/modals/sub_modals/change_deputy_status.html',
+                'module/user_access_configuration/modals/add_user.html',
+                'module/user_access_configuration/modals/edit_user.html',
             ];
 
             Factory.dtOptions = function () {
@@ -53,7 +48,7 @@ define([
                     },
                     "mark"           : true,
                     "autoWidth"      : false,
-                    "responsive"     : true,
+                    "responsive"     : false,
                     "data"           : [],
                     "buttons"        : [],
                     "order"          : [
@@ -68,23 +63,65 @@ define([
                             "searchable" : false,
                             "orderable"  : false,
                             "className"  : "text-center"
-                        }
+                        },
+                        {
+                            "targets"    : 5,
+                            "searchable" : false,
+                            "orderable"  : false,
+                            "className"  : "text-center",
+                            "render"     :  function(data, type, full, meta) {
+                                                if (data == '1') {
+                                                    return '<span style="display: inline; padding: .2em .6em .3em; background-color:#ED3850; color: white; border-radius: 25px; font-size: 12px; font-weight: 500">SUPER ADMIN</span>';
+                                                } else if (data == '2') {
+                                                    return '<span style="display: inline; padding: .2em .6em .3em; background-color:#ED389A; color: white; border-radius: 25px; font-size: 12px; font-weight: 500">ADMIN</span>';
+                                                } else if (data == '3') {
+                                                    return '<span style="display: inline; padding: .2em .6em .3em; background-color:#38C3ED; color: white; border-radius: 25px; font-size: 12px; font-weight: 500">TREASURER</span>';
+                                                } else if (data == '4') {
+                                                    return '<span style="display: inline; padding: .2em .6em .3em; background-color:#38E6ED; color: white; border-radius: 25px; font-size: 12px; font-weight: 500">ACCOUNTING</span>';
+                                                } else {
+                                                    return '';
+                                                }
+
+                            }
+                        },
+                        {
+                            "targets"    : 6,
+                            "searchable" : false,
+                            "orderable"  : false,
+                            "className"  : "text-left",
+                            "render"    : function(data, type, full, meta) {
+                                                var str = '';
+                                                str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="Reset" class="btn btn-block bg-warning btn-sm mr-2 text-white text-left"><i class="fas fa-history"></i> Reset Password</button>';
+                                                str += '<p style="margin-bottom:5px;"></p>';
+                                                str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-block bg-primary btn-sm mr-2 text-white text-left"><i class="fas fa-edit"></i> Edit User Info</button>';
+                                                str += '<p style="margin-bottom:5px;"></p>';
+                                                str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Delete" class="btn btn-block bg-danger btn-sm mr-2 text-white text-left"><i class="fas fa-trash"></i> Delete User</button>';
+
+                                                return str;
+                            }
+                        },
                     ],
                     "columns"      : [
                         { 
-                            "data" : "id" 
+                            "data" : null 
                         },
                         { 
-                            "data" : "employee_no", 
+                            "data" : "username", 
                         },
                         { 
                             "data" : "full_name", 
                         },
                         { 
-                            "data" : "position_name", 
+                            "data" : "department", 
                         },
                         { 
-                            "data" : "username", 
+                            "data" : "position", 
+                        },
+                        { 
+                            "data" : "access_type", 
+                        },
+                        { 
+                            "data" : null, 
                         }
                     ]
                 };
@@ -108,6 +145,14 @@ define([
             _this.getDetails = function () {
                 return $http.get(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/UserAccessConfigurationService.php/getDetails');
             };
+
+            _this.reset = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/UserAccessConfigurationService.php/resetUserPassword', data);
+            };
+
+            _this.archive = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/UserAccessConfiguration/UserAccessConfigurationService.php/archiveUser', data);
+            };
         }
     ]);
 
@@ -128,119 +173,19 @@ define([
              */
             _loadDetails = function () {
                 blocker.start();
-
                 Service.getDetails().then( function (res) {
-                    $scope.jqDataTableOptions         = Factory.dtOptions();
-                    $scope.jqDataTableOptions.buttons = _btnFunc();
-                    $scope.jqDataTableOptions.data    = res.data.users;
-                });
-            };
-
-            _viewDeputyInfo = function(){
-                var data = table.DataTable().rows('.selected').data()[0];
-                if (data != undefined) {
-                    var paramData, modalInstance;
-
-                    paramData = {
-                        'id'        : data.id,
-                        'full_name' : data.full_name,
-                        'account_status' : data.account_status
-                    };
-    
-                    modalInstance = $uibModal.open({
-                        animation       : true,
-                        keyboard        : false,
-                        backdrop        : 'static',
-                        ariaLabelledBy  : 'modal-title',
-                        ariaDescribedBy : 'modal-body',
-                        templateUrl     : 'view_deputy_config.html',
-                        controller      : 'ViewDeputyConfigController',
-                        size            : 'md',
-                        resolve         : {
-                            paramData : function () {
-                                return paramData;
-                            }
-                        }
-                    });
-    
-                    modalInstance.result.then(function (res) {
-                        table.DataTable().rows('.selected').data()[0].account_status = res;
-                    }, function (res) {
-                        // Result when modal is dismissed
-                    });
-                } else {
-                    Alertify.alert('<b>No selected row!</b>');
-                }
-            };
-
-            _viewProjectAccesses = function(){
-                var data = table.DataTable().rows('.selected').data()[0];
-                if (data != undefined) {
-                    var paramData, modalInstance;
-
-                    paramData = {
-                        'id'        : data.id,
-                        'full_name' : data.full_name
-                    };
-    
-                    modalInstance = $uibModal.open({
-                        animation       : true,
-                        keyboard        : false,
-                        backdrop        : 'static',
-                        ariaLabelledBy  : 'modal-title',
-                        ariaDescribedBy : 'modal-body',
-                        templateUrl     : 'view_project_accesses.html',
-                        controller      : 'ViewProjectAccessesController',
-                        size            : 'lg',
-                        resolve         : {
-                            paramData : function () {
-                                return paramData;
-                            }
-                        }
-                    });
-    
-                    modalInstance.result.then(function (res) {
-                    }, function (res) {
-                        // Result when modal is dismissed
-                    });
-                } else {
-                    Alertify.alert('<b>No selected row!</b>');
-                }
-            };
-
-            /**
-             * `_viewAccesses` Viewing of modules.
-             * @return {[modal]}
-             */
-            _viewAccesses = function () {
-                var paramData, modalInstance;
-
-                paramData = {
-                    'id'        : table.DataTable().rows('.selected').data()[0].id,
-                    'full_name' : table.DataTable().rows('.selected').data()[0].full_name
-                };
-
-                modalInstance = $uibModal.open({
-                    animation       : true,
-                    keyboard        : false,
-                    backdrop        : 'static',
-                    ariaLabelledBy  : 'modal-title',
-                    ariaDescribedBy : 'modal-body',
-                    templateUrl     : 'view_access.html',
-                    controller      : 'ViewAccessController',
-                    size            : 'lg',
-                    resolve         : {
-                        paramData : function () {
-                            return paramData;
-                        }
+                    if (res.data.users != undefined) {
+                        $scope.jqDataTableOptions         = Factory.dtOptions();
+                        $scope.jqDataTableOptions.buttons = _btnFunc();
+                        $scope.jqDataTableOptions.data    = res.data.users;
+                        
+                        blocker.stop();
+                    } else {
+                        Alertify.error('An error occurred while fetching data. Please contact the administrator.');
+                        blocker.stop();
                     }
                 });
-
-                modalInstance.result.then(function (res) {
-                }, function (res) {
-                    // Result when modal is dismissed
-                });
-            }
+            };
 
             /**
              * `_btnFunc` list of button functions.
@@ -253,62 +198,139 @@ define([
 
                 buttons.unshift({ 
                     init        : function(api, node, config) {
-                        $(node).removeClass('btn-default');
-                        $(node).addClass('btn bg-olive btn-sm hoverable add'); 
-                        $(node).append('<i class="fa fa-users"></i>&nbsp;<span class="hidden-xs hidden-sm">VIEW DEPUTY INFO</span>');
+                        $(node).removeClass('btn-default btn-secondary');
+                        $(node).addClass('btn bg-info text-white btn-sm add'); 
+                        $(node).append('<i class="fas fa-plus"></i>&nbsp;<span class="hidden-xs hidden-sm">ADD USER</span>');
                     },
                     text        : '', 
-                    titleAttr   : 'View Deputy Info', 
+                    titleAttr   : 'Add User', 
                     key: { 
                         key     : '1', 
                         altKey  : true 
                     }, 
                     'action'    : function () { 
-                        _viewDeputyInfo(); 
+                        $scope.addUser(); 
                     },
                     enabled     : true,
                     name        : 'add'
                 }); 
 
-                buttons.unshift({ 
-                    init        : function(api, node, config) {
-                        $(node).removeClass('btn-default');
-                        $(node).addClass('btn bg-primary btn-sm hoverable add'); 
-                        $(node).append('<i class="fa fa-list-alt"></i>&nbsp;<span class="hidden-xs hidden-sm">VIEW POJECT ACCESSES</span>');
-                    },
-                    text        : '', 
-                    titleAttr   : 'View Project Access', 
-                    key: { 
-                        key     : '1', 
-                        altKey  : true 
-                    }, 
-                    'action'    : function () { 
-                        _viewProjectAccesses(); 
-                    },
-                    enabled     : true,
-                    name        : 'add'
-                }); 
-
-                buttons.unshift({ 
-                    init        : function(api, node, config) {
-                        $(node).removeClass('btn-default');
-                        $(node).addClass('btn bg-orange btn-sm hoverable edit'); 
-                        $(node).append('<i class="fa fa-edit"></i>&nbsp;<span class="hidden-xs hidden-sm">VIEW</span>');
-                    }, 
-                    text        : '', 
-                    titleAttr   : 'View Access', 
-                    key: { 
-                        key     : '2', 
-                        altKey  : true 
-                    }, 
-                    'action'    : function () { 
-                        _viewAccesses(); 
-                    },
-                    enabled     : false,
-                    name        : 'edit'
-                }); 
-                
                 return buttons;
+            }
+
+            $scope.rowBtns = {
+                "firstButton": function(data, index) {
+                    $scope.resetPassword(data, index)
+                },
+                "secondButton": function(data, index) {
+                    $scope.editUser(data, index)
+                },
+                "thirdButton": function(data, index) {
+                    $scope.archiveUser(data, index)
+                },
+            };
+
+            $scope.addUser = function(){
+                var paramData, modalInstance;
+
+                paramData = {}
+
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'add_user.html',
+                    controller      : 'AddUserController',
+                    size            : 'md',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (res) {
+                    console.log('addREsult: ', res);
+                    table.DataTable().row.add(res).draw();
+                    table.find('tbody tr').css('cursor', 'pointer');
+                    
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+            }
+
+            $scope.resetPassword = function(data, index){
+                Alertify
+                .okBtn("Yes")
+                .cancelBtn("No")
+                .confirm("Are you sure you want to reset the password for <b><i>" + data.full_name + "'s</i></b> user account?", function(){
+                    blocker.start();
+                    Service.reset(data).then(res => {
+                        if (res.data.status) {
+                            Alertify.success("Password reset is successful!");
+                            Alertify.alert("DEFAULT PASSWORD: <b>12345</b>");
+
+                            blocker.stop();
+                        } else {
+                            Alertify.error("An error occurred while saving data. Please contact the administrator.");
+                            blocker.stop();
+                        }
+                    })
+                })
+            }
+
+            $scope.editUser = function(data, index){
+                var paramData, modalInstance;
+
+                paramData = {
+                    data
+                }
+
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'edit_user.html',
+                    controller      : 'EditUserController',
+                    size            : 'md',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (res) {
+                    console.log("editResult: ", res);
+                    table.DataTable().row(index).data(res).draw();
+                    
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+            }
+
+            $scope.archiveUser = function(data, index){
+                Alertify
+                .okBtn("Yes")
+                .cancelBtn("No")
+                .confirm("Are you sure you want to delete the selected user?", function(){
+                    blocker.start();
+                    Service.archive(data).then(res => {
+                        if (res.data.status) {
+                            table.DataTable().row('.selected').remove().draw(true);
+                            Alertify.success("Deleted successfully!");
+
+                            blocker.stop();
+                        } else {
+                            Alertify.error("An error occurred while saving data. Please contact the administrator.");
+                            blocker.stop();
+                        }
+                    })
+                })
             }
 
             /**
@@ -319,7 +341,9 @@ define([
                 // default settings
                 Factory.autoloadSettings();
 
-                $scope.contentheader.title = 'User Access Configuration';
+                $scope.header.title = "User Access Configuration"
+                $scope.header.link.sub = ""
+                $scope.header.link.main = "User Access Configuration"
 
                 $scope.templates = Factory.templates;
 

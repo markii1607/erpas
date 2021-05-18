@@ -251,7 +251,7 @@
 
             $tdCategory = ($hasCategory) ? $advancedSearch['category'] : '';
 
-            $query = $this->queryHandler->selectTaxDeclarations($hasId, $hasStatus, $hasRevId, $hasTdNo, $hasPin, $hasOwner, $hasLotNo, $hasBrgyId, $hasType, $hasDateFrom, $hasDateTo, $tdCategory, $tdIDs, $hasTotal)->orderBy('RY.year, TD.created_at', 'DESC')->end();
+            $query = $this->queryHandler->selectTaxDeclarations($hasId, $hasStatus, $hasRevId, $hasTdNo, $hasPin, $hasOwner, $hasLotNo, $hasBrgyId, $hasType, $hasDateFrom, $hasDateTo, $tdCategory, $tdIDs, $hasTotal)->orderBy('TD.created_at', 'DESC')->end();
             $tax_declarations = $this->dbCon->prepare($query.' '.$limit);
             $tax_declarations->execute($data);
 
