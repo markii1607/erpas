@@ -31,6 +31,13 @@ define(function() {
             "deps": "/public/module/user_access_configuration/index.js"
         },
         {
+            "name": "main.signatories_configuration",
+            "url": "/signatories_configuration",
+            "controller": "SignatoriesConfigurationController",
+            "templateUrl": "/public/module/signatories_configuration/signatories_configuration.html",
+            "deps": "/public/module/signatories_configuration/index.js"
+        },
+        {
             "name": "main.market_value_classifications",
             "url": "/market_value_classifications",
             "controller": "MarketValueClassificationsController",

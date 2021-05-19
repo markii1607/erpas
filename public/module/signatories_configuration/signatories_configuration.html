@@ -1,0 +1,32 @@
+<div class="row" block-ui="blockSignatoriesConfiguration">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card border-bottom-success shadow mb-4">
+            <div class="card-header bg-success py-3">
+                <h6 class="m-0 font-weight-bold text-white">SIGNATORIES</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="signatoriesConfiguration" jq-data-tables options="jqDataTableOptions" rowbtn="rowBtns" class="table table-hover table-bordered" width="100%">
+                        <thead>
+                            <tr class="text-uppercase" style="letter-spacing: 1px;">
+                                <th rowspan="2" class="text-center" style="width: 5%;  vertical-align: middle;">#</th>
+                                <th colspan="2" class="text-center" style="width: 50%; vertical-align: middle;">Approvers</th>
+                                <th rowspan="2" class="text-center" style="width: 15%; vertical-align: middle;">Created At</th>
+                                <th rowspan="2" class="text-center" style="width: 5%;  vertical-align: middle;"></th>
+                            </tr>
+                            <tr>
+                                <th class="text-center" style="width: 25%; vertical-align: middle;">Provincial</th>
+                                <th class="text-center" style="width: 25%; vertical-align: middle;">Municipal</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Load modal template -->
+<div class="modal" ng-repeat="template in templates">
+    <ng-include src="template"></ng-include>
+</div>
