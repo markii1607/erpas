@@ -100,22 +100,17 @@
                 $user->execute([
                     'username'  => $userName,
                     'password'  => crypt($credentials->password, $salt),
-                    'is_active' => 1
                 ]);
-    
                 $userDetails = $user->fetchAll(\PDO::FETCH_ASSOC);
                 
             }
 
             if (count($userDetails) > 0) {
                 $_SESSION['user_id']                 = $userDetails[0]['id'];
-                $_SESSION['personal_information_id'] = $userDetails[0]['personal_information_id'];
-                $_SESSION['position_id']             = $userDetails[0]['position_id'];
-                $_SESSION['position_name']           = $userDetails[0]['position_name'];
-                $_SESSION['position_code']           = $userDetails[0]['position_code'];
+                $_SESSION['position_name']           = $userDetails[0]['position'];
+                $_SESSION['department']              = $userDetails[0]['department'];
                 $_SESSION['full_name']               = $userDetails[0]['full_name'];
-                $_SESSION['is_signatory']            = $userDetails[0]['is_signatory'];
-                $_SESSION['account_status']          = $userDetails[0]['account_status'];
+                $_SESSION['access_type']             = $userDetails[0]['access_type'];
                 $_SESSION['is_active']               = true;
 
                 $this->loginSystemLogs($userDetails[0]['id'], 'users', 'login', 'login');

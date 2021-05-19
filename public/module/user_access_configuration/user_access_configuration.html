@@ -1,33 +1,24 @@
-<style type="text/css">
-    #userAccessConfiguration tbody tr {
-        cursor: pointer;
-    }
-</style>
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="box box-danger" block-ui="blockUserAccessConfiguration">
-                <div class="box-header">
-                    <span class="fa-stack fa-lg">
-                        <i class="fa fa-square fa-stack-2x text-danger"></i>
-                        <i class="fa fa-database fa-stack-1x" style="color: white;"></i>
-                    </span>
-                    <span style="letter-spacing: 1px;">USERS</span>
-                </div>
-                <div class="box-body">
-                    <div class="table-responsive">
-                        <table id="userAccessConfiguration" jq-data-tables options="jqDataTableOptions" rowbtn="rowBtns" class="table table-hover table-bordered table-striped" width="100%" blocker="'blockUserAccessConfiguration'">
-                            <thead>
-                                <tr class="text-uppercase" style="letter-spacing: 1px;">
-                                    <th class="text-center" style="width: 5%; border-top: solid 3px #d2d6de; vertical-align: middle;"></th>
-                                    <th class="text-center" style="width: 5%; border-top: solid 3px #d2d6de; vertical-align: middle;"><small>Code</small></th>
-                                    <th class="text-center" style="width: 60%; border-top: solid 3px #d2d6de; vertical-align: middle;"><small>Employee Name</small></th>
-                                    <th class="text-center" style="width: 60%; border-top: solid 3px #d2d6de; vertical-align: middle;"><small>Position Name</small></th>
-                                    <th class="text-center" style="width: 30%; border-top: solid 3px #d2d6de; vertical-align: middle;"><small>Username</small></th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
+<div class="row" block-ui="blockUserAccessConfiguration">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card border-bottom-success shadow mb-4">
+            <div class="card-header bg-success py-3">
+                <h6 class="m-0 font-weight-bold text-white">Users</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="userAccessConfiguration" jq-data-tables options="jqDataTableOptions" rowbtn="rowBtns" class="table table-hover table-bordered table-striped" width="100%">
+                        <thead>
+                            <tr class="text-uppercase" style="letter-spacing: 1px;">
+                                <th class="text-center" style="width: 2%;  vertical-align: middle;">#</th>
+                                <th class="text-center" style="width: 8%;  vertical-align: middle;">Username</th>
+                                <th class="text-center" style="width: 15%; vertical-align: middle;">Full Name</th>
+                                <th class="text-center" style="width: 15%; vertical-align: middle;">Department</th>
+                                <th class="text-center" style="width: 15%; vertical-align: middle;">Position</th>
+                                <th class="text-center" style="width: 10%; vertical-align: middle;">Access Type</th>
+                                <th class="text-center" style="width: 15%; vertical-align: middle;"></th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>

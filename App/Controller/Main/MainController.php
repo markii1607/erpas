@@ -59,7 +59,7 @@ class MainController extends BaseController
     public function getInformation($userId = '')
     {
         $informations = $this->dbCon->prepare($this->queryHandler->selectUsers(true)->end());
-        $informations->execute(['is_active' => 1, 'id' => $userId]);
+        $informations->execute(['id' => $userId]);
 
         return $informations->fetchAll(\PDO::FETCH_ASSOC);
     }

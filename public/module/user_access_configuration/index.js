@@ -1,12 +1,7 @@
 define([
     './UserAccessConfiguration.js',
-    './modals/ViewAccess.js',
-    './modals/ViewProjectAccesses.js',
-    './modals/ViewDeputyConfig.js',
-    './modals/sub_modals/Access.js',
-    './modals/sub_modals/ProjectAccess.js',
-    './modals/sub_modals/AddDeputy.js',
-    './modals/sub_modals/ChangeDeputyStatus.js',
+    './modals/AddUser.js',
+    './modals/EditUser.js',
     
     '../../directive/dataTable.js',
     '../../directive/ngInfinite.js',

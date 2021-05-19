@@ -6,6 +6,7 @@
 
     use App\Config\BaseController as BaseController;
     use App\Model\MarketValueSubclassification\MarketValueSubclassificationQueryHandler as QueryHandler;
+    use Exception;
 
     class MarketValueSubclassificationController extends BaseController {
         /**

@@ -1,0 +1,143 @@
+<style>
+    /* Hiding the checkbox, but allowing it to be focused */
+    .badgebox
+    {
+        opacity: 0;
+    }
+
+    .badgebox + .badge
+    {
+        /* Move the check mark away when unchecked */
+        text-indent: -999999px;
+        /* Makes the badge's width stay the same checked and unchecked */
+        width: 27px;
+    }
+
+    .badgebox:focus + .badge
+    {
+        /* Set something to make the badge looks focused */
+        /* This really depends on the application, in my case it was: */
+        
+        /* Adding a light border */
+        box-shadow: inset 0px 0px 5px;
+        /* Taking the difference out of the padding */
+    }
+
+    .badgebox:checked + .badge
+    {
+        /* Move the check mark back when checked */
+        text-indent: 0;
+    }
+
+    .default-btn 
+    {
+        background-color: #f4f4f4;
+        color: #444;
+        border-color: #ddd;
+    }
+
+    .lbl-super
+    {
+        background-color:#ED3850; 
+        color: white; 
+    }
+
+    .lbl-admin
+    {
+        background-color:#ED389A; 
+        color: white; 
+    }
+
+    .lbl-treas
+    {
+        background-color:#38C3ED; 
+        color: white; 
+    }
+
+    .lbl-acctg
+    {
+        background-color:#38E6ED; 
+        color: white; 
+    }
+
+</style>
+<script type="text/ng-template" id="edit_user.html">
+    <div block-ui="blockEditUser">
+        <form name="form.editUser" ng-submit="save(form.editUser.$valid)" novalidate>
+            <div class="modal-header align-items-center">
+				<span class="fa-stack fa-lg">
+	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+	                <i class="fas fa-edit fa-stack-1x fa-inverse"></i>
+	            </span>
+
+				<h5 class="modal-title" style="letter-spacing: 1px;">EDIT USER</h5>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+	                <span aria-hidden="true">
+	                    <i class="fas fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group mb-3">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label for="fname" class="font-weight-bold">First Name:<i class="text-danger">*</i></label>
+                                    <input type="text" ng-model="editUser.fname" class="form-control" id="fname" placeholder="Enter First Name..." autocomplete="off" required />
+                                </div>
+                                <div class="col-4">
+                                    <label for="mname" class="font-weight-bold">Middle Name:</label>
+                                    <input type="text" ng-model="editUser.mname" class="form-control" id="mname" placeholder="Enter Middle Name..." autocomplete="off" />
+                                </div>
+                                <div class="col-4">
+                                    <label for="lname" class="font-weight-bold">Last Name:<i class="text-danger">*</i></label>
+                                    <input type="text" ng-model="editUser.lname" class="form-control" id="lname" placeholder="Enter Last Name..." autocomplete="off" required />
+                                </div>
+                            </div>
+						</div>
+                        <div class="form-group mb-3">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label for="department" class="font-weight-bold">Department:<i class="text-danger">*</i></label>
+                                    <input type="text" ng-model="editUser.department" class="form-control" id="department" placeholder="Enter Department..." autocomplete="off" required />
+                                </div>
+                                <div class="col-4">
+                                    <label for="position" class="font-weight-bold">Position:<i class="text-danger">*</i></label>
+                                    <input type="text" ng-model="editUser.position" class="form-control" id="position" placeholder="Enter Position..." autocomplete="off" required />
+                                </div>
+                                <div class="col-4">
+                                    <label for="username" class="font-weight-bold">Username:<i class="text-danger">*</i></label>
+                                    <input type="text" ng-model="editUser.username" class="form-control" id="username" placeholder="Enter Username..." autocomplete="off" required />
+                                </div>
+                            </div>
+						</div>
+                        <div class="form-group mb-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="access" class="font-weight-bold">Access Type:<i class="text-danger">*</i></label>
+                                    <div class="form-group">
+                                        <label for="super" class="btn default-btn" ng-class="{'lbl-super' : editUser.chk_super}">SUPER ADMIN<input type="checkbox" ng-model="editUser.chk_super" id="super" class="badgebox" ng-click="changeAcctType('super')"><span class="badge">&check;</span></label>
+                                        <label for="admin" class="btn default-btn" ng-class="{'lbl-admin' : editUser.chk_admin}">ADMIN<input type="checkbox" ng-model="editUser.chk_admin" id="admin" class="badgebox" ng-click="changeAcctType('admin')"><span class="badge">&check;</span></label>
+                                        <label for="treas" class="btn default-btn" ng-class="{'lbl-treas' : editUser.chk_treas}">TREASURER<input type="checkbox" ng-model="editUser.chk_treas" id="treas" class="badgebox" ng-click="changeAcctType('treas')"><span class="badge">&check;</span></label>
+                                        <label for="acctg" class="btn default-btn" ng-class="{'lbl-acctg' : editUser.chk_acctg}">ACCOUNTING<input type="checkbox" ng-model="editUser.chk_acctg" id="acctg" class="badgebox" ng-click="changeAcctType('acctg')"><span class="badge">&check;</span></label>
+                                    </div>
+                                </div>
+                            </div>
+						</div>
+                        <p class="text-danger font-italic" style="font-size: 10px;">* Fields are required.</p>
+                    </div>
+                </div>            	
+            </div>
+            <div class="modal-footer bordered">
+				<button type="submit" class="btn btn-default bg-crimson-red" ng-disabled="form.editUser.$invalid">
+					<span>SAVE</span>
+				</button>
+				<button type="button" class="btn btn-default" ng-click="closeModal()">
+					<span>CLOSE</span>
+				</button>
+			</div>
+        </form>
+    </div>
+</script>
