@@ -2,7 +2,7 @@ define([
     'app',
     'moment', 
 ], function (app, moment) {
-    app.factory('NoPropertyDecFactory', [
+    app.factory('PropTaxDecFactory', [
         'alertify',
         function (alertify) {
             var Factory = {};
@@ -22,9 +22,9 @@ define([
              * @type {Array}
              */
             Factory.templates = [
-                'module/no_property_dec/modals/add_no_property_dec.html',
-                // 'module/no_property_dec/modals/edit_no_property_dec.html',
-                // 'module/no_property_dec/modals/view_no_property_dec.html',
+                'module/prop_tax_dec/modals/add_prop_tax_dec.html',
+                'module/prop_tax_dec/modals/edit_prop_tax_dec.html',
+                'module/prop_tax_dec/modals/view_prop_tax_dec.html',
             ];
 
             Factory.dtOptions = function () {
@@ -104,13 +104,22 @@ define([
                             "data" : "date"
                         },
                         { 
+                            "data" : "td_no"
+                        },
+                        { 
                             "data" : "or_no"
+                        },
+                        { 
+                            "data" : "lot_no"
                         },
                         { 
                             "data" : "requestor"
                         },
                         { 
                             "data" : "declarees"
+                        },
+                        { 
+                            "data" : "location"
                         },
                         { 
                             "data" : "purpose"
@@ -124,22 +133,63 @@ define([
             Factory.dummyData = [
                 {
                     date: {
-                        day: 10,
-                        month: 'September',
+                        day: 29,
+                        month: 'October',
                         year: 2020
                     },
-                    or_no: '7020342',
-                    requestor: 'Mark Philip C. Bernardo',
-                    declarees: 'SPS. DR. CLEODOSIL R. COPE & RENEE ESTANISLAO',
-                    purpose: 'BIR'
-                }
+                    td_no: '2017-0015-00370',
+                    or_no: '7666041',
+                    lot_no: '1914',
+                    requestor: 'Nerissa Sugiyama',
+                    declarees: 'Gloria Bitara',
+                    location: 'San Jose, Malilipot, Albay',
+                    purpose: 'BIR',
+                    arps: [
+                        {
+                            arp_no: '2017-0015-00371',
+                            declarant: 'Bitara, Joshua',
+                            lot_no: 'CANTEEN',
+                            area: 25,
+                            unit: 'sq.m',
+                            market_value: 93500,
+                            assessed_value: 28050,
+                        },
+                        {
+                            arp_no: '2017-0015-00372',
+                            declarant: 'Bitara, Cynthia',
+                            lot_no: 'RES. BLDG.',
+                            area: 60,
+                            unit: 'sq.m',
+                            market_value: 290400,
+                            assessed_value: 29040,
+                        },
+                        {
+                            arp_no: '2017-0015-00373',
+                            declarant: 'Bola, Abelardo',
+                            lot_no: 'BLDG.',
+                            area: 45,
+                            unit: 'sq.m',
+                            market_value: 247320,
+                            assessed_value: 74200,
+                        },
+                        {
+                            arp_no: '2017-0015-00374',
+                            declarant: 'Bilaos, Jose',
+                            lot_no: 'Res. Bldg.',
+                            area: 80,
+                            unit: 'sq.m',
+                            market_value: 286000,
+                            assessed_value: 28600,
+                        },
+                    ],
+                },
             ]
 
             return Factory;
         }
     ]);
 
-    app.service('NoPropertyDecService', [
+    app.service('PropTaxDecService', [
         '$http',
         function ($http) {
             var _this = this;
@@ -149,29 +199,29 @@ define([
              * @return {[route]}
              */
             // _this.getDetails = function () {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/NoPropertyDec/NoPropertyDecService.php/getTDCount');
+            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/PropTaxDec/PropTaxDecService.php/getTDCount');
             // };
 
             // _this.retire = function (data) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/NoPropertyDec/NoPropertyDecService.php/retireNoPropertyDec', data);
+            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/PropTaxDec/PropTaxDecService.php/retirePropTaxDec', data);
             // };
 
             // _this.archive = function (data) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/NoPropertyDec/NoPropertyDecService.php/archiveNoPropertyDec', data);
+            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/PropTaxDec/PropTaxDecService.php/archivePropTaxDec', data);
             // };
         }
     ]);
 
-    app.controller('NoPropertyDecController', [
+    app.controller('PropTaxDecController', [
         '$scope',
         '$uibModal',
         '$timeout',
         'blockUI',
         'alertify',
-        'NoPropertyDecFactory',
-        'NoPropertyDecService',
+        'PropTaxDecFactory',
+        'PropTaxDecService',
         function ($scope, $uibModal, $timeout, BlockUI, Alertify, Factory, Service) {
-            var _init, _loadDetails, _btnFunc, _viewAccesses, blocker = BlockUI.instances.get('blockNoPropertyDec'), table = angular.element('#no_property_dec');
+            var _init, _loadDetails, _btnFunc, _viewAccesses, blocker = BlockUI.instances.get('blockPropTaxDec'), table = angular.element('#prop_tax_dec');
 
             /**
              * `_loadDetails` Load first needed data
@@ -207,7 +257,7 @@ define([
                         altKey  : true 
                     }, 
                     'action'    : function () { 
-                        $scope.addNoPropertyDec(); 
+                        $scope.addPropTaxDec(); 
                     },
                     enabled     : true,
                     name        : 'add'
@@ -218,17 +268,17 @@ define([
 
             $scope.rowBtns = {
                 "firstButton": function(data, index) {
-                    $scope.viewNoPropertyDec(data, index)
+                    $scope.viewPropTaxDec(data, index)
                 },
                 "secondButton": function(data, index) {
-                    $scope.editNoPropertyDec(data, index)
+                    $scope.editPropTaxDec(data, index)
                 },
                 "thirdButton": function(data, index) {
-                    $scope.deleteNoPropertyDec(data, index)
+                    $scope.deletePropTaxDec(data, index)
                 },
             };
 
-            $scope.addNoPropertyDec = function () {
+            $scope.addPropTaxDec = function () {
                 var paramData, modalInstance;
 
                 paramData = {}
@@ -239,8 +289,8 @@ define([
                     backdrop        : 'static',
                     ariaLabelledBy  : 'modal-title',
                     ariaDescribedBy : 'modal-body',
-                    templateUrl     : 'add_no_property_dec.html',
-                    controller      : 'AddNoPropertyDecController',
+                    templateUrl     : 'add_prop_tax_dec.html',
+                    controller      : 'AddPropTaxDecController',
                     size            : 'md',
                     resolve         : {
                         paramData : function () {
@@ -258,7 +308,7 @@ define([
                 });
             }
 
-            $scope.editNoPropertyDec = function (data, index) {
+            $scope.editPropTaxDec = function (data, index) {
                 var paramData, modalInstance;
 
                 paramData = {
@@ -271,8 +321,8 @@ define([
                     backdrop        : 'static',
                     ariaLabelledBy  : 'modal-title',
                     ariaDescribedBy : 'modal-body',
-                    templateUrl     : 'edit_no_property_dec.html',
-                    controller      : 'EditNoPropertyDecController',
+                    templateUrl     : 'edit_prop_tax_dec.html',
+                    controller      : 'EditPropTaxDecController',
                     size            : 'md',
                     resolve         : {
                         paramData : function () {
@@ -289,37 +339,37 @@ define([
                 });
             }
 
-            // $scope.viewNoPropertyDec = function (data, index) {
-            //     var paramData, modalInstance;
+            $scope.viewPropTaxDec = function (data, index) {
+                var paramData, modalInstance;
 
-            //     paramData = {
-            //         data,
-            //         server_base_url: $scope.server.base_url,
-            //     }
+                paramData = {
+                    data,
+                    server_base_url: $scope.server.base_url,
+                }
 
-            //     modalInstance = $uibModal.open({
-            //         animation       : true,
-            //         keyboard        : false,
-            //         backdrop        : 'static',
-            //         ariaLabelledBy  : 'modal-title',
-            //         ariaDescribedBy : 'modal-body',
-            //         templateUrl     : 'view_tax_declaration.html',
-            //         controller      : 'ViewTaxDeclarationController',
-            //         size            : 'xlg',
-            //         resolve         : {
-            //             paramData : function () {
-            //                 return paramData;
-            //             }
-            //         }
-            //     });
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'view_prop_tax_dec.html',
+                    controller      : 'ViewPropTaxDecController',
+                    size            : 'xlg',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
 
-            //     modalInstance.result.then(function (res) {
-            //     }, function (res) {
-            //         // Result when modal is dismissed
-            //     });
-            // }
+                modalInstance.result.then(function (res) {
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+            }
 
-            $scope.deleteNoPropertyDec = function(data, index){
+            $scope.deletePropTaxDec = function(data, index){
                 Alertify
                 .okBtn("Yes")
                 .cancelBtn("Cancel")
@@ -392,9 +442,9 @@ define([
                 // default settings
                 Factory.autoloadSettings();
 
-                $scope.header.title = "No Property Declaration"
+                $scope.header.title = "Property Tax Declaration"
                 $scope.header.link.sub = "Certifications"
-                $scope.header.link.main = "No Property Declaration"
+                $scope.header.link.main = "Property Tax Declaration"
                 $scope.header.showButton = false
 
                 $scope.templates = Factory.templates;
