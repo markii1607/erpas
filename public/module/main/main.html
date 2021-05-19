@@ -30,7 +30,8 @@
         </div>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" ui-sref="main.tax_declaration">
+            <!-- <a class="nav-link collapsed" ui-sref="main.tax_declaration"> -->
+            <a class="nav-link collapsed" style="cursor: pointer;" ng-click="redirectToModule('tax_declaration', 'RPT')">
                 <i class="fas fa-fw fa-house-user"></i>
                 <span>Tax Declaration of Real Property</span>
             </a>
@@ -45,21 +46,24 @@
         </div>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" ui-sref="main.user_access_configuration">
+            <!-- <a class="nav-link collapsed" ui-sref="main.user_access_configuration"> -->
+            <a class="nav-link collapsed" style="cursor: pointer;" ng-click="redirectToModule('user_access_configuration', 'UAC')">
                 <i class="fas fa-fw fa-users-cog"></i>
                 <span>User Access Configuration</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" ui-sref="main.signatories_configuration">
+            <!-- <a class="nav-link collapsed" ui-sref="main.signatories_configuration"> -->
+            <a class="nav-link collapsed" style="cursor: pointer;" ng-click="redirectToModule('signatories_configuration', 'SSC')">
                 <i class="fas fa-fw fa-pen"></i>
                 <span>Signatories Configuration</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" ui-sref="main.barangays_config">
+            <!-- <a class="nav-link collapsed" ui-sref="main.barangays_config"> -->
+            <a class="nav-link collapsed" style="cursor: pointer;" ng-click="redirectToModule('barangays_config', 'BAC')">
                 <i class="fas fa-fw fa-map-marker-alt"></i>
                 <span>Barangays Configuration</span>
             </a>
@@ -74,9 +78,12 @@
             <div id="market_value" class="collapse" aria-labelledby="market_value" data-parent="#erpasSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <!-- <h6 class="collapse-header">Custom Components:</h6> -->
-                    <a class="collapse-item" ui-sref="main.market_value_classifications">Classifications</a>
+                    <!-- <a class="collapse-item" ui-sref="main.market_value_classifications">Classifications</a>
                     <a class="collapse-item" ui-sref="main.market_value_subclassifications">Sub-Classifications</a>
-                    <a class="collapse-item" ui-sref="main.market_value_revisions">Schedule of Unit Values</a>
+                    <a class="collapse-item" ui-sref="main.market_value_revisions">Schedule of Unit Values</a> -->
+                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('market_value_classifications', 'MVC')">Classifications</a>
+                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('market_value_subclassifications', 'MVS')">Sub-Classifications</a>
+                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('market_value_revisions', 'MVR')">Schedule of Unit Values</a>
                 </div>
             </div>
         </li>
@@ -97,9 +104,12 @@
             <div id="certis" class="collapse" aria-labelledby="certis" data-parent="#erpasSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <!-- <h6 class="collapse-header">Custom Components:</h6> -->
-                    <a class="collapse-item" ui-sref="main.no_property_dec">No Property Declaration</a>
+                    <!-- <a class="collapse-item" ui-sref="main.no_property_dec">No Property Declaration</a>
                     <a class="collapse-item" ui-sref="main.prop_tax_dec">Property Tax Declaration</a>
-                    <a class="collapse-item" ui-sref="#">Properties Declaration</a>
+                    <a class="collapse-item" ui-sref="#">Properties Declaration</a> -->
+                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('no_property_dec', 'NPC')">No Property Declaration</a>
+                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('prop_tax_dec', 'PTD')">Property Tax Declaration</a>
+                    <a class="collapse-item" style="cursor: pointer;">Properties Declaration</a>
                 </div>
             </div>
         </li>
@@ -125,7 +135,7 @@
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content-wrapper" block-ui="blockerMain" class="d-flex flex-column">
         <!-- Main Content -->
         <div id="content">
             <!-- Topbar -->
@@ -182,7 +192,7 @@
                     </li>
 
                     <!-- Nav Item - Alerts -->
-                    <li class="nav-item dropdown no-arrow mx-1">
+                    <li ng-hide="true" class="nav-item dropdown no-arrow mx-1">
                         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-bell fa-fw"></i>
@@ -233,7 +243,7 @@
                     </li>
 
                     <!-- Nav Item - Messages -->
-                    <li class="nav-item dropdown no-arrow mx-1">
+                    <li ng-hide="true" class="nav-item dropdown no-arrow mx-1">
                         <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-envelope fa-fw"></i>
@@ -311,18 +321,18 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                             aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
+                            <!-- <a class="dropdown-item" href="#">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
-                            </a>
-                            <a class="dropdown-item" href="#">
+                            </a> -->
+                            <a class="dropdown-item" style="cursor: pointer;" ng-click="changePassword()">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Settings
+                                Change Password
                             </a>
-                            <a class="dropdown-item" href="#">
+                            <!-- <a class="dropdown-item" href="#">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Activity Log
-                            </a>
+                            </a> -->
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item cursor-pointer" ng-click="signOut()" role="button"> 
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -377,4 +387,8 @@
 
 </div>
 <!-- End of Page Wrapper -->
+<!-- Load modal template -->
+<div class="modal" ng-repeat="template in templates">
+    <ng-include src="template"></ng-include>
+</div>
 

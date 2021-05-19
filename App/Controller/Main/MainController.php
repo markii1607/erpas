@@ -7,6 +7,7 @@ require_once("../../Model/Main/MainQueryHandler.php");
 
 use App\Config\BaseController as BaseController;
 use App\Model\Main\MainQueryHandler as QueryHandler;
+use Exception;
 
 class MainController extends BaseController
 {
@@ -89,5 +90,39 @@ class MainController extends BaseController
         }
 
         session_destroy();
+    }
+
+    public function changePassword($input)
+    {
+        // print_r($_SESSION['user_id']);
+        // die();
+        try {
+            $this->dbCon->beginTransaction();
+
+            $salt = '+^7*_<>/?absdia7has723n7as123';
+
+            $entryData = [
+                'password'    => crypt($input->new_password, $salt),
+                'updated_by'  => $_SESSION['user_id'],
+                'updated_at'  => date('Y-m-d H:i:s'),
+            ];
+
+            $updateUserPassword = $this->dbCon->prepare($this->queryHandler->updateUser($_SESSION['user_id'], $entryData));
+            $status = $updateUserPassword->execute($entryData);
+            $this->systemLogs($_SESSION['user_id'], 'users', 'Main', 'change password');
+        
+            $this->dbCon->commit();
+
+            $output = [
+                'status' => $status
+            ];
+
+            return $output;
+        
+        } catch (Exception $exc) {
+            echo $exc->getMessage();
+            $this->dbCon->rollBack();
+        }
+        
     }
 }
