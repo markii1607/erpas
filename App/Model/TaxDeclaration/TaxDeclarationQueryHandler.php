@@ -226,7 +226,7 @@
             return $initQuery;
         }
 
-        public function selectTDNumbers($rev_id = false, $id = false)
+        public function selectTDNumbers($rev_id = false, $id = false, $td_no = false)
         {
             $fields = [
                 'TD.id',
@@ -245,6 +245,7 @@
 
             $initQuery = ($rev_id)  ? $initQuery->andWhere(['TD.revision_year_id' => ':rev_id']) : $initQuery;
             $initQuery = ($id)      ? $initQuery->andWhere(['TD.id' => ':id']) : $initQuery;
+            $initQuery = ($td_no)   ? $initQuery->andWhere(['TD.td_no' => ':td_no']) : $initQuery;
 
             return $initQuery;
         }

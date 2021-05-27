@@ -380,10 +380,11 @@
             return $revYears->fetchAll(\PDO::FETCH_ASSOC);
         }
 
-        public function getTDNumbers($rev_id = '', $id = '')
+        public function getTDNumbers($rev_id = '', $id = '', $td_no = '')
         {
             $hasRevId = empty($rev_id) ? false : true;
             $hasId    = empty($id)     ? false : true;
+            $hasTdNo  = empty($td_no)  ? false : true;
 
             $data = [
                 'is_active' => 1
@@ -391,8 +392,9 @@
 
             ($hasRevId) ? $data['rev_id'] = $rev_id : '';
             ($hasId)    ? $data['id'] = $id         : '';
+            ($hasTdNo)  ? $data['td_no'] = $td_no   : '';
             
-            $tdNumbers = $this->dbCon->prepare($this->queryHandler->selectTDNumbers($hasRevId, $hasId)->orderBy('TD.td_no, RY.year', 'DESC')->end());
+            $tdNumbers = $this->dbCon->prepare($this->queryHandler->selectTDNumbers($hasRevId, $hasId, $hasTdNo)->orderBy('TD.td_no, RY.year', 'DESC')->end());
             $tdNumbers->execute($data);
 
             return $tdNumbers->fetchAll(\PDO::FETCH_ASSOC);

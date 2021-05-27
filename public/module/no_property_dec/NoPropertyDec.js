@@ -75,22 +75,13 @@ define([
                                 var str = '';
                                 str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-md mr-2 text-white"><i class="fas fa-eye"></i></button>';
                                 str += '<p style="margin-bottom:5px;"></p>';
-                                str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-edit"></i></button>';
-                                str += '<p style="margin-bottom:5px;"></p>';
+                                // str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-edit"></i></button>';
+                                // str += '<p style="margin-bottom:5px;"></p>';
                                 str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-md mr-2 text-white"><i class="fas fa-trash"></i></button>';
 
                                 return str;
                             }
-                        },
-                        {
-                            "targets"   : 2,
-                            "searchable": true,
-                            "orderable" : true,
-                            "className" : "text-left",
-                            "render"    : function(data, type, full, meta) {
-                                return `${data.month} ${data.day}, ${data.year}`
-                            }
-                        },
+                        }
                     ],
                     "columns"      : 
                     [
@@ -101,7 +92,7 @@ define([
                             "data" : null 
                         },
                         { 
-                            "data" : "date"
+                            "data" : "request_date"
                         },
                         { 
                             "data" : "or_no"
@@ -110,7 +101,7 @@ define([
                             "data" : "requestor"
                         },
                         { 
-                            "data" : "declarees"
+                            "data" : "declaree"
                         },
                         { 
                             "data" : "purpose"
@@ -120,31 +111,6 @@ define([
 
                 return options;
             };
-
-            Factory.dummyData = [
-                {
-                    date: {
-                        day: 10,
-                        month: 'September',
-                        year: 2020
-                    },
-                    or_no: '7020342',
-                    requestor: 'Mark Philip C. Bernardo',
-                    declarees: 'SPS. DR. CLEODOSIL R. COPE & RENEE ESTANISLAO',
-                    purpose: 'BIR'
-                },
-                {
-                    date: {
-                        day: 16,
-                        month: 'November',
-                        year: 2020
-                    },
-                    or_no: '5186868',
-                    requestor: 'Helen De Lima',
-                    declarees: 'JOSEPAT N. CLIMACOSA',
-                    purpose: 'DAR Clearance'
-                }
-            ]
 
             return Factory;
         }
@@ -159,9 +125,9 @@ define([
              * `getDetails` Query string that will get first needed details.
              * @return {[route]}
              */
-            // _this.getDetails = function () {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/NoPropertyDec/NoPropertyDecService.php/getTDCount');
-            // };
+            _this.getDetails = function () {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/NoPropertyCertification/NoPropertyCertificationService.php/getDetails');
+            };
 
             // _this.retire = function (data) {
             //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/NoPropertyDec/NoPropertyDecService.php/retireNoPropertyDec', data);
@@ -189,10 +155,19 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
-
-                $scope.jqDataTableOptions         = Factory.dtOptions();
-                $scope.jqDataTableOptions.data    = Factory.dummyData;
-                $scope.jqDataTableOptions.buttons = _btnFunc();
+                blocker.start();
+                Service.getDetails().then(res => {
+                    if (res.data.certifications != undefined) {
+                        $scope.jqDataTableOptions         = Factory.dtOptions();
+                        $scope.jqDataTableOptions.data    = res.data.certifications;
+                        $scope.jqDataTableOptions.buttons = _btnFunc();
+                        
+                        blocker.stop();
+                    } else {
+                        Alertify.error("An error occurred while fetching data. Please contact the administrator.");
+                        blocker.stop();
+                    }
+                });
 
             };
 
@@ -261,9 +236,9 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
-                    // console.log('addREsult: ', res);
-                    // table.DataTable().row.add(res).draw();
-                    // table.find('tbody tr').css('cursor', 'pointer');
+                    console.log('addREsult: ', res);
+                    table.DataTable().row.add(res).draw();
+                    table.find('tbody tr').css('cursor', 'pointer');
                 }, function (res) {
                     // Result when modal is dismissed
                 });
