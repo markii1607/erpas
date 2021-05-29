@@ -88,7 +88,6 @@
                 $user = $this->dbCon->prepare($this->queryHandler->selectUsersDevMode()->end());
                 $user->execute([
                     'username'  => $explodedUsername[0],
-                    'is_active' => 1
                 ]);
     
                 $userDetails = $user->fetchAll(\PDO::FETCH_ASSOC);

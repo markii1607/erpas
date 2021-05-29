@@ -112,12 +112,12 @@ define([
                                 str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-md mr-2 text-white"><i class="fas fa-eye"></i></button>';
                                 str += '<p style="margin-bottom:5px;"></p>';
                                 str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-info btn-md mr-2 text-white"><i class="fas fa-edit"></i></button>';
-                                str += '<p style="margin-bottom:5px;"></p>';
-                                str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Retire" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-ban"></i></button>';
+                                // str += '<p style="margin-bottom:5px;"></p>';
+                                // str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Retire" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-ban"></i></button>';
                                 str += '<p style="margin-bottom:5px;"></p>';
                                 str += '<button type="submit" id="fourthButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-md mr-2 text-white"><i class="fas fa-trash"></i></button>';
-                                str += '<p style="margin-bottom:5px;"></p>';
-                                str += '<button type="submit" id="fifthButton" data-toggle="tooltip" title="Tax Due" class="btn btn-default btn-md mr-2 text-white" style="background-color:#605ca8 !important;"><i class="fas fa-money-bill"></i></button>';
+                                // str += '<p style="margin-bottom:5px;"></p>';
+                                // str += '<button type="submit" id="fifthButton" data-toggle="tooltip" title="Tax Due" class="btn btn-default btn-md mr-2 text-white" style="background-color:#605ca8 !important;"><i class="fas fa-money-bill"></i></button>';
 
                                 return str;
                             }

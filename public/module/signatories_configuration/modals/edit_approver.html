@@ -1,0 +1,163 @@
+<style>
+    /* Hiding the checkbox, but allowing it to be focused */
+    .badgebox
+    {
+        opacity: 0;
+    }
+
+    .badgebox + .badge
+    {
+        /* Move the check mark away when unchecked */
+        text-indent: -999999px;
+        /* Makes the badge's width stay the same checked and unchecked */
+        width: 27px;
+    }
+
+    .badgebox:focus + .badge
+    {
+        /* Set something to make the badge looks focused */
+        /* This really depends on the application, in my case it was: */
+        
+        /* Adding a light border */
+        box-shadow: inset 0px 0px 5px;
+        /* Taking the difference out of the pediting */
+    }
+
+    .badgebox:checked + .badge
+    {
+        /* Move the check mark back when checked */
+        text-indent: 0;
+    }
+
+    .default-btn 
+    {
+        background-color: #f4f4f4;
+        color: #444;
+        border-color: #ddd;
+    }
+
+    .lbl-super
+    {
+        background-color:#ED3850; 
+        color: white; 
+    }
+
+    .lbl-admin
+    {
+        background-color:#ED389A; 
+        color: white; 
+    }
+
+    .lbl-treas
+    {
+        background-color:#38C3ED; 
+        color: white; 
+    }
+
+    .lbl-acctg
+    {
+        background-color:#38E6ED; 
+        color: white; 
+    }
+
+</style>
+<script type="text/ng-template" id="edit_approver.html">
+    <div block-ui="blockAddUser">
+        <form name="form.editApprover" ng-submit="save(form.editApprover.$valid)" novalidate>
+            <div class="modal-header align-items-center">
+				<span class="fa-stack fa-lg">
+	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+	                <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+	            </span>
+
+				<h5 class="modal-title" style="letter-spacing: 1px;">ADD SET OF APPROVERS</h5>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+	                <span aria-hidden="true">
+	                    <i class="fas fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group mb-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="card bg-light text-dark">
+                                        <div class="card-body">
+                                            <p style="font-size:16px;" class="text-center"><b>PROVINCIAL</b></p>
+                                        </div>
+                                    </div>
+                                    <p style="margin-top:10px; margin-bottom:10px;"></p>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <b>NAME<i class="text-danger">*</i></b>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" ng-model="editApprover.approvers.prov.name" class="form-control" id="prov_name" placeholder="Enter Name..." autocomplete="off" required />
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:10px;">
+                                        <div class="col-3">
+                                            <b>POSITION<i class="text-danger">*</i></b>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" ng-model="editApprover.approvers.prov.position" class="form-control" id="prov_position" placeholder="Enter Position..." autocomplete="off" required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card bg-light text-dark">
+                                        <div class="card-body">
+                                            <p style="font-size:16px;" class="text-center"><b>MUNICIPAL</b></p>
+                                        </div>
+                                    </div>
+                                    <p style="margin-top:10px; margin-bottom:10px;"></p>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <b>NAME<i class="text-danger">*</i></b>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" ng-model="editApprover.approvers.mun.name" class="form-control" id="mun_name" placeholder="Enter Name..." autocomplete="off" required />
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:10px;">
+                                        <div class="col-3">
+                                            <b>POSITION<i class="text-danger">*</i></b>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" ng-model="editApprover.approvers.mun.position" class="form-control" id="mun_position" placeholder="Enter Position..." autocomplete="off" required />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+						</div>
+                        <!-- <div class="form-group mb-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="department" class="font-weight-bold">Department:<i class="text-danger">*</i></label>
+                                    <input type="text" ng-model="editApprover.department" class="form-control" id="department" placeholder="Enter Department..." autocomplete="off" required />
+                                </div>
+                                <div class="col-6">
+                                    <label for="position" class="font-weight-bold">Position:<i class="text-danger">*</i></label>
+                                    <input type="text" ng-model="editApprover.position" class="form-control" id="position" placeholder="Enter Position..." autocomplete="off" required />
+                                </div>
+                            </div>
+						</div> -->
+                        
+                        <p class="text-danger font-italic" style="font-size: 10px;">* Fields are required.</p>
+                    </div>
+                </div>            	
+            </div>
+            <div class="modal-footer bordered">
+				<button type="submit" class="btn btn-default bg-crimson-red" ng-disabled="form.editApprover.$invalid">
+					<span>SAVE</span>
+				</button>
+				<button type="button" class="btn btn-default" ng-click="closeModal()">
+					<span>CLOSE</span>
+				</button>
+			</div>
+        </form>
+    </div>
+</script>

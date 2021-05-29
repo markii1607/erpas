@@ -61,6 +61,21 @@
             return $newIncrement;
         }
 
+        public function checkTDNoDuplicate($input)
+        {
+            // print_r($input);
+            // die();
+            $tdNumberStr = $this->setTaxDecNo($input->td_no);
+            $chechTDData = $this->getTDNumbers('', '', $tdNumberStr);
+
+            $output = [
+                'hasDuplicate'  => !empty($chechTDData) ? true : false,
+                'td_no'         => $tdNumberStr
+            ];
+
+            return $output;
+        }
+
         public function saveNewTaxDeclaration($input)
         {
             // print_r($this->convertValue(15, 'ha.'));

@@ -43,9 +43,9 @@
                                     </ui-select>
                                 </div>
                                 <div class="col-6">
-                                    <label for="rev_no" class="font-weight-bold">Revision Year:<i class="text-danger">*</i></label>
+                                    <label for="rev_no" class="font-weight-bold">Effectivity of Assessment:<i class="text-danger">*</i></label>
                                     <ui-select ng-model="editRev.revision_year" id="rev_no" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
-                                        <ui-select-match placeholder="Select Revision Year">
+                                        <ui-select-match placeholder="Select Effectivity of Assessment">
                                             {{ $select.selected.year }}
                                         </ui-select-match>
                                         <ui-select-choices style="font-size: 12px;" repeat="rvn in revision_years | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
@@ -78,13 +78,13 @@
                         <div class="form-group mb-3">
                             <div class="row">
                                 <div class="col-6">
-                                    <label for="market_value" class="font-weight-bold">Market Value:<i class="text-danger">*</i></label>
-                                    <input type="number" ng-model="editRev.market_value" class="form-control" id="market_value" placeholder="Enter Market Value..." autocomplete="off" required />
+                                    <label for="market_value" class="font-weight-bold">Unit Value:<i class="text-danger">*</i></label>
+                                    <input type="number" ng-model="editRev.market_value" class="form-control" id="market_value" placeholder="Enter Unit Value..." autocomplete="off" required />
                                 </div>
                                 <div class="col-4">
-                                    <label for="unit" class="font-weight-bold">Unit of Measurement:<i class="text-danger">*</i></label>
+                                    <label for="unit" class="font-weight-bold">Area:<i class="text-danger">*</i></label>
                                     <ui-select ng-model="editRev.unit" id="unit" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
-                                        <ui-select-match placeholder="Unit">
+                                        <ui-select-match placeholder="Area">
                                             {{ $select.selected.name }}
                                         </ui-select-match>
                                         <ui-select-choices style="font-size: 12px;" repeat="unit in units | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">

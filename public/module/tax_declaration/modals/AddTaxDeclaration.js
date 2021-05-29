@@ -43,6 +43,10 @@ define([
                 return $http.get(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/AddTaxDeclarationService.php/getIncrementingTDNumber?rev_id=' + rev_id);
             }
 
+            _this.checkTDNoDuplicate = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/AddTaxDeclarationService.php/checkTDNoDuplicate', {td_no : data});
+            }
+
             _this.save = function (data) {
                 return $http.post(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/AddTaxDeclarationService.php/saveNewTaxDeclaration', data);
             }
@@ -213,23 +217,38 @@ define([
              */
             $scope.save = function (isValid) {
                 if (isValid) {
-                    Alertify.confirm("Are you sure you want to add this tax declaration?",
-                        function () {
-                            blocker.start();
-
-                            Service.save($scope.addTaxDec).then( function (res) {
-                                if (res.data.status) {
-                                    Alertify.success("Tax Declaration successfully added!");
-
-                                    $uibModalInstance.close(res.data.rowData);
-                                    blocker.stop();
-                                } else {
-                                    Alertify.error("An error occurred while saving! Please contact the administrator.");
-                                    blocker.stop();
-                                }
-                            });
+                    blocker.start();
+                    Service.checkTDNoDuplicate($scope.addTaxDec.td_no).then(tdChk => {
+                        if (tdChk.data.hasDuplicate != undefined) {
+                            if (!tdChk.data.hasDuplicate) {
+                                Alertify.confirm("Are you sure you want to add this tax declaration?",
+                                    function () {
+                                        blocker.start();
+                                        
+                                        Service.save($scope.addTaxDec).then( function (res) {
+                                            if (res.data.status) {
+                                                Alertify.success("Tax Declaration successfully added!");
+        
+                                                $uibModalInstance.close(res.data.rowData);
+                                                blocker.stop();
+                                            } else {
+                                                Alertify.error("An error occurred while saving! Please contact the administrator.");
+                                                blocker.stop();
+                                            }
+                                        });
+                                    }
+                                );
+                            } else {
+                                Alertify.alert("Tax Declaration No. <u><b><i>" + tdChk.data.td_no + "</i></b></u> is already existing on the database. Please provide new TD No. to proceed.");
+                            }
+                            
+                            blocker.stop();
+                        } else {
+                            Alertify.error('An error occurred while validating entries. Please contact the administrator.');
+                            blocker.stop();
                         }
-                    );
+
+                    });
                 } else {
                     Alertify.error("All fields marked with * are required!");
                 }

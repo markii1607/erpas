@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="add_no_property_dec.html">
     <div block-ui="blockAddNoPropertyDec">
-        <form name="form.addNoPropertyDec" ng-submit="save(form.addNoPropertyDec.$valid)" novalidate>
+        <form name="form.addNoPropertyDec" novalidate>
             <div class="modal-header align-items-center">
 				<span class="fa-stack fa-lg">
 	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
@@ -17,35 +17,86 @@
             </div>
             <div class="modal-body" id="modal-body">
                 <div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					&nbsp;&nbsp;&nbsp;<label for="declarees" class="font-weight-bold">Declaree/s Complete Name/s<i class="text-danger">*</i></label>
+					<div class="col-9">
 						<div class="form-group">
-							<label for="or_no" class="font-weight-bold">OR No.<i class="text-danger">*</i></label>
-							<input type="text" ng-model="addNoPropDec.or_no" class="form-control" id="or_no" placeholder="Enter OR No..." autocomplete="off" required />
-						</div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<div class="form-group">
-							<label for="requestor" class="font-weight-bold">Requestor Complete Name<i class="text-danger">*</i></label>
-							<input type="text" ng-model="addNoPropDec.requestor" class="form-control" id="requestor" placeholder="Enter Requestor Name..." autofocus autocomplete="off" required />
-						</div>
-                    </div>
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<div class="form-group">
-							<label for="declarees" class="font-weight-bold">Declaree/s Complete Name/s<i class="text-danger">*</i></label>
-							<input type="text" ng-model="addNoPropDec.declarees" class="form-control" id="declarees" placeholder="Enter Declaree/s Name/s..." autocomplete="off" required />
+							<input type="text" ng-model="addNoPropDec.declarees" class="form-control" ng-change="reset()" id="declarees" placeholder="Enter Declaree/s Name/s..." autocomplete="off" required />
 							<small>If multiple names, separate it with '&'</small>
 						</div>
                     </div>
+					<div class="col-3">
+						<center>
+							<button type="submit" class="btn btn-success" ng-if="withExistingRecords" ng-disabled="addNoPropDec.declarees == undefined || addNoPropDec.declarees == ''" ng-click="verifyDeclareeRecords()">
+								<i class="fas fa-id-badge"></i> <span>VERIFY RECORDS</span>
+							</button>
+						</center>
+					</div>
+				</div>
+				<div class="row" ng-if="!withExistingRecords">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<div class="form-group">
-							<label for="purpose" class="font-weight-bold">Purpose<i class="text-danger">*</i></label>
-							<input type="text" ng-model="addNoPropDec.purpose" class="form-control" id="purpose" placeholder="Enter Purpose..." autocomplete="off" required />
+						<div class="row">
+							<div class="col-12">
+								<div class="form-group">
+									<label for="requestor" class="font-weight-bold">Requestor Complete Name<i class="text-danger">*</i></label>
+									<input type="text" ng-model="addNoPropDec.requestor" class="form-control" id="requestor" placeholder="Enter Requestor Name..." autofocus autocomplete="off" required />
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-6">
+								<div class="form-group">
+									<label for="or_no" class="font-weight-bold">OR No.<i class="text-danger">*</i></label>
+									<input type="text" ng-model="addNoPropDec.or_no" class="form-control" id="or_no" placeholder="Enter OR No..." autocomplete="off" required />
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="form-group">
+									<label for="amount_paid" class="font-weight-bold">Amount Paid<i class="text-danger">*</i></label>
+									<input type="text" ng-model="addNoPropDec.amount_paid" class="form-control" id="amount_paid" placeholder="Enter Amount Paid..." autocomplete="off" required />
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-8">
+								<label for="purpose" class="font-weight-bold">Purpose<i class="text-danger">*</i></label>
+								<textarea ng-model="addNoPropDec.purpose" rows="3" class="form-control resize-none" id="purpose" placeholder="Enter Purpose..." autocomplete="off" required></textarea>
+							</div>
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-6">
+								<div class="form-group">
+									<label for="prepared_by" class="font-weight-bold">Prepared By:<i class="text-danger">*</i></label>
+									<ui-select ng-model="addNoPropDec.prepared_by" id="prepared_by" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+										<ui-select-match placeholder="Select User">
+											<span>{{ $select.selected.full_name }}</span>
+										</ui-select-match>
+										<ui-select-choices style="font-size: 12px;" repeat="user in users | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+											<span class="text-uppercase"><b>{{user.full_name}}</b></span><br>
+											<small>{{user.position}}</small>
+										</ui-select-choices>
+									</ui-select>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="form-group">
+									<label for="verified_by" class="font-weight-bold">Verified By:<i class="text-danger">*</i></label>
+									<ui-select ng-model="addNoPropDec.verified_by" id="verified_by" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+										<ui-select-match placeholder="Select User">
+											<span>{{ $select.selected.full_name }}</span>
+										</ui-select-match>
+										<ui-select-choices style="font-size: 12px;" repeat="user in users | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+											<span class="text-uppercase"><b>{{user.full_name}}</b></span><br>
+											<small>{{user.position}}</small>
+										</ui-select-choices>
+									</ui-select>
+								</div>
+							</div>
 						</div>
                     </div>
-                </div>            	
+                </div>        	
             </div>
             <div class="modal-footer bordered">
-				<button type="submit" class="btn btn-default bg-crimson-red" ng-disabled="form.addNoPropertyDec.$invalid">
+				<button type="submit" class="btn btn-default bg-crimson-red" ng-if="!withExistingRecords" ng-disabled="form.addNoPropertyDec.$invalid" ng-click="save()">
 					<span>SAVE</span>
 				</button>
 				<button type="button" class="btn btn-default" ng-click="closeModal()">
