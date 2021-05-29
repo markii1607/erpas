@@ -1,7 +1,7 @@
 define([
     'app'
 ], function (app) {
-    app.factory('AddNoPropertyDecFactory', [
+    app.factory('AddPropTaxDecFactory', [
         'alertify',
         function (alertify) {
             var Factory = {};
@@ -16,11 +16,22 @@ define([
                 alertify.theme('')
             };
 
+            Factory.units = [
+                {
+                    id: 1,
+                    name: 'sq.m'
+                },
+                {
+                    id: 2,
+                    name: 'ha'
+                },
+            ]
+
             return Factory;
         }
     ]);
 
-    app.service('AddNoPropertyDecService', [
+    app.service('AddPropTaxDecService', [
         '$http',
         function ($http) {
             var _this = this;
@@ -31,7 +42,7 @@ define([
         }
     ]);
 
-    app.controller('AddNoPropertyDecController', [
+    app.controller('AddPropTaxDecController', [
         '$scope',
         '$uibModal',
         '$uibModalInstance',
@@ -40,16 +51,33 @@ define([
         'blockUI',
         'alertify',
         'paramData',
-        'AddNoPropertyDecFactory',
-        'AddNoPropertyDecService',
+        'AddPropTaxDecFactory',
+        'AddPropTaxDecService',
         function ($scope, $uibModal, $uibModalInstance, $timeout, $filter, BlockUI, Alertify, ParamData, Factory, Service) {
-            var _init, _loadDetails, blocker = BlockUI.instances.get('blockAddNoPropertyDec');
+            var _init, _loadDetails, blocker = BlockUI.instances.get('blockAddPropTaxDec');
 
             /**
              * `_loadDetails` Load first Needed details.
              * @return {[mixed]}
              */
             _loadDetails = function () {
+                $scope.units = angular.copy(Factory.units)
+            }
+
+            $scope.addRow = function() {
+                $scope.addPropTaxDec.arps.push({
+                    arp_no: null,
+                    declarant: null,
+                    lot_no: null,
+                    area: null,
+                    unit: null,
+                    market_value: null,
+                    assessed_value: null,
+                })
+            }
+
+            $scope.removeRow = function(index) {
+                $scope.addPropTaxDec.arps.splice(index, 1)
             }
 
             /**
@@ -95,7 +123,17 @@ define([
                 // default settings
                 Factory.autoloadSettings();
                 
-                $scope.addNoPropDec = {};
+                $scope.addPropTaxDec = {
+                    arps: [{
+                        arp_no: null,
+                        declarant: null,
+                        lot_no: null,
+                        area: null,
+                        unit: null,
+                        market_value: null,
+                        assessed_value: null,
+                    }]
+                };
 
                 _loadDetails();
             };

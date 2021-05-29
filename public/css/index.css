@@ -637,6 +637,10 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
     font-size: 30px;
 }
 
+.font-32 {
+    font-size: 32px;
+}
+
 .inline {
     display: inline-block;
 }
@@ -651,4 +655,22 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
 
 .white-space-pre {
     white-space: pre;
+}
+
+.table-custom {
+    color: black;
+}
+
+.table-custom td, .table-custom th {
+    border-color: black;
+    color: black;
+    font-family: 'Arial', serif;
+}
+
+.table-custom thead th {
+    border-bottom: 1px solid black !important;
+}
+
+.table-custom tbody+tbody {
+    border-top: 1px solid black !important;
 }

@@ -138,6 +138,7 @@ define([
                         year: 2020
                     },
                     td_no: '2017-0015-00370',
+                    effectivity: 2018,
                     or_no: '7666041',
                     lot_no: '1914',
                     requestor: 'Nerissa Sugiyama',
@@ -150,7 +151,10 @@ define([
                             declarant: 'Bitara, Joshua',
                             lot_no: 'CANTEEN',
                             area: 25,
-                            unit: 'sq.m',
+                            unit: {
+                                id: 1,
+                                name: 'sq.m'
+                            },
                             market_value: 93500,
                             assessed_value: 28050,
                         },
@@ -159,7 +163,10 @@ define([
                             declarant: 'Bitara, Cynthia',
                             lot_no: 'RES. BLDG.',
                             area: 60,
-                            unit: 'sq.m',
+                            unit: {
+                                id: 1,
+                                name: 'sq.m'
+                            },
                             market_value: 290400,
                             assessed_value: 29040,
                         },
@@ -168,7 +175,10 @@ define([
                             declarant: 'Bola, Abelardo',
                             lot_no: 'BLDG.',
                             area: 45,
-                            unit: 'sq.m',
+                            unit: {
+                                id: 1,
+                                name: 'sq.m'
+                            },
                             market_value: 247320,
                             assessed_value: 74200,
                         },
@@ -177,7 +187,10 @@ define([
                             declarant: 'Bilaos, Jose',
                             lot_no: 'Res. Bldg.',
                             area: 80,
-                            unit: 'sq.m',
+                            unit: {
+                                id: 1,
+                                name: 'sq.m'
+                            },
                             market_value: 286000,
                             assessed_value: 28600,
                         },
@@ -291,7 +304,7 @@ define([
                     ariaDescribedBy : 'modal-body',
                     templateUrl     : 'add_prop_tax_dec.html',
                     controller      : 'AddPropTaxDecController',
-                    size            : 'md',
+                    size            : 'xxlg',
                     resolve         : {
                         paramData : function () {
                             return paramData;
@@ -323,7 +336,7 @@ define([
                     ariaDescribedBy : 'modal-body',
                     templateUrl     : 'edit_prop_tax_dec.html',
                     controller      : 'EditPropTaxDecController',
-                    size            : 'md',
+                    size            : 'xxlg',
                     resolve         : {
                         paramData : function () {
                             return paramData;

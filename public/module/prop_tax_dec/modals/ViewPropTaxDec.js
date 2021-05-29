@@ -3,7 +3,7 @@ define([
     'moment',
     'airDatepickeri18n',
 ], function(app, moment, airDatepickeri18n) {
-    app.factory('ViewNoPropertyDecFactory', [
+    app.factory('ViewPropTaxDecFactory', [
         'alertify',
         function(alertify) {
             var Factory = {};
@@ -22,7 +22,7 @@ define([
         }
     ]);
 
-    app.service('ViewNoPropertyDecService', [
+    app.service('ViewPropTaxDecService', [
         '$http',
         function($http) {
             var _this = this;
@@ -37,7 +37,7 @@ define([
         }
     ]);
 
-    app.controller('ViewNoPropertyDecController', [
+    app.controller('ViewPropTaxDecController', [
         '$scope',
         '$uibModalInstance',
         '$timeout',
@@ -46,10 +46,10 @@ define([
         'blockUI',
         'alertify',
         'paramData',
-        'ViewNoPropertyDecFactory',
-        'ViewNoPropertyDecService',
+        'ViewPropTaxDecFactory',
+        'ViewPropTaxDecService',
         function($scope, $uibModalInstance, $timeout, $location, $filter, BlockUI, Alertify, paramData, Factory, Service) {
-            var _init, _loadDetails, blocker = BlockUI.instances.get('blockViewNoPropertyDec');
+            var _init, _loadDetails, blocker = BlockUI.instances.get('blockViewPropTaxDec');
 
             /**
              * `_loadDetails` Loading of first needed data from database.
