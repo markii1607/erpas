@@ -107,9 +107,17 @@ define([
                         $location.path('main/' + link);
                     }
                 } else if ($scope.userDetails.access_type == 3) {  // TREASURER
-                    Alertify.log('You don\'t have access to this module.');
+                    if (moduleAlias == 'TREAS') {
+                        $location.path('main/' + link);
+                    } else {
+                        Alertify.log('You don\'t have access to this module.');
+                    }
                 } else if ($scope.userDetails.access_type == 4) {  // ACCOUNTING
-                    Alertify.log('You don\'t have access to this module.');
+                    if (moduleAlias == 'ACCT') {
+                        $location.path('main/' + link);
+                    } else {
+                        Alertify.log('You don\'t have access to this module.');
+                    }
                 }
             }
 

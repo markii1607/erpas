@@ -1,0 +1,22 @@
+TREASURER'S MODULE FEATURES:
+
+- Date Range Field
+- Monitoring Data Table
+- Add Payment Transaction
+    => td_no (selection --- td numbers where is_paid IS NULL)
+    => view td form (button)
+        => set payment details (button)
+            Fields : 
+            => OR no. (text)
+            => amount_paid (number)
+            => payee (text)
+            => date_paid (date)
+                payment_details = 
+                {
+                    'or_no'         => '',
+                    'amount_paid    => '',
+                    'payee'         => '',
+                    'paid_at'       => ''
+                }
+
+            
