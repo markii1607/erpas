@@ -86,6 +86,13 @@ define(function() {
             "templateUrl": "/public/module/prop_tax_dec/prop_tax_dec.html",
             "deps": "/public/module/prop_tax_dec/index.js"
         },
+        {
+            "name": "main.properties_dec",
+            "url": "/properties_dec",
+            "controller": "PropertiesDecController",
+            "templateUrl": "/public/module/properties_dec/properties_dec.html",
+            "deps": "/public/module/properties_dec/index.js"
+        },
     ];
 
     return routes;

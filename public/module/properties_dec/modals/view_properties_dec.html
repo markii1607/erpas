@@ -1,0 +1,119 @@
+<script type="text/ng-template" id="view_properties_dec.html">
+    <div block-ui="blockViewPropertiesDec">
+		<div class="modal-header align-items-center">
+			<span class="fa-stack fa-lg">
+				<i class="fas fa-square fa-stack-2x text-crimson"></i>
+				<i class="fas fa-eye fa-stack-1x fa-inverse"></i>
+			</span>
+
+			<h5 class="modal-title" style="letter-spacing: 1px;">PRINT PREVIEW</h5>
+
+			<button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+				<span aria-hidden="true">
+					<i class="fas fa-times"></i>
+				</span>
+			</button>
+		</div>
+		<div class="modal-body landscape" id="print-identifier" style="padding-left: 30px; padding-right: 30px;">
+			<div class="row mb-0 align-items-start pt-5">
+				<div class="col-3">
+					<div id="logo_albay" class="text-right">
+						<img class="w-35" src="{{ server_base_url }}/public/img/lgu_malilipot.png" alt="LGU Malilipot Logo" />
+					</div>
+				</div>
+				<div class="col-6">
+					<p class="font-arial text-center mb-0 font-12-l">Republic of the Philippines</p>
+					<p class="font-arial text-center mb-0 font-12-l">Province of Albay</p>
+					<p class="font-arial text-center mb-0 font-12-l">Municipality of Malilipot</p>
+					<h4 class="font-arial font-15 font-weight-bold text-center mb-4">OFFICE OF THE MUNICIPAL ASSESSOR</h4>
+				</div>
+				<div class="col-3"></div>
+			</div>
+			<div class="row mb-2 align-items-center">
+				<div class="col-12">
+					<h4 class="font-times font-15 font-weight-bold text-center mb-2" style="margin: 0 auto; width: 95%; padding-bottom: 7px; letter-spacing: 10px; border-bottom: 3px solid black;">CERTIFICATION</h4>
+				</div>
+			</div>
+			<div class="row mb-2 align-items-center" style="padding-left: 2rem; padding-right: 2rem;">
+				<div class="col-12">
+					<p class="font-arial mb-0 text-justify font-weight-bold font-11-l">TO WHOM IT MAY CONCERN:</p>
+				</div>
+			</div>
+			<div class="row mb-2 align-items-center" style="padding-left: 2rem; padding-right: 2rem; text-indent: 20px;">
+				<div class="col-12">
+					<p class="font-arial mb-0 text-justify font-11-l">
+						This is to certify that as per available records of this office, the person/s named hereunder is/are the declared 
+						owner/s of the properties describer below.
+					</p>
+				</div>
+			</div>
+			<div class="row mb-2 align-items-center" style="padding-left: 2rem; padding-right: 2rem;">
+				<div class="col-12">
+					<table class="table table-bordered table-custom mb-0">
+						<thead>
+							<tr>
+								<th class="font-11-l text-uppercase text-center vertical-align-center" style="vertical-align: middle !important;">TD/ARP NO.</th>
+								<th class="font-11-l text-uppercase text-center" style="vertical-align: middle !important;">DECLARANT</th>
+								<th class="font-11-l text-uppercase text-center" style="vertical-align: middle !important;">KIND OF PROPERTY</th>
+								<th class="font-11-l text-uppercase text-center" style="vertical-align: middle !important;">LOCATION OF PROPERTY</th>
+								<th class="font-11-l text-uppercase text-center" style="vertical-align: middle !important;">LOT NO.</th>
+								<th class="font-11-l text-uppercase text-center" style="vertical-align: middle !important;">AREA</th>
+								<th class="font-11-l text-uppercase text-center" style="vertical-align: middle !important;">MARKET VALUE</th>
+								<th class="font-11-l text-uppercase text-center" style="vertical-align: middle !important;">ASSESSED VALUE</th>
+							</tr>
+						</thead>						
+                        <tbody>
+                            <tr ng-repeat="r in data.properties">
+                                <td class="font-11-l text-uppercase font-weight-bold text-center">{{ r.td_no }}</td>
+                                <td class="font-11-l text-uppercase font-weight-bold text-center">{{ r.declarant }}</td>
+                                <td class="font-11-l font-weight-bold text-center">{{ r.type }}</td>
+                                <td class="font-11-l text-uppercase font-weight-bold text-center">{{ r.location }}</td>
+                                <td class="font-11-l text-uppercase font-weight-bold text-center">{{ r.lot_no }}</td>
+                                <td class="font-11-l text-uppercase font-weight-bold text-center">{{ r.area }}</td>
+                                <td class="font-11-l text-uppercase font-weight-bold text-center">{{ r.market_value | number: 2 }}</td>
+                                <td class="font-11-l text-uppercase font-weight-bold text-center">{{ r.assessed_value | number: 2 }}</td>
+                            </tr>
+                        </tbody>
+					</table>
+				</div>
+			</div>
+			<div class="row mb-3 align-items-center" style="padding-left: 2rem; padding-right: 2rem; text-indent: 20px;">
+				<div class="col-12">
+					<p class="font-arial mb-0 text-justify font-11-l">
+						Issued this {{ data.date.day }}<sup>{{ data.date.day_ord }}</sup> day of {{ data.date.month }}, {{ data.date.year }} 
+						upon the request of <b class="text-uppercase">{{ data.requestor }}</b> who said that this certification 
+						will be used for {{ data.purpose }} purposes.
+					</p>
+				</div>
+			</div>
+			<div class="row mb-2 align-items-start">
+				<div class="col-6"></div>
+				<div class="col-3">
+					<p class="font-arial mb-3 font-11-l">Research/Prepared by:</p>
+					<p class="font-arial mb-0 font-weight-bold font-11-l"><u>MAE ANNJENETTE CASIMIRO</u></p>
+				</div>
+				<div class="col-3">
+					<p class="font-arial mb-3 font-11-l">Verified by:</p>
+					<p class="font-arial mb-0 font-weight-bold font-11-l"><u>NATIVIDAD C. KRISHNAN, REA</u></p>
+					<p class="font-arial mb-0 font-11-l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Municipal Assessor</p>
+				</div>
+			</div>
+			<div class="row mb-4 align-items-center" style="padding-left: 2rem; padding-right: 2rem;">
+				<div class="col-12">
+					<p class="font-arial mb-0 font-11-l">Paid Under: P20.00</p>
+					<p class="font-arial mb-0 font-11-l">OR No. {{ data.or_no }}</p>
+					<p class="font-arial mb-0 font-11-l">Dated: {{ data.date.month }} {{ data.date.day }}, {{ data.date.year }}</p>
+					<p class="font-arial mb-0 font-11-l">MTO, Malilipot, Albay</p>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer bordered">
+			<button type="submit" class="btn btn-default bg-crimson-red" ng-click="print()">
+				<span>PRINT</span>
+			</button>
+			<button type="button" class="btn btn-default" ng-click="closeModal()">
+				<span>CLOSE</span>
+			</button>
+		</div>
+    </div>
+</script>

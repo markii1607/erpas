@@ -251,8 +251,24 @@ a.text-crimson:focus,a.text-crimson:hover {
     resize: none;
 }
 
+
+.w-35 {
+    width: 35%;
+    margin: auto;
+}
+
+.w-45 {
+    width: 45%;
+    margin: auto;
+}
+
 .w-50 {
     width: 50%;
+    margin: auto;
+}
+
+.w-60 {
+    width: 60%;
     margin: auto;
 }
 
@@ -609,6 +625,16 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
     line-height: 1.8rem;
 }
 
+.font-11-l {
+    font-size: 10px;
+    line-height: 1rem;
+}
+
+.font-12-l {
+    font-size: 13px;
+    line-height: 1.1rem;
+}
+
 .font-12 {
     font-size: 13px;
 }
@@ -625,8 +651,16 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
     font-size: 18px;
 }
 
+.font-18 {
+    font-size: 20px;
+}
+
 .font-20 {
     font-size: 22px;
+}
+
+.font-23 {
+    font-size: 25px;
 }
 
 .font-25 {
