@@ -101,6 +101,7 @@ define([
                 Factory.autoloadSettings();
 
                 $scope.data = paramData.data
+                console.log($scope.data);
                 $scope.server_base_url = paramData.server_base_url;
 
                 _loadDetails();

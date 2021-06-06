@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2021 at 08:07 AM
+-- Generation Time: Jun 02, 2021 at 12:25 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -69,22 +69,9 @@ CREATE TABLE `tax_declarations` (
   `approvers` text NOT NULL,
   `memoranda` text DEFAULT NULL,
   `status` int(5) DEFAULT 1 COMMENT '1-active | 2-retired | 3-canceled',
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `created_by` int(5) UNSIGNED NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_by` int(5) UNSIGNED NOT NULL,
-  `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `tax_declarations`
---
-ALTER TABLE `tax_declarations`
-  ADD PRIMARY KEY (`id`);
+  `is_paid` tinyint(1) DEFAULT NULL,
+  `payment_details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
+) ;
 
 --
 -- AUTO_INCREMENT for dumped tables

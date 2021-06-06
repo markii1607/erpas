@@ -1,7 +1,8 @@
 define([
-    'app'
+    'app',
+    'airDatepickeri18n'
 ], function (app) {
-    app.factory('TaxDeclarationFactory', [
+    app.factory('TreasurerTdMonitoringFactory', [
         'alertify',
         function (alertify) {
             var Factory = {};
@@ -64,7 +65,7 @@ define([
                     "serverSide"     : true,
                     "ajax"           : 
                     {
-                        "url"  : APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/TaxDeclarationService.php/getDetails',
+                        "url"  : APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/TreasurerTdMonitoringService.php/getDetails',
                         "data" : function (data) {
                             var temp = {
                                 'advanced_search' : {
@@ -110,12 +111,12 @@ define([
                             "render"    : function(data, type, full, meta) {
                                 var str = '';
                                 str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-md mr-2 text-white"><i class="fas fa-eye"></i></button>';
-                                str += '<p style="margin-bottom:5px;"></p>';
-                                str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-info btn-md mr-2 text-white"><i class="fas fa-edit"></i></button>';
+                                // str += '<p style="margin-bottom:5px;"></p>';
+                                // str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-info btn-md mr-2 text-white"><i class="fas fa-edit"></i></button>';
                                 // str += '<p style="margin-bottom:5px;"></p>';
                                 // str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Retire" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-ban"></i></button>';
-                                str += '<p style="margin-bottom:5px;"></p>';
-                                str += '<button type="submit" id="fourthButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-md mr-2 text-white"><i class="fas fa-trash"></i></button>';
+                                // str += '<p style="margin-bottom:5px;"></p>';
+                                // str += '<button type="submit" id="fourthButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-md mr-2 text-white"><i class="fas fa-trash"></i></button>';
                                 // str += '<p style="margin-bottom:5px;"></p>';
                                 // str += '<button type="submit" id="fifthButton" data-toggle="tooltip" title="Tax Due" class="btn btn-default btn-md mr-2 text-white" style="background-color:#605ca8 !important;"><i class="fas fa-money-bill"></i></button>';
 
@@ -123,28 +124,13 @@ define([
                             }
                         },
                         {
-                            "targets"   : 7,
+                            "targets"   : 6,
                             "searchable": true,
                             "orderable" : true,
                             "className" : "text-left",
                             "render"    : function(data, type, full, meta) {
                                 var strStreet = (data != '' && data != null) ? data + ', ' : '';
                                 return strStreet + full.barangay.name + ', Malilipot, Albay';
-                            }
-                        },
-                        {
-                            "targets"   : 8,
-                            "searchable": false,
-                            "orderable" : false,
-                            "className" : "text-center",
-                            "render"    : function(data, type, full, meta) {
-                                if (data == '1') {
-                                    return '<span style="display: inline; padding: .2em .6em .3em; background-color:#5cb85c; color: white; border-radius: 25px; font-size: 12px; font-weight: 500">ACTIVE</span>';
-                                } else if (data == '2') {
-                                    return '<span style="display: inline; padding: .2em .6em .3em; background-color:#f0ad4e; color: white; border-radius: 25px; font-size: 12px; font-weight: 500">RETIRED</span>';
-                                } else if (data == '3') {
-                                    return '<span style="display: inline; padding: .2em .6em .3em; background-color:#d9534f; color: white; border-radius: 25px; font-size: 12px; font-weight: 500">CANCELED</span>';
-                                }
                             }
                         }
                     ],
@@ -155,9 +141,6 @@ define([
                         },
                         { 
                             "data" : null 
-                        },
-                        { 
-                            "data" : "rev_year"
                         },
                         { 
                             "data" : "td_no"
@@ -175,7 +158,10 @@ define([
                             "data" : "prop_location_street"
                         },
                         { 
-                            "data" : "status"
+                            "data" : "total_assessed_value"
+                        },
+                        { 
+                            "data" : "payment_details"
                         },
                     ]
                 };
@@ -187,7 +173,7 @@ define([
         }
     ]);
 
-    app.service('TaxDeclarationService', [
+    app.service('TreasurerTdMonitoringService', [
         '$http',
         function ($http) {
             var _this = this;
@@ -197,27 +183,27 @@ define([
              * @return {[route]}
              */
             _this.getDetails = function () {
-                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/TaxDeclarationService.php/getTDCount');
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/TreasurerTdMonitoringService.php/getTDCount');
             };
 
             _this.retire = function (data) {
-                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/TaxDeclarationService.php/retireTaxDeclaration', data);
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/TreasurerTdMonitoringService.php/retireTreasurerTdMonitoring', data);
             };
 
             _this.archive = function (data) {
-                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TaxDeclaration/TaxDeclarationService.php/archiveTaxDeclaration', data);
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/TreasurerTdMonitoringService.php/archiveTreasurerTdMonitoring', data);
             };
         }
     ]);
 
-    app.controller('TaxDeclarationController', [
+    app.controller('TreasurerTdMonitoringController', [
         '$scope',
         '$uibModal',
         '$timeout',
         'blockUI',
         'alertify',
-        'TaxDeclarationFactory',
-        'TaxDeclarationService',
+        'TreasurerTdMonitoringFactory',
+        'TreasurerTdMonitoringService',
         function ($scope, $uibModal, $timeout, BlockUI, Alertify, Factory, Service) {
             var _init, _loadDetails, _btnFunc, _viewAccesses, blocker = BlockUI.instances.get('blockTaxDeclarations'), table = angular.element('#tax_declarations');
 
@@ -227,54 +213,9 @@ define([
              */
             _loadDetails = function () {
 
-                $scope.jqDataTableOptions         = Factory.dtOptions();
-                $scope.jqDataTableOptions.buttons = _btnFunc();
+                $scope.jqDataTableOptions = Factory.dtOptions();
 
-                blocker.start();
-                Service.getDetails().then( function (res) {
-                    if (res.data.allTdCount != undefined) {
-                        $scope.allTdCount = parseInt(res.data.allTdCount);
-                        $scope.actTdCount = parseInt(res.data.actTdCount);
-                        $scope.rtdTdCount = parseInt(res.data.rtdTdCount);
-                        $scope.cldTdCount = parseInt(res.data.cldTdCount);
-                    } else {
-                        Alertify.error("Back-end error! Please notify the administrator.");
-                    }
-
-                    blocker.stop();
-                });
             };
-
-            /**
-             * `_btnFunc` list of button functions.
-             * @return {[type]}
-             */
-            _btnFunc = function () {
-                var buttons = [];
-
-                buttons = [];
-
-                buttons.push({ 
-                    init        : function(api, node, config) {
-                        $(node).removeClass('btn-default btn-secondary');
-                        $(node).addClass('btn bg-info text-white btn-sm add'); 
-                        $(node).append('<i class="fas fa-plus"></i>&nbsp;<span class="hidden-xs hidden-sm">ADD</span>');
-                    },
-                    text        : '', 
-                    titleAttr   : 'Add Tax Declaration', 
-                    key: { 
-                        key     : '1', 
-                        altKey  : true 
-                    }, 
-                    'action'    : function () { 
-                        $scope.addTaxDec(); 
-                    },
-                    enabled     : true,
-                    name        : 'add'
-                });
-                
-                return buttons;
-            }
 
             $scope.rowBtns = {
                 "firstButton": function(data, index) {
@@ -553,14 +494,24 @@ define([
 
                 $scope.header.title = "Tax Declaration of Real Property"
                 $scope.header.link.sub = ""
-                $scope.header.link.main = "Tax Declaration of Real Property (ASSESSOR'S)"
+                $scope.header.link.main = "Tax Declaration of Real Property (TREASURER)"
                 $scope.header.showButton = false
 
                 $scope.templates = Factory.templates;
 
-                $scope.filters = {
-                    status : ''
-                }
+                $scope.search = {};
+
+                $timeout(function() {
+                    angular.element('#date_range').datepicker({
+                        language: 'en',
+                        autoClose: true,
+                        position: 'top center',
+                        maxDate: new Date(), 
+                        onSelect: function(formattedDate, date, inst) {
+                            $scope.search.date_range = angular.copy(formattedDate);
+                        }
+                    });
+                }, 500);
 
                 _loadDetails();
             };

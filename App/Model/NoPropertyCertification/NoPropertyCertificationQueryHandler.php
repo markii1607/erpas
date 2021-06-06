@@ -24,7 +24,7 @@
 
             $initQuery = $this->select($fields)
                               ->from('released_certifications RC')
-                              ->where(['RC.is_active' => ':is_active']);
+                              ->where(['RC.is_active' => ':is_active', 'RC.type' => ':type']);
 
             $initQuery = ($id) ? $initQuery->andWhere(['RC.id' => ':id']) : $initQuery;
 
@@ -73,6 +73,13 @@
         public function insertCertification($data = [])
         {
             $initQuery = $this->insert('released_certifications', $data);
+
+            return $initQuery;
+        }
+
+        public function updateCertification($id = '', $data = [])
+        {
+            $initQuery = $this->update('released_certifications', $id, $data);
 
             return $initQuery;
         }

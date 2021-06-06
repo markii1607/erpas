@@ -42,8 +42,8 @@
 				<div class="col-12">
 					<p class="font-arial mb-0 text-justify">
 						This is to certify that as per available records on file in this office, <b><u>Tax Dec. No. {{ data.td_no }}</u></b> 
-						effective {{ data. effectivity }} covering <b><u>Lot No. {{ data.lot_no }}</u></b> declared in the name of 
-						<b class="text-uppercase"><u>{{ data.declarees }}</u></b> located at {{ data.location }} has an existing improvement thereon.
+						effective {{ data.effectivity }} covering <b><u>Lot No. {{ data.lot_no }}</u></b> declared in the name of 
+						<b class="text-uppercase"><u>{{ data.declaree }}</u></b> located at {{ data.location }} has an existing improvement thereon.
 					</p>
 				</div>
 			</div>
@@ -61,11 +61,11 @@
 							</tr>
 						</thead>						
                         <tbody>
-                            <tr ng-repeat="r in data.arps">
-                                <td>{{ r.arp_no }}</td>
+                            <tr ng-repeat="r in data.details">
+                                <td>{{ r.td_no }}</td>
                                 <td class="text-uppercase font-weight-bold">{{ r.declarant }}</td>
                                 <td class="text-uppercase text-center">{{ r.lot_no }}</td>
-                                <td class="text-center">{{ r.area | number: 2 }} {{ r.unit.name }}</td>
+                                <td class="text-center">{{ r.area }}</td>
                                 <td class="text-center">{{ r.market_value | number: 2 }}</td>
                                 <td class="text-center">{{ r.assessed_value | number: 2 }}</td>
                             </tr>

@@ -75,20 +75,11 @@ define([
                                 var str = '';
                                 str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-md mr-2 text-white"><i class="fas fa-eye"></i></button>';
                                 str += '<p style="margin-bottom:5px;"></p>';
-                                str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-edit"></i></button>';
-                                str += '<p style="margin-bottom:5px;"></p>';
+                                // str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-edit"></i></button>';
+                                // str += '<p style="margin-bottom:5px;"></p>';
                                 str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-md mr-2 text-white"><i class="fas fa-trash"></i></button>';
 
                                 return str;
-                            }
-                        },
-                        {
-                            "targets"   : 2,
-                            "searchable": true,
-                            "orderable" : true,
-                            "className" : "text-left",
-                            "render"    : function(data, type, full, meta) {
-                                return `${data.month} ${data.day}, ${data.year}`
                             }
                         },
                     ],
@@ -101,7 +92,7 @@ define([
                             "data" : null 
                         },
                         { 
-                            "data" : "date"
+                            "data" : "request_date"
                         },
                         { 
                             "data" : "td_no"
@@ -116,10 +107,7 @@ define([
                             "data" : "requestor"
                         },
                         { 
-                            "data" : "declarees"
-                        },
-                        { 
-                            "data" : "location"
+                            "data" : "declaree"
                         },
                         { 
                             "data" : "purpose"
@@ -211,17 +199,13 @@ define([
              * `getDetails` Query string that will get first needed details.
              * @return {[route]}
              */
-            // _this.getDetails = function () {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/PropTaxDec/PropTaxDecService.php/getTDCount');
-            // };
+            _this.getDetails = function () {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/ImprovementCertification/ImprovementCertificationService.php/getDetails');
+            };
 
-            // _this.retire = function (data) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/PropTaxDec/PropTaxDecService.php/retirePropTaxDec', data);
-            // };
-
-            // _this.archive = function (data) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/PropTaxDec/PropTaxDecService.php/archivePropTaxDec', data);
-            // };
+            _this.archive = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/ImprovementCertification/ImprovementCertificationService.php/archivePropTaxDec', data);
+            };
         }
     ]);
 
@@ -241,10 +225,14 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
+                blocker.start();
+                Service.getDetails().then(res => {
+                    $scope.jqDataTableOptions         = Factory.dtOptions();
+                    $scope.jqDataTableOptions.data    = res.data.certifications;
+                    $scope.jqDataTableOptions.buttons = _btnFunc();
 
-                $scope.jqDataTableOptions         = Factory.dtOptions();
-                $scope.jqDataTableOptions.data    = Factory.dummyData;
-                $scope.jqDataTableOptions.buttons = _btnFunc();
+                    blocker.stop();
+                })
 
             };
 
@@ -304,7 +292,7 @@ define([
                     ariaDescribedBy : 'modal-body',
                     templateUrl     : 'add_prop_tax_dec.html',
                     controller      : 'AddPropTaxDecController',
-                    size            : 'xxlg',
+                    size            : 'xlg',
                     resolve         : {
                         paramData : function () {
                             return paramData;
@@ -313,9 +301,9 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
-                    // console.log('addREsult: ', res);
-                    // table.DataTable().row.add(res).draw();
-                    // table.find('tbody tr').css('cursor', 'pointer');
+                    console.log('addREsult: ', res);
+                    table.DataTable().row.add(res).draw();
+                    table.find('tbody tr').css('cursor', 'pointer');
                 }, function (res) {
                     // Result when modal is dismissed
                 });
@@ -388,18 +376,18 @@ define([
                 .cancelBtn("Cancel")
                 .confirm("Are you sure you want to delete this certification?",
                     function () {
-                        // blocker.start();
-                        // Service.archive(data).then(res => {
-                        //     if (res.data.status) {
-                        //         table.DataTable().row('.selected').remove().draw(true);
-                        //         Alertify.log('Deleted!');
+                        blocker.start();
+                        Service.archive(data).then(res => {
+                            if (res.data.status) {
+                                table.DataTable().row('.selected').remove().draw(true);
+                                Alertify.log('Deleted!');
                                 
-                        //         blocker.stop();
-                        //     } else {
-                        //         Alertify.error("ERROR! Please contact the administrator.");
-                        //         blocker.stop();
-                        //     }
-                        // });
+                                blocker.stop();
+                            } else {
+                                Alertify.error("ERROR! Please contact the administrator.");
+                                blocker.stop();
+                            }
+                        });
                     }
                 );
             }

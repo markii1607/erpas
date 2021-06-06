@@ -129,13 +129,9 @@ define([
                 return $http.get(APP.SERVER_BASE_URL + '/App/Service/NoPropertyCertification/NoPropertyCertificationService.php/getDetails');
             };
 
-            // _this.retire = function (data) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/NoPropertyDec/NoPropertyDecService.php/retireNoPropertyDec', data);
-            // };
-
-            // _this.archive = function (data) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/NoPropertyDec/NoPropertyDecService.php/archiveNoPropertyDec', data);
-            // };
+            _this.archive = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/NoPropertyCertification/NoPropertyCertificationService.php/archiveNoPropertyDec', data);
+            };
         }
     ]);
 
@@ -311,18 +307,18 @@ define([
                 .cancelBtn("Cancel")
                 .confirm("Are you sure you want to delete this certification?",
                     function () {
-                        // blocker.start();
-                        // Service.archive(data).then(res => {
-                        //     if (res.data.status) {
-                        //         table.DataTable().row('.selected').remove().draw(true);
-                        //         Alertify.log('Deleted!');
+                        blocker.start();
+                        Service.archive(data).then(res => {
+                            if (res.data.status) {
+                                table.DataTable().row('.selected').remove().draw(true);
+                                Alertify.success('Deleted!');
                                 
-                        //         blocker.stop();
-                        //     } else {
-                        //         Alertify.error("ERROR! Please contact the administrator.");
-                        //         blocker.stop();
-                        //     }
-                        // });
+                                blocker.stop();
+                            } else {
+                                Alertify.error("ERROR! Please contact the administrator.");
+                                blocker.stop();
+                            }
+                        });
                     }
                 );
             }

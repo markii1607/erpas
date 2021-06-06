@@ -86,6 +86,13 @@ define(function() {
             "templateUrl": "/public/module/prop_tax_dec/prop_tax_dec.html",
             "deps": "/public/module/prop_tax_dec/index.js"
         },
+        {
+            "name": "main.treasurer_td_monitoring",
+            "url": "/treasurer_td_monitoring",
+            "controller": "TreasurerTdMonitoringController",
+            "templateUrl": "/public/module/treasurer_td_monitoring/treasurer_td_monitoring.html",
+            "deps": "/public/module/treasurer_td_monitoring/index.js"
+        },
     ];
 
     return routes;

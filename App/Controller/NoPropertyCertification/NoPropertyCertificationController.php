@@ -51,12 +51,43 @@
             return $output;
         }
 
+        public function archiveNoPropertyDec($input)
+        {
+            try {
+                $this->dbCon->beginTransaction();
+
+                $entryData = [
+                    'is_active'     => 0,
+                    'updated_by'    => $_SESSION['user_id'],
+                    'updated_at'    => date('Y-m-d H:i:s')
+                ];
+
+                $archiveCertification = $this->dbCon->prepare($this->queryHandler->updateCertification($input->id, $entryData));
+                $status = $archiveCertification->execute($entryData);
+                $this->systemLogs($input->id, 'released_certifications', 'CERTIFICATION - NO PROPERTY DEC', 'archive');
+            
+                $this->dbCon->commit();
+
+                $output = [
+                    'status' => $status
+                ];
+
+                return $output;
+            
+            } catch (Exception $exc) {
+                echo $exc->getMessage();
+                $this->dbCon->rollBack();
+            }
+            
+        }
+
         public function getNoPropertyCertifications($id = '')
         {
             $hasId = empty($id) ? false : true;
 
             $data = [
-                'is_active' => 1
+                'is_active' => 1,
+                'type'      => 'A'
             ];
 
             ($hasId) ? $data['id'] = $id : '';
@@ -70,8 +101,8 @@
                 $result[$key]['prepared_by'] = $this->getUsers($value['prepared_by'])[0];
                 $result[$key]['verified_by'] = $this->getUsers($value['verified_by'])[0];
                 $result[$key]['date'] = [
-                    'month' => date('M', strtotime($value['request_date'])),
-                    'day'   => date('d', strtotime($value['request_date'])),
+                    'month' => date('F', strtotime($value['request_date'])),
+                    'day'   => date('j', strtotime($value['request_date'])),
                     'year'  => date('Y', strtotime($value['request_date'])),
                 ];
             }
