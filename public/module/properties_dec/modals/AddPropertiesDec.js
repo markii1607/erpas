@@ -1,7 +1,7 @@
 define([
     'app'
 ], function (app) {
-    app.factory('AddPropTaxDecFactory', [
+    app.factory('AddPropertiesDecFactory', [
         'alertify',
         function (alertify) {
             var Factory = {};
@@ -31,18 +31,26 @@ define([
         }
     ]);
 
-    app.service('AddPropTaxDecService', [
+    app.service('AddPropertiesDecService', [
         '$http',
         function ($http) {
             var _this = this;
 
-            // _this.save = function (data) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/MarketValueNoPropertyDec/MarketValueNoPropertyDecService.php/saveNewNoPropertyDec', data);
-            // }
+            _this.getDetails = function () {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/PropertiesDec/AddPropertiesDecService.php/getSelectionData');
+            }
+
+            _this.verifyRecords = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/PropertiesDec/AddPropertiesDecService.php/verifyRecords', data);
+            }
+
+            _this.save = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/PropertiesDec/AddPropertiesDecService.php/saveCertificationData', data);
+            }
         }
     ]);
 
-    app.controller('AddPropTaxDecController', [
+    app.controller('AddPropertiesDecController', [
         '$scope',
         '$uibModal',
         '$uibModalInstance',
@@ -51,8 +59,8 @@ define([
         'blockUI',
         'alertify',
         'paramData',
-        'AddPropTaxDecFactory',
-        'AddPropTaxDecService',
+        'AddPropertiesDecFactory',
+        'AddPropertiesDecService',
         function ($scope, $uibModal, $uibModalInstance, $timeout, $filter, BlockUI, Alertify, ParamData, Factory, Service) {
             var _init, _loadDetails, blocker = BlockUI.instances.get('blockAddPropTaxDec');
 
@@ -61,23 +69,16 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
-                $scope.units = angular.copy(Factory.units)
-            }
-
-            $scope.addRow = function() {
-                $scope.addPropTaxDec.arps.push({
-                    arp_no: null,
-                    declarant: null,
-                    lot_no: null,
-                    area: null,
-                    unit: null,
-                    market_value: null,
-                    assessed_value: null,
+                blocker.start();
+                Service.getDetails().then(res => {
+                    if (res.data.owners != undefined) {
+                        $scope.lot_owners = res.data.owners;
+                        blocker.stop();
+                    } else {
+                        Alertify.error('<b>An error occurred while fetching data. Please contact the administrator.</b>');
+                        blocker.stop();
+                    }
                 })
-            }
-
-            $scope.removeRow = function(index) {
-                $scope.addPropTaxDec.arps.splice(index, 1)
             }
 
             /**
@@ -88,32 +89,88 @@ define([
                 $uibModalInstance.dismiss();
             };
 
+            $scope.getLotOwners = function(){
+                blocker.start();
+                Service.getLotOwners($scope.addPropTaxDec.lot_no).then(res => {
+                    $scope.enabledOwnerSelection = true;
+                    if (res.data.owners != undefined) {
+                        $scope.lot_owners = res.data.owners;
+                        if ($scope.lot_owners.length == 0) Alertify.alert("<b>No records found for Lot No#<i>" + $scope.addPropTaxDec.lot_no + "</i></b>");
+                        blocker.stop();
+                    } else {
+                        Alertify.error("An error occurred while fetching data. Please contact the administrator.");
+                        blocker.stop();
+                    }
+                })
+            }
+
+            $scope.reset = function(){
+                $scope.withExistingRecords = false;
+            }
+
+            $scope.verifyRecords = function(){
+                blocker.start();
+                Service.verifyRecords($scope.addPropTaxDec).then(res => {
+                    if (res.data.records != undefined) {
+                        $scope.withExistingRecords = true;
+                        $scope.property_records = res.data.records;
+                        if ($scope.property_records.length == 0) Alertify.alert("<b>No records found!</b>");
+
+                        $scope.users = res.data.users;
+                        $scope.addPropTaxDec.prepared_by = $filter('filter')($scope.users, {
+                            'id' : res.data.user_id
+                        }, true)[0];
+                        $scope.addPropTaxDec.verified_by = $filter('filter')($scope.users, {
+                            'position' : 'Municipal Assessor'
+                        }, true)[0];
+
+                        blocker.stop();
+                    } else {
+                        Alertify.error("An error occurred while fetching data. Please contact the administrator.");
+                        blocker.stop();
+                    }
+                })
+            }
+
+            $scope.addRow = function() {
+                $scope.property_records.push({
+                    data_type   : 'new',
+                })
+            }
+
+            $scope.removeRow = function(index) {
+                $scope.property_records.splice(index, 1)
+            }
+
             /**
              * `save` Post data from form to database.
              * @param  {Boolean} isValid
              * @return {Object}
              */
-            $scope.save = function (isFormValid) {
-                if (isFormValid) {
-                    Alertify.confirm("Are you sure you want to add this certification?", function () {
-                        // blocker.start();
-    
-                        // Service.save($scope.addClfn).then( function (res) {
-                        //     if (res.data.status) {
-                        //         Alertify.success("Classification successfully added!");
-    
-                        //         $uibModalInstance.close(res.data.rowData);
-                        //         blocker.stop();
-                        //     } else {
-                        //         Alertify.error("An error occurred while saving! Please contact the administrator.");
-                        //         blocker.stop();
-                        //     }
-                        // });
+            $scope.save = function () {
+                Alertify.confirm("Are you sure you want to add this certification?", function () {
+                    blocker.start();
+                    $scope.addPropTaxDec.property_records = $scope.property_records;
+                    Service.save($scope.addPropTaxDec).then( function (res) {
+                        if (res.data.status) {
+                            Alertify.success("Classification successfully added!");
+
+                            $uibModalInstance.close(res.data.rowData);
+                            blocker.stop();
+                        } else {
+                            Alertify.error("An error occurred while saving! Please contact the administrator.");
+                            blocker.stop();
+                        }
                     });
-                } else {
-                    Alertify.error("All fields are required!");
-                }
+                });
             };
+
+            /**
+             *`addMoreItems` Adding more items for infinite scroll
+            */
+            //  $scope.addMoreItems = function () {
+            //     $scope.infiniteScroll.currentItems += $scope.infiniteScroll.numToAdd;
+            // };
 
             /**
              * `_init` Initialize first things first
@@ -122,18 +179,15 @@ define([
             _init = function () {
                 // default settings
                 Factory.autoloadSettings();
+
+                // $scope.infiniteScroll = {};
+                // $scope.infiniteScroll.numToAdd = 5;
+                // $scope.infiniteScroll.currentItems = 5;
                 
-                $scope.addPropTaxDec = {
-                    arps: [{
-                        arp_no: null,
-                        declarant: null,
-                        lot_no: null,
-                        area: null,
-                        unit: null,
-                        market_value: null,
-                        assessed_value: null,
-                    }]
-                };
+                $scope.addPropTaxDec = {};
+
+                $scope.withExistingRecords = false;
+                $scope.enabledOwnerSelection = false;
 
                 _loadDetails();
             };

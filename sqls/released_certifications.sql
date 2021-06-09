@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2021 at 08:40 AM
+-- Generation Time: Jun 09, 2021 at 10:20 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -32,7 +32,7 @@ CREATE TABLE `released_certifications` (
   `id` int(5) UNSIGNED NOT NULL,
   `type` text DEFAULT NULL COMMENT 'A-No Property Cert | B-Properties with Improvements | C-With Properties',
   `tax_declaration_id` int(5) UNSIGNED DEFAULT NULL COMMENT '(with data if cert type == ''B'')',
-  `declaree` text NOT NULL,
+  `declaree` text DEFAULT NULL,
   `requestor` text NOT NULL,
   `purpose` text NOT NULL,
   `request_date` date NOT NULL,

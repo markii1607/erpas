@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2021 at 09:07 AM
+-- Generation Time: Jun 07, 2021 at 08:52 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -38,6 +38,8 @@ CREATE TABLE `released_certification_details` (
   `area` text DEFAULT NULL,
   `market_value` decimal(20,2) DEFAULT NULL,
   `assessed_value` decimal(20,2) DEFAULT NULL,
+  `property_kind` text DEFAULT NULL,
+  `property_location` text DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `created_by` int(5) UNSIGNED NOT NULL,
   `created_at` datetime NOT NULL,
