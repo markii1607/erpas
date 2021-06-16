@@ -1,0 +1,90 @@
+<script type="text/ng-template" id="payment_portal.html">
+    <div block-ui="blockPaymentPortal">
+        <form name="form.addPaymentPortal" novalidate>
+            <div class="modal-header align-items-center">
+				<span class="fa-stack fa-lg">
+	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+	                <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+	            </span>
+
+				<h5 class="modal-title" style="letter-spacing: 1px;">PAYMENT DETAILS</h5>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+	                <span aria-hidden="true">
+	                    <i class="fas fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <table>
+                                                    <tr>
+                                                        <th class="text-right">Tax Declaration No.</th>
+                                                        <td> : 2012-45-879-789</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-right">Declarant/Owner</th>
+                                                        <td> : Sample Declarant Name</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-right">Total Assessed Value</th>
+                                                        <td> : Php 251,152.25</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-2">
+                                <label for="or_no" class="font-weight-bold">OR No.</label>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" ng-model="addTdPayment.or_no" class="form-control" id="or_no" placeholder="Enter OR Number..." autofocus autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-2">
+                                <label for="or_no" class="font-weight-bold">Amount</label>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="number" ng-model="addTdPayment.or_no" class="form-control" id="or_no" placeholder="Enter Amount to be Paid..." autofocus autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-2">
+                                <label for="or_no" class="font-weight-bold">Paid By</label>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" ng-model="addTdPayment.or_no" class="form-control" id="or_no" placeholder="Enter Name of Payor..." autofocus autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bordered">
+				<button type="submit" class="btn btn-default bg-crimson-red" ng-click="save()">
+					<span>SAVE PAYMENT</span>
+				</button>
+				<button type="button" class="btn btn-default" ng-click="closeModal()">
+					<span>CLOSE</span>
+				</button>
+			</div>
+        </form>
+    </div>
+</script>

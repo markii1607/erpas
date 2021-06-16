@@ -22,11 +22,11 @@ define([
              * @type {Array}
              */
             Factory.templates = [
-                'module/tax_declaration/modals/add_tax_declaration.html',
-                'module/tax_declaration/modals/advance_search.html',
-                'module/tax_declaration/modals/edit_tax_declaration.html',
+                'module/treasurer_td_monitoring/modals/add_td_payment.html',
+                'module/treasurer_td_monitoring/modals/payment_portal.html',
+                'module/treasurer_td_monitoring/modals/check_generation.html',
+                'module/treasurer_td_monitoring/modals/view_or_details.html',
                 'module/tax_declaration/modals/view_tax_declaration.html',
-                'module/tax_declaration/modals/view_tax_due.html',
             ];
 
             Factory.dtOptions = function () {
@@ -69,19 +69,7 @@ define([
                         "data" : function (data) {
                             var temp = {
                                 'advanced_search' : {
-                                    'status'        : '',
-                                    'rev_id'        : '',
-                                    'td_no'         : '',
-                                    'pin'           : '',
-                                    'owner'         : '',
-                                    'lot_no'        : '',
-                                    'brgy_id'       : '',
-                                    'type'          : '',
-                                    'category'      : '',
-                                    'class_id'      : '',
-                                    'actual_use'    : '',
-                                    'date_from'     : '',
-                                    'date_to'       : '',
+                                    'date_range'        : '',
                                 }
                             };
 
@@ -96,6 +84,8 @@ define([
                             angular.extend(data, temp);
                         }
                     },
+                    // "columnDefs"   : _columnDefs(type),
+                    // "columns"      : _columns(type),
                     "columnDefs"   : [ 
                         {
                             "targets"    : 0,
@@ -110,15 +100,7 @@ define([
                             "className" : "text-center",
                             "render"    : function(data, type, full, meta) {
                                 var str = '';
-                                str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-md mr-2 text-white"><i class="fas fa-eye"></i></button>';
-                                // str += '<p style="margin-bottom:5px;"></p>';
-                                // str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-info btn-md mr-2 text-white"><i class="fas fa-edit"></i></button>';
-                                // str += '<p style="margin-bottom:5px;"></p>';
-                                // str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Retire" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-ban"></i></button>';
-                                // str += '<p style="margin-bottom:5px;"></p>';
-                                // str += '<button type="submit" id="fourthButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-md mr-2 text-white"><i class="fas fa-trash"></i></button>';
-                                // str += '<p style="margin-bottom:5px;"></p>';
-                                // str += '<button type="submit" id="fifthButton" data-toggle="tooltip" title="Tax Due" class="btn btn-default btn-md mr-2 text-white" style="background-color:#605ca8 !important;"><i class="fas fa-money-bill"></i></button>';
+                                str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-md mr-2 text-white"><i class="fas fa-info"></i></button>';
 
                                 return str;
                             }
@@ -166,33 +148,14 @@ define([
                     ]
                 };
 
+                // options.ajax       = _ajaxUrl(type);
+                // options.processing = true;
+                // options.serverSide = true;
+
                 return options;
             };
 
             return Factory;
-        }
-    ]);
-
-    app.service('TreasurerTdMonitoringService', [
-        '$http',
-        function ($http) {
-            var _this = this;
-
-            /**
-             * `getDetails` Query string that will get first needed details.
-             * @return {[route]}
-             */
-            _this.getDetails = function () {
-                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/TreasurerTdMonitoringService.php/getTDCount');
-            };
-
-            _this.retire = function (data) {
-                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/TreasurerTdMonitoringService.php/retireTreasurerTdMonitoring', data);
-            };
-
-            _this.archive = function (data) {
-                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/TreasurerTdMonitoringService.php/archiveTreasurerTdMonitoring', data);
-            };
         }
     ]);
 
@@ -203,9 +166,10 @@ define([
         'blockUI',
         'alertify',
         'TreasurerTdMonitoringFactory',
-        'TreasurerTdMonitoringService',
-        function ($scope, $uibModal, $timeout, BlockUI, Alertify, Factory, Service) {
-            var _init, _loadDetails, _btnFunc, _viewAccesses, blocker = BlockUI.instances.get('blockTaxDeclarations'), table = angular.element('#tax_declarations');
+        function ($scope, $uibModal, $timeout, BlockUI, Alertify, Factory) {
+            var _init, _loadDetails, _btnFunc, _viewAccesses, blocker = BlockUI.instances.get('blockTaxDeclarations'), 
+            td_table = angular.element('#tax_declarations'),
+            cl_table = angular.element('#collections_tbl');
 
             /**
              * `_loadDetails` Load first needed data
@@ -213,7 +177,8 @@ define([
              */
             _loadDetails = function () {
 
-                $scope.jqDataTableOptions = Factory.dtOptions();
+                $scope.jqDataTableOptions = Factory.dtOptions('tax_dec');
+                $scope.ctDataTableOptions = Factory.dtOptions('collections');
 
             };
 
@@ -221,24 +186,10 @@ define([
                 "firstButton": function(data, index) {
                     $scope.viewTaxDec(data, index)
                 },
-                "secondButton": function(data, index) {
-                    $scope.editTaxDec(data, index)
-                },
-                "thirdButton": function(data, index) {
-                    $scope.retireTaxDec(data, index)
-                },
-                "fourthButton": function(data, index) {
-                    $scope.deleteTaxDec(data, index)
-                },
-                "fifthButton": function(data, index) {
-                    $scope.viewTaxDue(data, index)
-                },
             };
 
-            $scope.addTaxDec = function () {
-                var paramData, modalInstance;
-
-                paramData = {}
+            $scope.openTdPaymentProtal = function () {
+                var modalInstance;
 
                 modalInstance = $uibModal.open({
                     animation       : true,
@@ -246,41 +197,22 @@ define([
                     backdrop        : 'static',
                     ariaLabelledBy  : 'modal-title',
                     ariaDescribedBy : 'modal-body',
-                    templateUrl     : 'add_tax_declaration.html',
-                    controller      : 'AddTaxDeclarationController',
-                    size            : 'xxlg',
-                    resolve         : {
-                        paramData : function () {
-                            return paramData;
-                        }
-                    }
+                    templateUrl     : 'add_td_payment.html',
+                    controller      : 'AddTDPaymentController',
+                    size            : 'xlg',
                 });
 
                 modalInstance.result.then(function (res) {
                     console.log('addREsult: ', res);
-                    table.DataTable().row.add(res).draw();
-                    table.find('tbody tr').css('cursor', 'pointer');
-                    $scope.allTdCount += 1;
-                    $scope.actTdCount += 1;
-
-                    if (res.canceled_td.length != 0) {
-                        $scope.actTdCount -= 1;
-                        $scope.cldTdCount += 1;
-                    }
+                    td_table.DataTable().row.add(res).draw();
+                    td_table.find('tbody tr').css('cursor', 'pointer');
                 }, function (res) {
                     // Result when modal is dismissed
                 });
             }
 
-            $scope.showAdvSearch = function () {
-                var paramData, modalInstance;
-
-                // paramData = {
-                //     'id'        : table.DataTable().rows('.selected').data()[0].id,
-                //     'full_name' : table.DataTable().rows('.selected').data()[0].full_name
-                // };
-
-                paramData = {}
+            $scope.openCheckPortal = function () {
+                var modalInstance;
 
                 modalInstance = $uibModal.open({
                     animation       : true,
@@ -288,163 +220,15 @@ define([
                     backdrop        : 'static',
                     ariaLabelledBy  : 'modal-title',
                     ariaDescribedBy : 'modal-body',
-                    templateUrl     : 'advance_search.html',
-                    controller      : 'AdvanceSearchController',
-                    size            : 'xlg',
-                    resolve         : {
-                        paramData : function () {
-                            return paramData;
-                        }
-                    }
-                });
-
-                modalInstance.result.then(function (res) {
-                    console.log(res);
-                    $scope.filters.status = '';
-                    $scope.filterTaxDec(res);
-                }, function (res) {
-                    // Result when modal is dismissed
-                });
-            }
-
-            $scope.editTaxDec = function (data, index) {
-                var paramData, modalInstance;
-
-                paramData = {
-                    data,
-                }
-
-                modalInstance = $uibModal.open({
-                    animation       : true,
-                    keyboard        : false,
-                    backdrop        : 'static',
-                    ariaLabelledBy  : 'modal-title',
-                    ariaDescribedBy : 'modal-body',
-                    templateUrl     : 'edit_tax_declaration.html',
-                    controller      : 'EditTaxDeclarationController',
-                    size            : 'xxlg',
-                    resolve         : {
-                        paramData : function () {
-                            return paramData;
-                        }
-                    }
-                });
-
-                modalInstance.result.then(function (res) {
-                    console.log("editResult: ", res);
-                    table.DataTable().row(index).data(res).draw();
-                }, function (res) {
-                    // Result when modal is dismissed
-                });
-            }
-
-            $scope.viewTaxDec = function (data, index) {
-                var paramData, modalInstance;
-
-                paramData = {
-                    data,
-                    server_base_url: $scope.server.base_url,
-                }
-
-                modalInstance = $uibModal.open({
-                    animation       : true,
-                    keyboard        : false,
-                    backdrop        : 'static',
-                    ariaLabelledBy  : 'modal-title',
-                    ariaDescribedBy : 'modal-body',
-                    templateUrl     : 'view_tax_declaration.html',
-                    controller      : 'ViewTaxDeclarationController',
-                    size            : 'xlg',
-                    resolve         : {
-                        paramData : function () {
-                            return paramData;
-                        }
-                    }
-                });
-
-                modalInstance.result.then(function (res) {
-                }, function (res) {
-                    // Result when modal is dismissed
-                });
-            }
-
-            $scope.viewTaxDue = function (data, index) {
-                var paramData, modalInstance;
-
-                paramData = {
-                    data,
-                }
-
-                modalInstance = $uibModal.open({
-                    animation       : true,
-                    keyboard        : false,
-                    backdrop        : 'static',
-                    ariaLabelledBy  : 'modal-title',
-                    ariaDescribedBy : 'modal-body',
-                    templateUrl     : 'view_tax_due.html',
-                    controller      : 'ViewTaxDueController',
+                    templateUrl     : 'check_generation.html',
+                    controller      : 'CheckGenerationController',
                     size            : 'md',
-                    resolve         : {
-                        paramData : function () {
-                            return paramData;
-                        }
-                    }
                 });
 
                 modalInstance.result.then(function (res) {
                 }, function (res) {
                     // Result when modal is dismissed
                 });
-            }
-
-            $scope.retireTaxDec = function(data, index){
-                Alertify
-                .okBtn("Yes")
-                .cancelBtn("Cancel")
-                .confirm("Are you sure you want to retire Tax Declaration#<b><u>" + data.td_no + "</u></b>?",
-                function () {
-                    blocker.start();
-                    Service.retire(data).then(res => {
-                        if (res.data.status) {
-                            table.DataTable().row(index).data(res.data.rowData).draw();
-                            Alertify.log('Successfully marked Tax Declaration as RETIRED!');
-                            
-                            blocker.stop();
-                        } else {
-                            Alertify.error("ERROR! Please contact the administrator.");
-                            blocker.stop();
-                        }
-                    });
-                }
-            );
-            }
-
-            $scope.deleteTaxDec = function(data, index){
-                Alertify
-                .okBtn("Yes")
-                .cancelBtn("Cancel")
-                .confirm("Are you sure you want to delete Tax Declaration#<b><u>" + data.td_no + "</u></b>?",
-                    function () {
-                        blocker.start();
-                        Service.archive(data).then(res => {
-                            if (res.data.status) {
-                                table.DataTable().row('.selected').remove().draw(true);
-                                Alertify.log('Deleted!');
-                                $scope.allTdCount -= 1;
-                                blocker.stop();
-                            } else {
-                                Alertify.error("ERROR! Please contact the administrator.");
-                                blocker.stop();
-                            }
-                        });
-                    }
-                );
-            }
-
-            $scope.setFilterStatus = function(filter){
-                $scope.filters.status = filter;
-
-                $scope.filterTaxDec();
             }
 
             $scope.filterTaxDec = function (params = []) {
@@ -492,9 +276,9 @@ define([
                 // default settings
                 Factory.autoloadSettings();
 
-                $scope.header.title = "Tax Declaration of Real Property"
+                $scope.header.title = "Treasurer's Department"
                 $scope.header.link.sub = ""
-                $scope.header.link.main = "Tax Declaration of Real Property (TREASURER)"
+                $scope.header.link.main = "Transactions and Configuration"
                 $scope.header.showButton = false
 
                 $scope.templates = Factory.templates;
@@ -502,13 +286,22 @@ define([
                 $scope.search = {};
 
                 $timeout(function() {
-                    angular.element('#date_range').datepicker({
+                    angular.element('#date_range_tbl1').datepicker({
                         language: 'en',
                         autoClose: true,
                         position: 'top center',
                         maxDate: new Date(), 
                         onSelect: function(formattedDate, date, inst) {
-                            $scope.search.date_range = angular.copy(formattedDate);
+                            $scope.search.date_range_tbl1 = angular.copy(formattedDate);
+                        }
+                    });
+                    angular.element('#date_range_tbl2').datepicker({
+                        language: 'en',
+                        autoClose: true,
+                        position: 'top center',
+                        maxDate: new Date(), 
+                        onSelect: function(formattedDate, date, inst) {
+                            $scope.search.date_range_tbl2 = angular.copy(formattedDate);
                         }
                     });
                 }, 500);

@@ -1,0 +1,66 @@
+<script type="text/ng-template" id="view_or_details.html">
+    <div block-ui="blockOrDetails">
+        <form name="form.orDetails" novalidate>
+            <div class="modal-header align-items-center">
+				<span class="fa-stack fa-lg">
+	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+	                <i class="fas fa-info fa-stack-1x fa-inverse"></i>
+	            </span>
+
+				<h5 class="modal-title" style="letter-spacing: 1px;">O.R.#4567755 DETAILS</h5>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+	                <span aria-hidden="true">
+	                    <i class="fas fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-2"></div>
+                                            <div class="col-10">
+                                                <table>
+                                                    <tr>
+                                                        <th class="text-right">Transaction Date</th>
+                                                        <td>&nbsp;&nbsp;&nbsp;: 2012-45-879-789</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-right">TD No.</th>
+                                                        <td>&nbsp;&nbsp;&nbsp;: Sample Declarant Name</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-right">Amount Paid</th>
+                                                        <td>&nbsp;&nbsp;&nbsp;: Php 251,152.25</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-right">Paid By</th>
+                                                        <td>&nbsp;&nbsp;&nbsp;: Sample Declarant Name</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-right">Collecting Officer</th>
+                                                        <td>&nbsp;&nbsp;&nbsp;: Sample Declarant Name</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bordered">
+				<button type="button" class="btn btn-default" ng-click="closeModal()">
+					<span>CLOSE</span>
+				</button>
+			</div>
+        </form>
+    </div>
+</script>
