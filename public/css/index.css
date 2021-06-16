@@ -517,17 +517,17 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
     -moz-transition: all 0.3s ease-out;
     -ms-transition: all 0.3s ease-out;
     -o-transition: all 0.3s ease-out;
-    border: 2px solid #CCCCCC;
+    border: 2px solid #2a8be6;
 }
 
 .checkbox-label input:checked~.checkbox-custom {
-    background-color: #cccccc;
+    background-color: #489be9;
     border-radius: 5px;
     -webkit-transform: rotate(0deg) scale(1);
     -ms-transform: rotate(0deg) scale(1);
     transform: rotate(0deg) scale(1);
     opacity: 1;
-    border: 2px solid #CCCCCC;
+    border: 2px solid #2a8be6;
 }
 
 .checkbox-label .checkbox-custom::after {

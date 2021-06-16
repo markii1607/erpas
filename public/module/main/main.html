@@ -33,7 +33,7 @@
             <!-- <a class="nav-link collapsed" ui-sref="main.tax_declaration"> -->
             <a class="nav-link collapsed" style="cursor: pointer;" ng-click="redirectToModule('tax_declaration', 'RPT')">
                 <i class="fas fa-fw fa-house-user"></i>
-                <span>Tax Declaration of Real Property</span>
+                <span>Transactions</span>
             </a>
         </li>
 
@@ -49,7 +49,7 @@
             <!-- <a class="nav-link collapsed" ui-sref="main.tax_declaration"> -->
             <a class="nav-link collapsed" style="cursor: pointer;" ng-click="redirectToModule('treasurer_td_monitoring', 'TREAS')">
                 <i class="fas fa-fw fa-house-user"></i>
-                <span>Tax Declaration Monitoring</span>
+                <span>Transactions</span>
             </a>
         </li>
 
@@ -65,7 +65,7 @@
             <!-- <a class="nav-link collapsed" ui-sref="main.tax_declaration"> -->
             <a class="nav-link collapsed" style="cursor: pointer;" ng-click="redirectToModule('accounting_td_monitoring', 'ACCT')">
                 <i class="fas fa-fw fa-house-user"></i>
-                <span>Tax Declaration Monitoring</span>
+                <span>Transactions</span>
             </a>
         </li>
 
@@ -139,9 +139,9 @@
                     <!-- <a class="collapse-item" ui-sref="main.no_property_dec">No Property Declaration</a>
                     <a class="collapse-item" ui-sref="main.prop_tax_dec">Property Tax Declaration</a>
                     <a class="collapse-item" ui-sref="#">Properties Declaration</a> -->
-                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('no_property_dec', 'NPC')">No Property Declaration</a>
-                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('prop_tax_dec', 'PTD')">Property Tax Declaration</a>
-                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('properties_dec', 'PRD')">Properties Declaration</a>
+                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('no_property_dec', 'NPC')">No Property Certification</a>
+                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('prop_tax_dec', 'PTD')">Property w/ Improvements</a>
+                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('properties_dec', 'PRD')">Property Records</a>
                 </div>
             </div>
         </li>
@@ -393,8 +393,8 @@
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-2">
                     <h1 class="h3 mb-0 text-gray-800">{{ header.title }}</h1>
-                    <a ng-show="header.showButton" href="#" class="d-none d-sm-inline-block btn btn-sm btn-crimson shadow-sm"><i
-                            class="fas fa-download fa-sm text-white-70"></i> Generate Report</a>
+                    <!-- <a ng-show="header.showButton" href="#" class="d-none d-sm-inline-block btn btn-sm btn-crimson shadow-sm"><i
+                            class="fas fa-download fa-sm text-white-70"></i> Generate Report</a> -->
                 </div>
 
                 <nav aria-label="breadcrumb" class="mb-4">

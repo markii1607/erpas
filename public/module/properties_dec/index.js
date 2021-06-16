@@ -1,6 +1,6 @@
 define([
     './PropertiesDec.js',
-    // './modals/AddPropertiesDec.js',
+    './modals/AddPropertiesDec.js',
     // './modals/EditPropertiesDec.js',
     './modals/ViewPropertiesDec.js',
     

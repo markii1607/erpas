@@ -22,7 +22,7 @@ define([
              * @type {Array}
              */
             Factory.templates = [
-                // 'module/properties_dec/modals/add_properties_dec.html',
+                'module/properties_dec/modals/add_properties_dec.html',
                 // 'module/properties_dec/modals/edit_properties_dec.html',
                 'module/properties_dec/modals/view_properties_dec.html',
             ];
@@ -74,21 +74,12 @@ define([
                             "render"    : function(data, type, full, meta) {
                                 var str = '';
                                 str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-md mr-2 text-white"><i class="fas fa-eye"></i></button>';
-                                str += '<p style="margin-bottom:5px;"></p>';
-                                str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-edit"></i></button>';
+                                // str += '<p style="margin-bottom:5px;"></p>';
+                                // str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-edit"></i></button>';
                                 str += '<p style="margin-bottom:5px;"></p>';
                                 str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-md mr-2 text-white"><i class="fas fa-trash"></i></button>';
 
                                 return str;
-                            }
-                        },
-                        {
-                            "targets"   : 2,
-                            "searchable": true,
-                            "orderable" : true,
-                            "className" : "text-left",
-                            "render"    : function(data, type, full, meta) {
-                                return `${data.month} ${data.day}, ${data.year}`
                             }
                         },
                     ],
@@ -101,7 +92,7 @@ define([
                             "data" : null 
                         },
                         { 
-                            "data" : "date"
+                            "data" : "request_date"
                         },
                         { 
                             "data" : "or_no"
@@ -118,41 +109,6 @@ define([
                 return options;
             };
 
-            Factory.dummyData = [
-                {
-                    date: {
-                        day: 28,
-                        month: 'December',
-                        year: 2020
-                    },
-                    or_no: 7672120,
-                    requestor: 'Ma. Clarissa Bo',
-                    purpose: 'DAR Clearance',
-                    properties: [
-                        {
-                            td_no: '2017-0015-00283',
-                            declarant: 'Bemida, Pedro Jr.',
-                            type: 'Cocal',
-                            location: 'San Jose, Malilipot, Albay',
-                            lot_no: '1887-A',
-                            area: '.2500',
-                            market_value: 24060.00,
-                            assessed_value: 2720.00,
-                        },
-                        {
-                            td_no: '2017-0015-00284',
-                            declarant: 'Bemida, Pedro',
-                            type: 'Cocal',
-                            location: 'San Jose, Malilipot, Albay',
-                            lot_no: '1887-C',
-                            area: '.1110',
-                            market_value: 11270.00,
-                            assessed_value: 1440.00,
-                        },
-                    ],
-                }
-            ]
-
             return Factory;
         }
     ]);
@@ -166,17 +122,17 @@ define([
              * `getDetails` Query string that will get first needed details.
              * @return {[route]}
              */
-            // _this.getDetails = function () {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/PropertiesDec/PropertiesDecService.php/getTDCount');
-            // };
+            _this.getDetails = function () {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/PropertiesDec/PropertiesDecService.php/getDetails');
+            };
 
             // _this.retire = function (data) {
             //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/PropertiesDec/PropertiesDecService.php/retirePropertiesDec', data);
             // };
 
-            // _this.archive = function (data) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/PropertiesDec/PropertiesDecService.php/archivePropertiesDec', data);
-            // };
+            _this.archive = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/PropertiesDec/PropertiesDecService.php/archivePropertiesDec', data);
+            };
         }
     ]);
 
@@ -196,10 +152,19 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
-
-                $scope.jqDataTableOptions         = Factory.dtOptions();
-                $scope.jqDataTableOptions.data    = Factory.dummyData;
-                $scope.jqDataTableOptions.buttons = _btnFunc();
+                blocker.start();
+                Service.getDetails().then(res => {
+                    if (res.data.certifications != undefined) {
+                        $scope.jqDataTableOptions         = Factory.dtOptions();
+                        $scope.jqDataTableOptions.data    = res.data.certifications;
+                        $scope.jqDataTableOptions.buttons = _btnFunc();
+                        
+                        blocker.stop();
+                    } else {
+                        Alertify.error("An error occurred while fetching data. Please contact the administrator.");
+                        blocker.stop();
+                    }
+                });
 
             };
 
@@ -225,7 +190,7 @@ define([
                         altKey  : true 
                     }, 
                     'action'    : function () { 
-                        // $scope.addPropertiesDec(); 
+                        $scope.addPropertiesDec(); 
                     },
                     enabled     : true,
                     name        : 'add'
@@ -242,7 +207,7 @@ define([
                     // $scope.editPropertiesDec(data, index)
                 },
                 "thirdButton": function(data, index) {
-                    // $scope.deletePropertiesDec(data, index)
+                    $scope.deletePropertiesDec(data, index)
                 },
             };
 
@@ -259,7 +224,7 @@ define([
                     ariaDescribedBy : 'modal-body',
                     templateUrl     : 'add_properties_dec.html',
                     controller      : 'AddPropertiesDecController',
-                    size            : 'xxlg',
+                    size            : 'xlg',
                     resolve         : {
                         paramData : function () {
                             return paramData;
@@ -268,9 +233,9 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
-                    // console.log('addREsult: ', res);
-                    // table.DataTable().row.add(res).draw();
-                    // table.find('tbody tr').css('cursor', 'pointer');
+                    console.log('addREsult: ', res);
+                    table.DataTable().row.add(res).draw();
+                    table.find('tbody tr').css('cursor', 'pointer');
                 }, function (res) {
                     // Result when modal is dismissed
                 });
@@ -343,18 +308,18 @@ define([
                 .cancelBtn("Cancel")
                 .confirm("Are you sure you want to delete this certification?",
                     function () {
-                        // blocker.start();
-                        // Service.archive(data).then(res => {
-                        //     if (res.data.status) {
-                        //         table.DataTable().row('.selected').remove().draw(true);
-                        //         Alertify.log('Deleted!');
+                        blocker.start();
+                        Service.archive(data).then(res => {
+                            if (res.data.status) {
+                                table.DataTable().row('.selected').remove().draw(true);
+                                Alertify.log('Deleted!');
                                 
-                        //         blocker.stop();
-                        //     } else {
-                        //         Alertify.error("ERROR! Please contact the administrator.");
-                        //         blocker.stop();
-                        //     }
-                        // });
+                                blocker.stop();
+                            } else {
+                                Alertify.error("ERROR! Please contact the administrator.");
+                                blocker.stop();
+                            }
+                        });
                     }
                 );
             }

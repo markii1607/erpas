@@ -85,15 +85,15 @@
 				<div class="col-7"></div>
 				<div class="col-5">
 					<p class="font-arial mb-5">Research/Prepared by:</p>
-					<p class="font-arial mb-5 font-weight-bold">MAE ANNJENETTE CASIMIRO</p>
+					<p class="font-arial mb-5 font-weight-bold">{{ data.prepared_by.full_name }}</p>
 					<p class="font-arial mb-5">Verified by:</p>
-					<p class="font-arial mb-0 font-weight-bold">NATIVIDAD C. KRISHNAN, REA,REB</p>
-					<p class="font-arial mb-0 font-italic">&nbsp;&nbsp;OIC-Municipal Assessor</p>
+					<p class="font-arial mb-0 font-weight-bold">{{ data.verified_by.full_name }}</p>
+					<p class="font-arial mb-0 font-italic">&nbsp;&nbsp;{{ data.verified_by.position }}</p>
 				</div>
 			</div>
 			<div class="row mb-4 align-items-center" style="padding-left: 5rem; padding-right: 5rem;">
 				<div class="col-12">
-					<p class="font-arial mb-0">Paid Under: P20.00</p>
+					<p class="font-arial mb-0">Paid Under: P{{ data.amount_paid | number:2 }}</p>
 					<p class="font-arial mb-0">OR No. {{ data.or_no }}</p>
 					<p class="font-arial mb-0">Dated: {{ data.date.month }} {{ data.date.day }}, {{ data.date.year }}</p>
 					<p class="font-arial mb-0">Malilipot, Albay</p>

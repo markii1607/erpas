@@ -1,0 +1,116 @@
+<script type="text/ng-template" id="add_td_payment.html">
+    <style>
+        .selectedRow {
+            background-color: #ffff80;
+        }
+    </style>
+    <div block-ui="blockAddTDPayment">
+        <form name="form.addAddTDPayment" novalidate>
+            <div class="modal-header align-items-center">
+				<span class="fa-stack fa-lg">
+	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+	                <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+	            </span>
+
+				<h5 class="modal-title" style="letter-spacing: 1px;">ADD TAX DECLARATION PAYMENT</h5>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+	                <span aria-hidden="true">
+	                    <i class="fas fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+				<div class="row">
+                    <div class="col-3">
+                        <label for="lot_no" class="font-weight-bold">Lot No.</label>
+                    </div>
+                    <div class="col-3">
+                        <label for="td_no" class="font-weight-bold">TD No.</label>
+                    </div>
+                    <div class="col-3">
+                        <label for="declarant" class="font-weight-bold">Declarant/Owner</label>
+                    </div>
+                </div>
+				<div class="row mb-3">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <input type="text" ng-model="addTdPayment.lot_no" class="form-control" id="lot_no" placeholder="Enter Lot Number..." autofocus autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <ui-select ng-model="addTdPayment.td_no" id="td_no" theme="bootstrap" reset-search-input="true" append-to-body="true">
+                                <ui-select-match placeholder="Select Tax Dec Number">
+                                    <span>{{ $select.selected.td_no }}</span>
+                                </ui-select-match>
+                                <ui-select-choices style="font-size: 12px;" repeat="td in td_nos | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+                                    <span><b>{{td.td_no}}</b></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <input type="text" ng-model="addTdPayment.declarant" class="form-control" id="declarant" placeholder="Enter Declarant/Owner Name..." autofocus autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <button type="submit" class="btn btn-success" ng-click="verifyDeclareeRecords()">
+                            <i class="fas fa-id-badge"></i> <span>VERIFY RECORDS</span>
+                        </button>
+                    </div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="table-responsive">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th class="text-center align-middle"></th>
+										<th class="text-center align-middle">TD No.</th>
+										<th class="text-center align-middle"></th>
+										<th class="text-center align-middle">Total Assessed Value</th>
+										<th class="text-center align-middle"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+                                        <td>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" ng-model="addTdPayment.check" />
+                                                <span class="checkbox-custom"></span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            2012-15-4578-789
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            Taxable
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            Php 150,125.25
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <button class="btn btn-xs btn-primary" ng-click="viewTaxDec()">
+                                                <i class="fas fa-info"></i>&nbsp;View Details
+                                            </button>
+                                        </td>
+                                    </tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+            </div>
+            <div class="modal-footer bordered">
+				<button type="submit" class="btn btn-default bg-crimson-red" ng-click="transactPayment()">
+					<span>CREATE PAYMENT DETAILS</span>
+				</button>
+				<button type="button" class="btn btn-default" ng-click="closeModal()">
+					<span>CLOSE</span>
+				</button>
+			</div>
+        </form>
+    </div>
+</script>
