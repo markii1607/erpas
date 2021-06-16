@@ -147,10 +147,19 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" ui-sref="#">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#reports"
+                aria-expanded="true" aria-controls="reports">
                 <i class="fas fa-fw fa-table"></i>
                 <span>Tabular Reports</span>
             </a>
+            <div id="reports" class="collapse" aria-labelledby="reports" data-parent="#erpasSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" style="cursor: pointer; white-space: normal;" ng-click="redirectToModule('qr_assessment_report', 'QRR')">Quarterly Report on Real Property Assessment</a>
+                    <a class="collapse-item" style="cursor: pointer; white-space: normal;">Statement of Real Property Tax Collection</a>
+                    <a class="collapse-item" style="cursor: pointer; white-space: normal;">Consolidated Real Property Tax Collection</a>
+                    <a class="collapse-item" style="cursor: pointer; white-space: normal;">Collection and Deposits</a>
+                </div>
+            </div>
         </li>
 
         <!-- Divider -->

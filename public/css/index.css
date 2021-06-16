@@ -639,6 +639,10 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
     font-size: 13px;
 }
 
+.font-14 {
+    font-size: 14px;
+}
+
 .font-15 {
     font-size: 16px;
 }
@@ -707,4 +711,42 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
 
 .table-custom tbody+tbody {
     border-top: 1px solid black !important;
+}
+
+#big-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-collapse: collapse;
+}
+
+#big-table tbody {
+    display: table;
+    width: 100%;
+}
+
+#big-table td.b-black {
+    background-color: #000000;
+}
+
+#big-table td.b-grey {
+    background-color: #a7a7a7;
+    color: #000;
+}
+
+#big-table td.b-pink {
+    background-color: #fb9cb7;
+    color: #000;
+}
+
+#big-table td {
+    border: 3px solid black;
+}
+
+#big-table td.no-border {
+    border: none;
+}
+
+.vert-middle {
+    vertical-align: middle;
 }

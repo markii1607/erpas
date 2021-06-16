@@ -100,6 +100,13 @@ define(function() {
             "templateUrl": "/public/module/treasurer_td_monitoring/treasurer_td_monitoring.html",
             "deps": "/public/module/treasurer_td_monitoring/index.js"
         },
+        {
+            "name": "main.qr_assessment_report",
+            "url": "/qr_assessment_report",
+            "controller": "QRAssessmentReportController",
+            "templateUrl": "/public/module/qr_assessment_report/qr_assessment_report.html",
+            "deps": "/public/module/qr_assessment_report/index.js"
+        },
     ];
 
     return routes;
