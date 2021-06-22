@@ -34,7 +34,10 @@ define([
             _this.getDetails = function () {
                 return $http.get(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/AddTDPaymentService.php/getSelectionDetails');
             }
-
+            
+            _this.searchRecords = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/AddTDPaymentService.php/getRecords', data);
+            }
         }
     ]);
 
@@ -69,12 +72,30 @@ define([
                 })
             }
 
+            $scope.search = function(){
+                if ($scope.addTdPayment.lot_no == undefined && $scope.addTdPayment.td_no == undefined && $scope.addTdPayment.declarant == undefined) {
+                    Alertify.log("Please provide at least one(1) entry to proceed.");
+                } else {
+                    blocker.start();
+                    Service.searchRecords($scope.addTdPayment).then(res => {
+                        if (res.data.records != undefined) {
+                            $scope.td_records = res.data.records;
+                            if($scope.td_records.length == 0) Alertify.alert('<b>No records found!</b>');
+                            blocker.stop();
+                        } else {
+                            Alertify.error("An error occurred while fetching data. Please contact the administrator.");
+                            blocker.stop();
+                        }
+                    })
+                }
+            }
+
             $scope.viewTaxDec = function (data) {
                 var paramData, modalInstance;
 
                 paramData = {
                     data,
-                    server_base_url: $scope.server.base_url,
+                    server_base_url: APP.SERVER_BASE_URL,
                 }
 
                 modalInstance = $uibModal.open({
@@ -100,32 +121,45 @@ define([
             }
 
             $scope.transactPayment = function () {
-                var paramData, modalInstance;
-
-                paramData = {
-                    data : $scope.addTdPayment
-                }
-
-                modalInstance = $uibModal.open({
-                    animation       : true,
-                    keyboard        : false,
-                    backdrop        : 'static',
-                    ariaLabelledBy  : 'modal-title',
-                    ariaDescribedBy : 'modal-body',
-                    templateUrl     : 'payment_portal.html',
-                    controller      : 'PaymentPortalController',
-                    size            : 'md',
-                    resolve         : {
-                        paramData : function () {
-                            return paramData;
-                        }
+                var tempRecords = [];
+                angular.forEach($scope.td_records, (value, key) => {
+                    if (value.check != undefined) {
+                        if (value.check) tempRecords.push(value);
                     }
-                });
+                })
 
-                modalInstance.result.then(function (res) {
-                }, function (res) {
-                    // Result when modal is dismissed
-                });
+                if (tempRecords.length > 0) {
+                    $scope.addTdPayment.records = tempRecords;
+                    var paramData, modalInstance;
+    
+                    paramData = {
+                        data : $scope.addTdPayment
+                    }
+    
+                    modalInstance = $uibModal.open({
+                        animation       : true,
+                        keyboard        : false,
+                        backdrop        : 'static',
+                        ariaLabelledBy  : 'modal-title',
+                        ariaDescribedBy : 'modal-body',
+                        templateUrl     : 'payment_portal.html',
+                        controller      : 'PaymentPortalController',
+                        size            : 'md',
+                        resolve         : {
+                            paramData : function () {
+                                return paramData;
+                            }
+                        }
+                    });
+    
+                    modalInstance.result.then(function (res) {
+                        $uibModalInstance.close(res);
+                    }, function (res) {
+                        // Result when modal is dismissed
+                    });
+                } else {
+                    Alertify.log('Please select at least one(1) TD number.');
+                }
             }
 
             /**
