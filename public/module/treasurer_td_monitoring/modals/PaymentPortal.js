@@ -31,8 +31,8 @@ define([
              * @param  {[type]} id
              * @return {[type]}
              */
-            _this.getDetails = function () {
-                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/PaymentPortalService.php/getSelectionDetails');
+            _this.save = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/AddTDPaymentService.php/savePaymentDetails', data);
             }
 
         }
@@ -45,10 +45,11 @@ define([
         '$timeout',
         '$filter',
         'blockUI',
+        'paramData',
         'alertify',
         'PaymentPortalFactory',
         'PaymentPortalService',
-        function ($scope, $uibModal, $uibModalInstance, $timeout, $filter, BlockUI, Alertify, Factory, Service) {
+        function ($scope, $uibModal, $uibModalInstance, $timeout, $filter, BlockUI, ParamData, Alertify, Factory, Service) {
             var _init, _loadDetails, blocker = BlockUI.instances.get('blockPaymentPortal');
 
             /**
@@ -73,43 +74,32 @@ define([
              * @return {Object}
              */
             $scope.save = function (isValid) {
-               /*  if (isValid) {
-                    blocker.start();
-                    Service.checkTDNoDuplicate($scope.addTaxDec.td_no).then(tdChk => {
-                        if (tdChk.data.hasDuplicate != undefined) {
-                            if (!tdChk.data.hasDuplicate) {
-                                Alertify.confirm("Are you sure you want to add this tax declaration?",
-                                    function () {
-                                        blocker.start();
-                                        
-                                        Service.save($scope.addTaxDec).then( function (res) {
-                                            if (res.data.status) {
-                                                Alertify.success("Tax Declaration successfully added!");
-        
-                                                $uibModalInstance.close(res.data.rowData);
-                                                blocker.stop();
-                                            } else {
-                                                Alertify.error("An error occurred while saving! Please contact the administrator.");
-                                                blocker.stop();
-                                            }
-                                        });
-                                    }
-                                );
-                            } else {
-                                Alertify.alert("Tax Declaration No. <u><b><i>" + tdChk.data.td_no + "</i></b></u> is already existing on the database. Please provide new TD No. to proceed.");
-                            }
-                            
-                            blocker.stop();
-                        } else {
-                            Alertify.error('An error occurred while validating entries. Please contact the administrator.');
-                            blocker.stop();
-                        }
+                
+                Alertify.confirm("Saving the following data will marked the TD Number/s as PAID. Continue?",
+                    function () {
+                        blocker.start();
+                        
+                        _formatSubmittedData();
+                        Service.save($scope.addPaymentDetail).then( function (res) {
+                            if (res.data.status) {
+                                Alertify.success("You have successfully saved the payment details of the seleted TD Number/s!");
 
-                    });
-                } else {
-                    Alertify.error("All fields marked with * are required!");
-                } */
+                                $uibModalInstance.close(res.data.rowData);
+                                blocker.stop();
+                            } else {
+                                Alertify.error("An error occurred while saving! Please contact the administrator.");
+                                blocker.stop();
+                            }
+                        });
+                    }
+                );
             };
+
+            _formatSubmittedData = function(data) {
+                angular.forEach($scope.td_records, (value, key) => {
+                    $scope.addPaymentDetail.records.push({id : value.id});
+                })
+            }
 
             /**
              * `_init` Initialize first things first
@@ -119,7 +109,10 @@ define([
                 // default settings
                 Factory.autoloadSettings();
                 
-                $scope.addTdPayment = {};
+                $scope.td_records = ParamData.data.records
+                $scope.addPaymentDetail = {
+                    records : []
+                };
 
                 _loadDetails();
             };

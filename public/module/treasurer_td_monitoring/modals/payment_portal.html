@@ -18,7 +18,7 @@
             <div class="modal-body" id="modal-body">
                 <div class="row">
                     <div class="col-12">
-                        <div class="row mb-3">
+                        <div class="row mb-3" ng-repeat="(key, value) in td_records track by $index">
                             <div class="col-12">
                                 <div class="card shadow">
                                     <div class="card-body">
@@ -27,15 +27,15 @@
                                                 <table>
                                                     <tr>
                                                         <th class="text-right">Tax Declaration No.</th>
-                                                        <td> : 2012-45-879-789</td>
+                                                        <td> : {{value.td_no}}</td>
                                                     </tr>
                                                     <tr>
                                                         <th class="text-right">Declarant/Owner</th>
-                                                        <td> : Sample Declarant Name</td>
+                                                        <td> : {{value.owner}}</td>
                                                     </tr>
                                                     <tr>
                                                         <th class="text-right">Total Assessed Value</th>
-                                                        <td> : Php 251,152.25</td>
+                                                        <td> : Php {{value.total_assessed_value | number:2}}</td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -50,27 +50,27 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="text" ng-model="addTdPayment.or_no" class="form-control" id="or_no" placeholder="Enter OR Number..." autofocus autocomplete="off" />
+                                    <input type="text" ng-model="addPaymentDetail.or_no" class="form-control" id="or_no" placeholder="Enter OR Number..." autofocus autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-2">
-                                <label for="or_no" class="font-weight-bold">Amount</label>
+                                <label for="amount_paid" class="font-weight-bold">Amount</label>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="number" ng-model="addTdPayment.or_no" class="form-control" id="or_no" placeholder="Enter Amount to be Paid..." autofocus autocomplete="off" />
+                                    <input type="number" ng-model="addPaymentDetail.amount_paid" class="form-control" id="amount_paid" placeholder="Enter Amount to be Paid..." autofocus autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-2">
-                                <label for="or_no" class="font-weight-bold">Paid By</label>
+                                <label for="payor" class="font-weight-bold">Paid By</label>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="text" ng-model="addTdPayment.or_no" class="form-control" id="or_no" placeholder="Enter Name of Payor..." autofocus autocomplete="off" />
+                                    <input type="text" ng-model="addPaymentDetail.payor" class="form-control" id="payor" placeholder="Enter Name of Payor..." autofocus autocomplete="off" required />
                                 </div>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                 </div>
             </div>
             <div class="modal-footer bordered">
-				<button type="submit" class="btn btn-default bg-crimson-red" ng-click="save()">
+				<button type="submit" class="btn btn-default bg-crimson-red" ng-click="save()" ng-disabled="!form.addPaymentPortal.$valid">
 					<span>SAVE PAYMENT</span>
 				</button>
 				<button type="button" class="btn btn-default" ng-click="closeModal()">

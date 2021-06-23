@@ -7,7 +7,136 @@
 
     class TreasurerTdMonitoringQueryHandler extends QueryHandler {
 
-        public function selectTaxDeclarations($id = false, $status = false, $rev_id = false, $td_no = false, $pin = false, $owner = false, $lot_no = false, $brgy_id = false, $type = false, $date_from = false, $date_to = false, $tdCategory = '', $tdIDs = [], $total = false)
+        public function selectGeneratedOrNumbers($id = false, $total = false)
+        {
+            $fields = [
+                'PTD.id',
+                'PTD.user_id',
+                'DATE_FORMAT(PTD.transaction_date, "%M %d, %Y") as transaction_date',
+                'PTD.or_no',
+                'PTD.amount_paid',
+                'PTD.paid_by',
+                'PTD.has_check_no',
+                'CONCAT_WS(" ", NULLIF(U.fname, ""), NULLIF(CONCAT(LEFT(U.mname,1), "."), ""), NULLIF(U.lname, "")) as collector_name',
+                'U.position as collector_position',
+            ];
+
+            $fields = ($total) ? array('COUNT(PTD.id) as td_count') : $fields;
+
+            $orWhereConditions = array(
+                'DATE_FORMAT(PTD.transaction_date, "%M %d, %Y")' => ':filter_val',
+                'PTD.or_no'         => ':filter_val',
+                'PTD.amount_paid'   => ':filter_val',
+                'PTD.paid_by'       => ':filter_val',
+                'U.fname'           => ':filter_val',
+                'U.mname'           => ':filter_val',
+                'U.lname'           => ':filter_val',
+                'U.position'        => ':filter_val',
+            );
+
+            $initQuery = $this->select($fields)
+                              ->from('paid_tax_declarations PTD')
+                              ->join(['users U' => 'U.id = PTD.user_id'])
+                              ->where(['PTD.is_active' => ':is_active'])
+                              ->logicEx('AND')
+                              ->orWhereLike($orWhereConditions);
+
+            $initQuery = ($id) ? $initQuery->andWhere(['PTD.id' => ':id']) : $initQuery;
+            // $initQuery = ($date_from && $date_to) ? $initQuery->andWhereRange('PTD.transaction_date', [':date_from', ':date_to']) : $initQuery;
+
+            return $initQuery;
+        }
+
+        public function selectGeneratedChkNumbers($id = false, $total = false)
+        {
+            $fields = [
+                'TC.id',
+                'TC.user_id',
+                'DATE_FORMAT(TC.date_generated, "%M %d, %Y") as date_generated',
+                'TC.check_no',
+                'TC.total_amount',
+                'CONCAT_WS(" ", NULLIF(U.fname, ""), NULLIF(CONCAT(LEFT(U.mname,1), "."), ""), NULLIF(U.lname, "")) as collector_name',
+                'U.position as collector_position',
+            ];
+
+            $fields = ($total) ? array('COUNT(TC.id) as tc_count') : $fields;
+
+            $orWhereConditions = array(
+                'DATE_FORMAT(TC.date_generated, "%M %d, %Y")' => ':filter_val',
+                'TC.check_no'       => ':filter_val',
+                'U.fname'           => ':filter_val',
+                'U.mname'           => ':filter_val',
+                'U.lname'           => ':filter_val',
+                'U.position'        => ':filter_val',
+            );
+
+            $initQuery = $this->select($fields)
+                              ->from('treasurer_collections TC')
+                              ->join(['users U' => 'U.id = TC.user_id'])
+                              ->where(['TC.is_active' => ':is_active'])
+                              ->logicEx('AND')
+                              ->orWhereLike($orWhereConditions);
+
+            $initQuery = ($id) ? $initQuery->andWhere(['TC.id' => ':id']) : $initQuery;
+            // $initQuery = ($date_from && $date_to) ? $initQuery->andWhereRange('PTD.date_generated', [':date_from', ':date_to']) : $initQuery;
+
+            return $initQuery;
+        }
+
+        public function selectTreasurerCollectionDetails($tc_id = false)
+        {
+            $fields = [
+                'TCD.id',
+                'TCD.treasurer_collection_id',
+                'TCD.paid_tax_declaration_id',
+                'PTD.or_no'
+            ];
+
+            $initQuery = $this->select($fields)
+                              ->from('treasurer_collection_details TCD')
+                              ->join(['paid_tax_declarations PTD' => 'PTD.id = TCD.paid_tax_declaration_id'])
+                              ->where(['TCD.is_active' => ':is_active']);
+
+            $initQuery = ($tc_id) ? $initQuery->andWhere(['TCD.treasurer_collection_id' => ':tc_id']) : $initQuery;
+
+            return $initQuery;
+        }
+
+        public function selectBarangays($id = false)
+        {
+            $fields = [
+                'B.id',
+                'B.code',
+                'B.name',
+                'B.no_of_sections',
+            ];
+
+            $initQuery = $this->select($fields)
+                              ->from('barangays B')
+                              ->where(['B.is_active' => ':is_active']);
+
+            $initQuery = ($id) ? $initQuery->andWhere(['B.id' => ':id']) : $initQuery;
+
+            return $initQuery;
+        }
+
+        public function selectRevisionYears($id = false)
+        {
+            $fields = [
+                'RY.id',
+                'RY.year',
+            ];
+
+            $initQuery = $this->select($fields)
+                              ->from('revision_years RY')
+                              ->where(['RY.is_active' => ':is_active']);
+
+            $initQuery = ($id) ? $initQuery->andWhere(['RY.id' => ':id']) : $initQuery;
+
+            return $initQuery;
+        }
+
+        public function selectTDNumbers($rev_id = false, $id = false, $td_no = false)
         {
             $fields = [
                 'TD.id',
@@ -55,189 +184,7 @@
                 'TD.status',
                 'TD.is_paid',
                 'TD.payment_details',
-                'RY.year as rev_year',
-                'B.name as brgy',
-                'B.code as brgy_code',
-            ];
-
-            $fields = ($total) ? array('COUNT(Td.id) as td_count') : $fields;
-
-            $orWhereCondition = array(
-                'TD.td_no'                  => ':filter_val',
-                'TD.pin'                    => ':filter_val',
-                'TD.owner'                  => ':filter_val',
-                'TD.property_kind'          => ':filter_val',
-                'TD.prop_location_street'   => ':filter_val',
-                'RY.year'                   => ':filter_val',
-                'B.name'                    => ':filter_val',
-                'B.code'                    => ':filter_val',
-            );
-
-            $joins = [
-                'revision_years RY' => 'RY.id = TD.revision_year_id',
-                'barangays B'       => 'B.id = TD.barangay_id'
-            ];
-
-            $initQuery = $this->select($fields)
-                              ->from('tax_declarations TD')
-                              ->join($joins)
-                              ->where(['TD.is_active' => ':is_active'])
-                              ->andWhereNotNull(['TD.is_paid'])
-                              ->logicEx('AND')
-                              ->orWhereLike($orWhereCondition);
-
-            $initQuery = ($id)      ? $initQuery->andWhere(['TD.id' => ':id'])           : $initQuery;
-            $initQuery = ($status)  ? $initQuery->andWhere(['TD.status' => ':status'])   : $initQuery;
-            $initQuery = ($rev_id)  ? $initQuery->andWhere(['RY.id' => ':rev_id'])       : $initQuery;
-            $initQuery = ($td_no)   ? $initQuery->andWhereLike(['TD.td_no' => ':td_no']) : $initQuery;
-            $initQuery = ($pin)     ? $initQuery->andWhereLike(['TD.pin' => ':pin'])     : $initQuery;
-            $initQuery = ($owner)   ? $initQuery->andWhereLike(['TD.owner' => ':owner']) : $initQuery;
-            $initQuery = ($lot_no)  ? $initQuery->andWhereLike(['TD.lot_no' => ':lot_no'])  : $initQuery;
-            $initQuery = ($brgy_id) ? $initQuery->andWhere(['B.id' => ':brgy_id'])          : $initQuery;
-            $initQuery = ($type)    ? $initQuery->andWhereLike(['TD.property_kind' => ':type']) : $initQuery;
-            $initQuery = ($date_from && $date_to) ? $initQuery->andWhereRange('TD.created_at', [':date_from', ':date_to']) : $initQuery;
-            $initQuery = !empty($tdIDs) ? $initQuery->andWhereIn('TD.id', $tdIDs) : $initQuery;
-            if ($tdCategory == 'taxable') {
-                $initQuery = $initQuery->andWhereNotNull(['TD.is_taxable']);
-            } else if ($tdCategory == 'exempt') {
-                $initQuery = $initQuery->andWhereNotNull(['TD.is_exempt']);
-            }
-
-            return $initQuery;
-        }
-
-        public function selectTaxDeclarationClassifications($td_id = false)
-        {
-            $fields = [
-                'TDC.id',
-                'TDC.tax_declaration_id',
-                'TDC.classification_id',
-                'TDC.market_value_id',
-                'TDC.area',
-                'TDC.unit_measurement',
-                'TDC.area_in_sqm',
-                'TDC.area_in_ha',
-                'TDC.market_value',
-                'TDC.actual_use',
-                'TDC.assessment_level',
-                'TDC.assessed_value',
-                '"saved" as data_type'
-            ];
-
-            $initQuery = $this->select($fields)
-                              ->from('tax_declaration_classifications TDC')
-                              ->where(['TDC.is_active' => ':is_active']);
-
-            $initQuery = ($td_id) ? $initQuery->andWhere(['TDC.tax_declaration_id' => ':td_id'])    : $initQuery;
-
-            return $initQuery;
-        }
-
-        public function selectFilteredTDClassifications($class_id = false, $actual_use = false)
-        {
-            $fields = [
-                'TDC.id',
-                'TDC.tax_declaration_id',
-                'TDC.classification_id',
-                'TDC.market_value_id',
-                'TDC.area',
-                'TDC.unit_measurement',
-                'TDC.area_in_sqm',
-                'TDC.area_in_ha',
-                'TDC.market_value',
-                'TDC.actual_use',
-                'TDC.assessment_level',
-                'TDC.assessed_value',
-                '"saved" as data_type'
-            ];
-
-            $initQuery = $this->select($fields)
-                              ->from('tax_declaration_classifications TDC')
-                              ->join(['tax_declarations TD' => 'TD.id = TDC.tax_declaration_id'])
-                              ->where(['TDC.is_active' => ':is_active', 'TD.is_active' => ':is_active']);
-
-            $initQuery = ($class_id)    ? $initQuery->andWhere(['TDC.classification_id' => ':class_id'])  : $initQuery;
-            $initQuery = ($actual_use)  ? $initQuery->andWhereLike(['TDC.actual_use' => ':actual_use'])   : $initQuery;
-
-            return $initQuery;
-        }
-
-        public function selectClassifications($id = false)
-        {
-            $fields = [
-                'C.id',
-                'C.name',
-            ];
-
-            $initQuery = $this->select($fields)
-                              ->from('classifications C')
-                              ->where(['C.is_active' => ':is_active']);
-
-            $initQuery = ($id) ? $initQuery->andWhere(['C.id' => ':id']) : $initQuery;
-
-            return $initQuery;
-        }
-
-        public function selectSubClassifications($class_id = false)
-        {
-            $fields = [
-                'SC.id',
-                'SC.classification_id',
-                'SC.name',
-            ];
-
-            $initQuery = $this->select($fields)
-                              ->from('classifications SC')
-                              ->where(['SC.is_active' => ':is_active']);
-
-            $initQuery = ($class_id) ? $initQuery->andWhere(['SC.classification_id' => ':class_id']) : $initQuery;
-
-            return $initQuery;
-        }
-
-        public function selectBarangays($id = false)
-        {
-            $fields = [
-                'B.id',
-                'B.code',
-                'B.name',
-                'B.no_of_sections',
-            ];
-
-            $initQuery = $this->select($fields)
-                              ->from('barangays B')
-                              ->where(['B.is_active' => ':is_active']);
-
-            $initQuery = ($id) ? $initQuery->andWhere(['B.id' => ':id']) : $initQuery;
-
-            return $initQuery;
-        }
-
-        public function selectRevisionYears($id = false)
-        {
-            $fields = [
-                'RY.id',
-                'RY.year',
-            ];
-
-            $initQuery = $this->select($fields)
-                              ->from('revision_years RY')
-                              ->where(['RY.is_active' => ':is_active']);
-
-            $initQuery = ($id) ? $initQuery->andWhere(['RY.id' => ':id']) : $initQuery;
-
-            return $initQuery;
-        }
-
-        public function selectTDNumbers($rev_id = false, $id = false, $td_no = false)
-        {
-            $fields = [
-                'TD.id',
-                'TD.revision_year_id',
-                'TD.td_no',
-                'TD.owner',
-                'TD.pin',
-                'TD.total_assessed_value',
+                'TD.is_paid',
                 'RY.year as revision_year'
             ];
 
@@ -253,49 +200,138 @@
             return $initQuery;
         }
 
-        public function selectMarketValues($class_id = false, $rev_id = false, $id = false)
+        public function selectTdRecords($lot_no = false, $td_id = false, $owner = false)
         {
             $fields = [
-                'MV.id',
-                'MV.sub_classification_id',
-                'MV.revision_year_id',
-                'MV.market_value',
-                'MV.unit_measurement as unit',
-                'MV.description',
-                'C.id as classification_id',
-                'SC.name as sub_classification',
-                'C.name as classification',
-                'RY.year as revision_year'
+                'TD.id',
+                'TD.revision_year_id',
+                'TD.td_no',
+                'TD.td_no as tdn',
+                'TD.pin',
+                'TD.pin as pin_1',
+                'TD.owner',
+                'TD.owner_tin',
+                'TD.owner_address',
+                'TD.beneficiary',
+                'TD.beneficiary_tin',
+                'TD.beneficiary_address',
+                'TD.beneficiary_tel_no',
+                'TD.prop_location_street',
+                'TD.barangay_id',
+                'TD.oct_tct_cloa_no',
+                'TD.cct',
+                'TD.survey_no',
+                'TD.lot_no',
+                'TD.block_no',
+                'DATE_FORMAT(TD.dated, "%m/%d/%Y") as dated',
+                'DATE_FORMAT(TD.dated, "%M %d, %Y") as dated_view',
+                'TD.boundaries',
+                'TD.boundaries_north',
+                'TD.boundaries_south',
+                'TD.boundaries_east',
+                'TD.boundaries_west',
+                'TD.property_kind',
+                'TD.description',
+                'TD.no_of_storey',
+                'TD.others_specified',
+                'TD.total_market_value',
+                'TD.total_assessed_value',
+                'TD.total_assessed_value_words',
+                'TD.is_taxable',
+                'TD.is_exempt',
+                'TD.effectivity',
+                'TD.canceled_td_id',
+                'TD.ordinance_no',
+                'DATE_FORMAT(TD.ordinance_date, "%m/%d/%Y") as ordinance_date',
+                'TD.approvers',
+                'TD.memoranda',
+                'TD.status',
+                'TD.is_paid',
+                'TD.payment_details',
+                'TD.is_paid',
             ];
 
-            $joins = [
-                'sub_classifications SC'    =>  'SC.id = MV.sub_classification_id',
-                'classifications C'         =>  'C.id = SC.classification_id',
-                'revision_years RY'         =>  'RY.id = MV.revision_year_id'
+            $orWhereLikeConditions = [
+                'TD.oct_tct_cloa_no'    => ':lot_no',
+                'TD.cct'                => ':lot_no',
+                'TD.survey_no'          => ':lot_no',
+                'TD.lot_no'             => ':lot_no',
+                'TD.block_no'           => ':lot_no',
+                'TD.boundaries_north'   => ':lot_no',
+                'TD.boundaries_south'   => ':lot_no',
+                'TD.boundaries_east'    => ':lot_no',
+                'TD.boundaries_west'    => ':lot_no'
             ];
 
             $initQuery = $this->select($fields)
-                              ->from('market_values MV')
-                              ->join($joins)
-                              ->where(['MV.is_active' => ':is_active']);
+                              ->from('tax_declarations TD')
+                              ->where(['TD.is_active'  =>  ':is_active'])
+                              ->andWhereNull(['TD.is_paid']);
 
-            $initQuery = ($class_id) ? $initQuery->andWhere(['C.id' => ':class_id'])                : $initQuery;
-            $initQuery = ($rev_id)   ? $initQuery->andWhere(['MV.revision_year_id' => ':rev_id'])   : $initQuery;
-            $initQuery = ($id)       ? $initQuery->andWhere(['MV.id' => ':id']) : $initQuery;
+            $initQuery = ($lot_no) ? $initQuery->logicEx('AND')->orWhereLike($orWhereLikeConditions) : $initQuery;
+            $initQuery = ($td_id)  ? $initQuery->andWhere(['TD.id' => ':td_id']) : $initQuery;
+            $initQuery = ($owner)  ? $initQuery->andWhereLike(['TD.owner' => ':owner']) : $initQuery;
 
             return $initQuery;
         }
 
-        public function selectApproverSets()
+        public function selectSpecifiedOrNumbers()
         {
             $fields = [
-                'AP.id',
-                'AP.approvers',
+                'PTD.id',
+                'PTD.user_id',
+                'DATE_FORMAT(PTD.transaction_date, "%M %d, %Y") as transaction_date',
+                'PTD.or_no',
+                'PTD.amount_paid',
+                'PTD.paid_by',
+                'PTD.has_check_no'
             ];
 
             $initQuery = $this->select($fields)
-                              ->from('approver_sets AP')
-                              ->where(['AP.is_active' => ':is_active']);
+                              ->from('paid_tax_declarations PTD')
+                              ->where(['PTD.is_active' => ':is_active'])
+                              ->andWhereNull(['PTD.has_check_no'])
+                              ->andWhereRange('PTD.transaction_date', [':from_date', ':to_date']);
+
+            return $initQuery;
+        }
+
+        public function selectUsers($id = false)
+        {
+            $fields = [
+                'U.id',
+                'U.username',
+                'U.fname',
+                'U.mname',
+                'U.lname',
+                'CONCAT_WS(" ", NULLIF(U.fname, ""), NULLIF(CONCAT(LEFT(U.mname,1), "."), ""), NULLIF(U.lname, "")) as full_name',
+                'U.department',
+                'U.position',
+                'U.access_type',
+            ];
+
+            $initQuery = $this->select($fields)
+                            ->from('users U')
+                            ->where(['U.is_active' => ':is_active']);
+
+            $initQuery = ($id) ? $initQuery->andWhere(['U.id' => ':id']) : $initQuery;
+
+            return $initQuery;
+        }
+
+        public function selectPaidTaxDecDetails($ptd_id = false)
+        {
+            $fields = [
+                'PTDD.id',
+                'PTDD.paid_tax_declaration_id',
+                'PTDD.tax_declaration_id',
+            ];
+
+            $initQuery = $this->select($fields)
+                              ->from('paid_tax_declaration_details PTDD')
+                              ->where(['PTDD.is_active' => ':is_active']);
+
+            $initQuery = ($ptd_id) ? $initQuery->andWhere(['PTDD.paid_tax_declaration_id' => ':ptd_id']) : $initQuery;
 
             return $initQuery;
         }

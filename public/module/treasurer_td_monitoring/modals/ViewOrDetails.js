@@ -31,8 +31,8 @@ define([
              * @param  {[type]} id
              * @return {[type]}
              */
-            _this.getDetails = function () {
-                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/ViewOrDetailsService.php/getSelectionDetails');
+            _this.getDetails = function (id) {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/CheckGenerationService.php/getOrTdList?ptd_id=' + id);
             }
 
         }
@@ -45,10 +45,11 @@ define([
         '$timeout',
         '$filter',
         'blockUI',
+        'paramData',
         'alertify',
         'ViewOrDetailsFactory',
         'ViewOrDetailsService',
-        function ($scope, $uibModal, $uibModalInstance, $timeout, $filter, BlockUI, Alertify, Factory, Service) {
+        function ($scope, $uibModal, $uibModalInstance, $timeout, $filter, BlockUI, ParamData, Alertify, Factory, Service) {
             var _init, _loadDetails, blocker = BlockUI.instances.get('blockViewOrDetails');
 
             /**
@@ -56,7 +57,48 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
-                
+                blocker.start();
+                Service.getDetails($scope.orDetails.id).then(res => {
+                    if (res.data.td_list != undefined) {
+                        $scope.orDetails.td_list = res.data.td_list;
+                        blocker.stop();
+                    } else {
+                        Alertify.error('An error occurred while fetching data. Please contact the administrator.');
+                        blocker.stop();
+                    }
+                })
+            }
+
+            $scope.viewTaxDec = function (data) {
+                        
+                var paramData, modalInstance;
+
+                paramData = {
+                    data           : data.td_details,
+                    server_base_url: APP.SERVER_BASE_URL,
+                }
+
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'view_tax_declaration.html',
+                    controller      : 'ViewTaxDeclarationController',
+                    size            : 'xlg',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (res) {
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+
             }
 
             /**
@@ -68,50 +110,6 @@ define([
             };
 
             /**
-             * `save` Post data from form to database.
-             * @param  {Boolean} isValid
-             * @return {Object}
-             */
-            $scope.save = function (isValid) {
-               /*  if (isValid) {
-                    blocker.start();
-                    Service.checkTDNoDuplicate($scope.addTaxDec.td_no).then(tdChk => {
-                        if (tdChk.data.hasDuplicate != undefined) {
-                            if (!tdChk.data.hasDuplicate) {
-                                Alertify.confirm("Are you sure you want to add this tax declaration?",
-                                    function () {
-                                        blocker.start();
-                                        
-                                        Service.save($scope.addTaxDec).then( function (res) {
-                                            if (res.data.status) {
-                                                Alertify.success("Tax Declaration successfully added!");
-        
-                                                $uibModalInstance.close(res.data.rowData);
-                                                blocker.stop();
-                                            } else {
-                                                Alertify.error("An error occurred while saving! Please contact the administrator.");
-                                                blocker.stop();
-                                            }
-                                        });
-                                    }
-                                );
-                            } else {
-                                Alertify.alert("Tax Declaration No. <u><b><i>" + tdChk.data.td_no + "</i></b></u> is already existing on the database. Please provide new TD No. to proceed.");
-                            }
-                            
-                            blocker.stop();
-                        } else {
-                            Alertify.error('An error occurred while validating entries. Please contact the administrator.');
-                            blocker.stop();
-                        }
-
-                    });
-                } else {
-                    Alertify.error("All fields marked with * are required!");
-                } */
-            };
-
-            /**
              * `_init` Initialize first things first
              * @return {[void]}
              */
@@ -119,7 +117,8 @@ define([
                 // default settings
                 Factory.autoloadSettings();
                 
-                $scope.addTdPayment = {};
+                $scope.orDetails = ParamData.data;
+                console.log($scope.orDetails);
 
                 _loadDetails();
             };

@@ -3,6 +3,15 @@
         .selectedRow {
             background-color: #ffff80;
         }
+
+        .labelStyle {
+            display: inline; 
+            padding: .2em .6em .3em; 
+            color: white; 
+            border-radius: 25px; 
+            font-size: 8px; 
+            font-weight: 500
+        }
     </style>
     <div block-ui="blockAddTDPayment">
         <form name="form.addAddTDPayment" novalidate>
@@ -45,7 +54,9 @@
                                     <span>{{ $select.selected.td_no }}</span>
                                 </ui-select-match>
                                 <ui-select-choices style="font-size: 12px;" repeat="td in td_nos | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
-                                    <span><b>{{td.td_no}}</b></span>
+                                    <span><b>{{td.td_no}}</b></span>&nbsp;&nbsp;
+                                    <span class="labelStyle bg-success" ng-if="td.status == 1">Active</span>
+                                    <span class="labelStyle bg-danger" ng-if="td.status == 3">Canceled</span>
                                 </ui-select-choices>
                             </ui-select>
                         </div>
@@ -56,12 +67,12 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <button type="submit" class="btn btn-success" ng-click="verifyDeclareeRecords()">
-                            <i class="fas fa-id-badge"></i> <span>VERIFY RECORDS</span>
+                        <button type="submit" class="btn btn-success" ng-click="search()">
+                            <i class="fas fa-id-badge"></i> <span>SEARCH RECORDS</span>
                         </button>
                     </div>
 				</div>
-				<div class="row mb-3">
+				<div class="row mb-3" ng-if="td_records.length > 0">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<div class="table-responsive">
 							<table class="table table-bordered">
@@ -75,24 +86,27 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-                                        <td>
+									<tr ng-repeat="(key, value) in td_records track by $index" ng-class="{'selectedRow': value.check}">
+                                        <td class="text-center align-middle">
                                             <label class="checkbox-label">
-                                                <input type="checkbox" ng-model="addTdPayment.check" />
+                                                <input type="checkbox" ng-model="td_records[key].check" />
                                                 <span class="checkbox-custom"></span>
                                             </label>
                                         </td>
-                                        <td>
-                                            2012-15-4578-789
+                                        <td class="text-left align-middle">
+                                            {{value.td_no}}&nbsp;&nbsp;
+                                            <span class="labelStyle bg-success" ng-if="value.status == 1">Active</span>
+                                            <span class="labelStyle bg-danger" ng-if="value.status == 3">Canceled</span>
                                         </td>
                                         <td class="text-center align-middle">
-                                            Taxable
+                                            <span ng-if="value.is_taxable != null">Taxable</span>
+                                            <span ng-if="value.is_exempt != null">Exempt</span>
                                         </td>
                                         <td class="text-center align-middle">
-                                            Php 150,125.25
+                                            Php {{value.total_assessed_value | number:2}}
                                         </td>
                                         <td class="text-center align-middle">
-                                            <button class="btn btn-xs btn-primary" ng-click="viewTaxDec()">
+                                            <button class="btn btn-xs btn-primary" ng-click="viewTaxDec(value)">
                                                 <i class="fas fa-info"></i>&nbsp;View Details
                                             </button>
                                         </td>

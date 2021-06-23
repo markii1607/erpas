@@ -31,10 +31,13 @@ define([
              * @param  {[type]} id
              * @return {[type]}
              */
-            _this.getDetails = function () {
-                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/CheckGenerationService.php/getSelectionDetails');
+            _this.getRecords = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/CheckGenerationService.php/getRecords', {date_range : data});
             }
-
+            
+            _this.save = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/CheckGenerationService.php/saveCheckDetails', data);
+            }
         }
     ]);
 
@@ -84,11 +87,34 @@ define([
                 ];
             }
 
-            $scope.showDetails = function(index){
+            $scope.getRecords = function(){
+                blocker.start();
+                Service.getRecords($scope.addGeneratedCheck.date_range).then(res => {
+                    if (res.data.records != undefined) {
+                        $scope.or_records = res.data.records;
+                        if($scope.or_records.length == 0) Alertify.alert('<b>NO RECORDS FOUND!<br>Please try again by adjusting the Date Range.</b>');
+                        blocker.stop();
+                    } else {
+                        Alertify.error("An error occurred while fetching data. Please contact the administrator.");
+                        blocker.stop();
+                    }
+                })
+            }
+
+            $scope.computeAmount = function(data) {
+                console.log(data);
+                if (data.selected) {
+                    $scope.addGeneratedCheck.total_amount += parseFloat(data.amount_paid);
+                } else {
+                    if($scope.addGeneratedCheck.total_amount > 0) $scope.addGeneratedCheck.total_amount -= parseFloat(data.amount_paid);
+                }
+            }
+
+            $scope.showDetails = function(data){
                 var paramData, modalInstance;
 
                 paramData = {
-                    data : $scope.addTdPayment
+                    data
                 }
 
                 modalInstance = $uibModal.open({
@@ -126,43 +152,33 @@ define([
              * @param  {Boolean} isValid
              * @return {Object}
              */
-            $scope.save = function (isValid) {
-               /*  if (isValid) {
-                    blocker.start();
-                    Service.checkTDNoDuplicate($scope.addTaxDec.td_no).then(tdChk => {
-                        if (tdChk.data.hasDuplicate != undefined) {
-                            if (!tdChk.data.hasDuplicate) {
-                                Alertify.confirm("Are you sure you want to add this tax declaration?",
-                                    function () {
-                                        blocker.start();
-                                        
-                                        Service.save($scope.addTaxDec).then( function (res) {
-                                            if (res.data.status) {
-                                                Alertify.success("Tax Declaration successfully added!");
-        
-                                                $uibModalInstance.close(res.data.rowData);
-                                                blocker.stop();
-                                            } else {
-                                                Alertify.error("An error occurred while saving! Please contact the administrator.");
-                                                blocker.stop();
-                                            }
-                                        });
-                                    }
-                                );
-                            } else {
-                                Alertify.alert("Tax Declaration No. <u><b><i>" + tdChk.data.td_no + "</i></b></u> is already existing on the database. Please provide new TD No. to proceed.");
-                            }
-                            
-                            blocker.stop();
-                        } else {
-                            Alertify.error('An error occurred while validating entries. Please contact the administrator.');
-                            blocker.stop();
-                        }
+            $scope.save = function () {
+                var tempRecords = [];
+                angular.forEach($scope.or_records, (value, key) => {
+                    if (value.selected != undefined) {
+                        if (value.selected) tempRecords.push({id : value.id});
+                    }
+                })
 
-                    });
+                if (tempRecords.length > 0) {
+                    Alertify.confirm("Please confirm saving of data.", function(){
+                        blocker.start();
+                        $scope.addGeneratedCheck.records = tempRecords;
+                        Service.save($scope.addGeneratedCheck).then(res => {
+                            if (res.data.status) {
+                                Alertify.success("Successfully saved data!");
+                                blocker.stop();
+
+                                $uibModalInstance.close(res.data.rowData);
+                            } else {
+                                Alertify.error('An error occurred while saving. Please contact the administrator.');
+                                blocker.stop();
+                            }
+                        })
+                    })
                 } else {
-                    Alertify.error("All fields marked with * are required!");
-                } */
+                    Alertify.log('Please select at least one(1) O.R. number.');
+                }
             };
 
             /**
@@ -173,7 +189,9 @@ define([
                 // default settings
                 Factory.autoloadSettings();
                 
-                $scope.addGeneratedCheck = {};
+                $scope.addGeneratedCheck = {
+                    total_amount : 0
+                };
                 
                 $timeout(function() {
                     angular.element('#date_range').datepicker({

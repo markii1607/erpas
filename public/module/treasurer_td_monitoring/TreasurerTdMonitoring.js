@@ -29,128 +29,206 @@ define([
                 'module/tax_declaration/modals/view_tax_declaration.html',
             ];
 
-            Factory.dtOptions = function () {
-                var options = {};
+            Factory.dtOptions = function (type) {
+                var options = {}, _columns, _ajaxUrl, _columnDefs;
+
+                _columns = function (type) {
+                    if (type == 'tax_dec') {
+                        var col = [
+                            {
+                                "data"   : null
+                            },
+                            {
+                                "data"   : "transaction_date",
+                            },
+                            {
+                                "data"   : "or_no",
+                            },
+                            {
+                                "data"   : "amount_paid",
+                            },
+                            {
+                                "data"   : "paid_by",
+                            },
+                            {
+                                "data"   : "collector_name",
+                            },
+                            {
+                                "data"   : null,
+                            },
+                        ];
+                    } else if (type == 'collections') {
+                        var col = [
+                            {
+                                "data"   : null
+                            },
+                            {
+                                "data"   : "date_generated",
+                            },
+                            {
+                                "data"   : "check_no",
+                            },
+                            {
+                                "data"   : "total_amount",
+                            },
+                            {
+                                "data"   : "or_numbers",
+                            },
+                            {
+                                "data"   : "collector_name",
+                            },
+                        ];
+                    }
+
+                    return col;
+                }
+
+                _columnDefs = function (type) {
+
+                    if (type == 'tax_dec') {
+                        var columnDefs = [
+                            {
+                                "targets"    : 5,
+                                "searchable" : true,
+                                "orderable"  : true,
+                                "className"  : "text-left",
+                                "render"     : function(data, type, full, meta){
+                                    return '<span class="text-uppercase"><b>' + data + '</b></span><br><small>' + full.collector_position + '</small>';
+                                }
+                            },
+                            {
+                                "targets"    : 6,
+                                "searchable" : true,
+                                "orderable"  : true,
+                                "className"  : "text-center",
+                                "render"     : function(data, type, full, meta){
+                                    
+                                    var str = '';
+                                    str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-md mr-2 text-white"><i class="fas fa-eye"></i> View O.R. Details</button>';
+
+                                    return str;
+                                }
+                            },
+                        ];
+                    } else if (type == 'collections') {
+                        var columnDefs = [
+                            {
+                                "targets"    : 4,
+                                "searchable" : true,
+                                "orderable"  : true,
+                                "className"  : "text-left",
+                                "render"     : function(data, type, full, meta){
+                                    var str =   '<ul>';
+                                                    angular.forEach(data, (value, key) => {
+                                                        str += '<li>' + value.or_no + '</li>';
+                                                    })
+                                        str +=  '</ul>';
+
+                                    return str;
+                                }
+                            },
+                            {
+                                "targets"    : 5,
+                                "searchable" : true,
+                                "orderable"  : true,
+                                "className"  : "text-left",
+                                "render"     : function(data, type, full, meta){
+                                    return '<span class="text-uppercase"><b>' + data + '</b></span><br><small>' + full.collector_position + '</small>';
+                                }
+                            },
+                        ];
+                    }
+
+                    return columnDefs;
+                }
+
+                _ajaxUrl = function (type) {
+                    if (type == 'tax_dec') {
+                        var ajax = {
+                            "url"  : APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/TreasurerTdMonitoringService.php/getDtOrDetails',
+                            "data" : function (data) {
+                                var temp = {
+                                    'advanced_search' : {
+                                        'date_range' : ''
+                                    }
+                                };
+    
+                                // Retrieve dynamic parameters
+                                var dt_params = angular.element('#tax_declarations').data('dt_params');
+                                // console.log('dt_params: ', dt_params);
+                                // Add dynamic parameters to the data object sent to the server
+                                if (dt_params) {
+                                    temp.advanced_search = dt_params;
+                                }
+    
+                                angular.extend(data, temp);
+                            }
+                        }
+                    } else if (type == 'collections') {
+                        var ajax = {
+                            "url"  : APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/TreasurerTdMonitoringService.php/getDtChkDetails',
+                            "data" : function (data) {
+                                var temp = {
+                                    'advanced_search' : {
+                                        'date_range'   : '',
+                                    }
+                                };
+    
+                                // Retrieve dynamic parameters
+                                var dt_params = angular.element('#collections_tbl').data('dt_params');
+                                // console.log('dt_params: ', dt_params);
+                                // Add dynamic parameters to the data object sent to the server
+                                if (dt_params) {
+                                    temp.advanced_search = dt_params;
+                                }
+    
+                                angular.extend(data, temp);
+                            }
+                        }
+                    }
+
+                    return ajax;
+                }
 
                 options = {
-                    "dom": 'Bfrtip',
-                    "paging": true,
-                    "lengthChange": true,
-                    "pageLength": 15,
-                    "searching": true,
-                    "ordering": true,
-                    "info": true,
-                    "select": {
+                    "dom"           : 'Bfrtip',
+                    "paging"        : true,
+                    "lengthChange"  : true,
+                    "pageLength"    : 5,
+                    "searching"     : true,
+                    "ordering"      : true,
+                    "info"          : true,
+                    "select"        : 
+                    {
                         style: 'single'
                     },
-                    "keys": {
+                    "keys"          : 
+                    {
                         keys: [
                             13 /* ENTER */ ,
                             38 /* UP */ ,
                             40 /* DOWN */
                         ]
                     },
-                    "mark": true,
-                    "autoWidth": false,
-                    "responsive": true,
-                    "data": [],
-                    "buttons": [],
-                    "order": [
+                    "mark"          : true,
+                    "autoWidth"     : false,
+                    "responsive"    : false,
+                    "data"          : [],
+                    "buttons"       : [],
+                    "order"         : 
+                    [
                         [
                             0,
                             "asc"
                         ]
                     ],
-                    "processing"     : true,
-                    "serverSide"     : true,
-                    "ajax"           : 
-                    {
-                        "url"  : APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/TreasurerTdMonitoringService.php/getDetails',
-                        "data" : function (data) {
-                            var temp = {
-                                'advanced_search' : {
-                                    'date_range'        : '',
-                                }
-                            };
-
-                            // Retrieve dynamic parameters
-                            var dt_params = angular.element('#tax_declarations').data('dt_params');
-                            // console.log('dt_params: ', dt_params);
-                            // Add dynamic parameters to the data object sent to the server
-                            if (dt_params) {
-                                temp.advanced_search = dt_params;
-                            }
-
-                            angular.extend(data, temp);
-                        }
-                    },
-                    // "columnDefs"   : _columnDefs(type),
-                    // "columns"      : _columns(type),
-                    "columnDefs"   : [ 
-                        {
-                            "targets"    : 0,
-                            "searchable" : false,
-                            "orderable"  : true,
-                            "className"  : "text-center"
-                        },
-                        {
-                            "targets"   : 1,
-                            "searchable": false,
-                            "orderable" : false,
-                            "className" : "text-center",
-                            "render"    : function(data, type, full, meta) {
-                                var str = '';
-                                str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-md mr-2 text-white"><i class="fas fa-info"></i></button>';
-
-                                return str;
-                            }
-                        },
-                        {
-                            "targets"   : 6,
-                            "searchable": true,
-                            "orderable" : true,
-                            "className" : "text-left",
-                            "render"    : function(data, type, full, meta) {
-                                var strStreet = (data != '' && data != null) ? data + ', ' : '';
-                                return strStreet + full.barangay.name + ', Malilipot, Albay';
-                            }
-                        }
-                    ],
-                    "columns"      : 
-                    [
-                        { 
-                            "data" : null 
-                        },
-                        { 
-                            "data" : null 
-                        },
-                        { 
-                            "data" : "td_no"
-                        },
-                        { 
-                            "data" : "pin"
-                        },
-                        { 
-                            "data" : "property_kind"
-                        },
-                        { 
-                            "data" : "owner"
-                        },
-                        { 
-                            "data" : "prop_location_street"
-                        },
-                        { 
-                            "data" : "total_assessed_value"
-                        },
-                        { 
-                            "data" : "payment_details"
-                        },
-                    ]
+                    "columnDefs"   : _columnDefs(type),
+                    "columns"      : _columns(type),
                 };
 
-                // options.ajax       = _ajaxUrl(type);
-                // options.processing = true;
-                // options.serverSide = true;
+                options.processing = true;
+                options.serverSide = true;
+                options.ajax       = _ajaxUrl(type);
 
                 return options;
             };
@@ -184,9 +262,38 @@ define([
 
             $scope.rowBtns = {
                 "firstButton": function(data, index) {
-                    $scope.viewTaxDec(data, index)
+                    $scope.showDetails(data, index)
                 },
             };
+
+            $scope.showDetails = function(data){
+                var paramData, modalInstance;
+
+                paramData = {
+                    data
+                }
+
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'view_or_details.html',
+                    controller      : 'ViewOrDetailsController',
+                    size            : 'md',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (res) {
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+            }
 
             $scope.openTdPaymentProtal = function () {
                 var modalInstance;
@@ -226,6 +333,9 @@ define([
                 });
 
                 modalInstance.result.then(function (res) {
+                    console.log('addREsult: ', res);
+                    cl_table.DataTable().row.add(res).draw();
+                    cl_table.find('tbody tr').css('cursor', 'pointer');
                 }, function (res) {
                     // Result when modal is dismissed
                 });
