@@ -635,6 +635,12 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
     line-height: 1.1rem;
 }
 
+.font-13-l {
+    font-size: 14px;
+    line-height: 1.3rem;
+}
+
+
 .font-12 {
     font-size: 13px;
 }
@@ -749,4 +755,24 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
 
 .vert-middle {
     vertical-align: middle;
+}
+
+#t-custom {
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    border-collapse: collapse;
+}
+
+#t-custom tbody {
+    display: table;
+    width: 100%;
+}
+
+#t-custom td {
+    border: 2px solid black;
+}
+
+#t-custom td.no-border {
+    border: none;
 }

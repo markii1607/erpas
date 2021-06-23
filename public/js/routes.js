@@ -107,6 +107,13 @@ define(function() {
             "templateUrl": "/public/module/qr_assessment_report/qr_assessment_report.html",
             "deps": "/public/module/qr_assessment_report/index.js"
         },
+        {
+            "name": "main.rpt_collection_report",
+            "url": "/rpt_collection_report",
+            "controller": "RptCollectionReportController",
+            "templateUrl": "/public/module/rpt_collection_report/rpt_collection_report.html",
+            "deps": "/public/module/rpt_collection_report/index.js"
+        },
     ];
 
     return routes;
