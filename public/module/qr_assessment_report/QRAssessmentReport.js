@@ -1,6 +1,7 @@
 define([
     'app',
     'moment', 
+    'airDatepickeri18n'
 ], function (app, moment) {
     app.factory('QRAssessmentReportFactory', [
         'alertify',
@@ -396,6 +397,19 @@ define([
                 $scope.header.link.sub = "Tabular Reports"
                 $scope.header.link.main = "Quarterly Report on Real Property Assessment"
                 $scope.header.showButton = false
+
+                $scope.filter = {};
+                $timeout(function() {
+                    angular.element('#date_range').datepicker({
+                        language: 'en',
+                        autoClose: true,
+                        dateFormat: 'MM dd, yyyy',
+                        maxDate: new Date(), 
+                        onSelect: function(formattedDate, date, inst) {
+                            $scope.filter.date_range = angular.copy(formattedDate);
+                        }
+                    });
+                }, 500);
 
                 $scope.templates = Factory.templates;
 

@@ -395,7 +395,7 @@ define([
 
                 $scope.search = {};
 
-                $timeout(function() {
+                /* $timeout(function() {
                     angular.element('#date_range_tbl1').datepicker({
                         language: 'en',
                         autoClose: true,
@@ -414,7 +414,7 @@ define([
                             $scope.search.date_range_tbl2 = angular.copy(formattedDate);
                         }
                     });
-                }, 500);
+                }, 500); */
 
                 _loadDetails();
             };

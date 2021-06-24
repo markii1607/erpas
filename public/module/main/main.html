@@ -37,6 +37,28 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#certis"
+                aria-expanded="true" aria-controls="certis">
+                <i class="fas fa-fw fa-certificate"></i>
+                <span>Certifications</span>
+            </a>
+            <div id="certis" class="collapse" aria-labelledby="certis" data-parent="#erpasSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('no_property_dec', 'NPC')">No Property Certification</a>
+                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('prop_tax_dec', 'PTD')">Property w/ Improvements</a>
+                    <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('properties_dec', 'PRD')">Property Records</a>
+                </div>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" style="cursor: pointer;" ng-click="redirectToModule('qr_assessment_report', 'QRR')">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Quarterly Report on Real Property Assessment</span>
+            </a>
+        </li>
+
         <!-- Divider -->
         <hr class="sidebar-divider">
 
@@ -53,6 +75,20 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link collapsed" style="cursor: pointer;">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Statement of Real Property Tax Collection</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" style="cursor: pointer;">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Consolidated Real Property Tax Collection</span>
+            </a>
+        </li>
+
         <!-- Divider -->
         <hr class="sidebar-divider">
 
@@ -66,6 +102,13 @@
             <a class="nav-link collapsed" style="cursor: pointer;" ng-click="redirectToModule('accounting_td_monitoring', 'ACCT')">
                 <i class="fas fa-fw fa-house-user"></i>
                 <span>Transactions & Configurations</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" style="cursor: pointer;">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Collection and Deposits</span>
             </a>
         </li>
 
@@ -123,7 +166,7 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
 
-        <div class="sidebar-heading">
+        <!-- <div class="sidebar-heading">
             Reports
         </div>
 
@@ -135,10 +178,6 @@
             </a>
             <div id="certis" class="collapse" aria-labelledby="certis" data-parent="#erpasSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <!-- <h6 class="collapse-header">Custom Components:</h6> -->
-                    <!-- <a class="collapse-item" ui-sref="main.no_property_dec">No Property Declaration</a>
-                    <a class="collapse-item" ui-sref="main.prop_tax_dec">Property Tax Declaration</a>
-                    <a class="collapse-item" ui-sref="#">Properties Declaration</a> -->
                     <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('no_property_dec', 'NPC')">No Property Certification</a>
                     <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('prop_tax_dec', 'PTD')">Property w/ Improvements</a>
                     <a class="collapse-item" style="cursor: pointer;" ng-click="redirectToModule('properties_dec', 'PRD')">Property Records</a>
@@ -160,10 +199,10 @@
                     <a class="collapse-item" style="cursor: pointer; white-space: normal;">Collection and Deposits</a>
                 </div>
             </div>
-        </li>
+        </li> -->
 
         <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block">
+        <!-- <hr class="sidebar-divider d-none d-md-block"> -->
 
         <!-- Sidebar Message -->
         <!-- <div class="sidebar-card">
