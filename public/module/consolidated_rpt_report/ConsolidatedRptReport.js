@@ -2,7 +2,7 @@ define([
     'app',
     'moment', 
 ], function (app, moment) {
-    app.factory('RptCollectionReportFactory', [
+    app.factory('ConsolidatedRptReportFactory', [
         'alertify',
         function (alertify) {
             var Factory = {};
@@ -31,7 +31,7 @@ define([
         }
     ]);
 
-    app.service('RptCollectionReportService', [
+    app.service('ConsolidatedRptReportService', [
         '$http',
         function ($http) {
             var _this = this;
@@ -41,29 +41,29 @@ define([
             //  * @return {[route]}
             //  */
             // _this.getDetails = function () {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/RptCollectionReport/RptCollectionReportService.php/getDetails');
+            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/ConsolidatedRptReport/ConsolidatedRptReportService.php/getDetails');
             // };
 
             // // _this.retire = function (data) {
-            // //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/RptCollectionReport/RptCollectionReportService.php/retireRptCollectionReport', data);
+            // //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/ConsolidatedRptReport/ConsolidatedRptReportService.php/retireConsolidatedRptReport', data);
             // // };
 
             // _this.archive = function (data) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/RptCollectionReport/RptCollectionReportService.php/archiveRptCollectionReport', data);
+            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/ConsolidatedRptReport/ConsolidatedRptReportService.php/archiveConsolidatedRptReport', data);
             // };
         }
     ]);
 
-    app.controller('RptCollectionReportController', [
+    app.controller('ConsolidatedRptReportController', [
         '$scope',
         '$uibModal',
         '$timeout',
         'blockUI',
         'alertify',
-        'RptCollectionReportFactory',
-        'RptCollectionReportService',
+        'ConsolidatedRptReportFactory',
+        'ConsolidatedRptReportService',
         function ($scope, $uibModal, $timeout, BlockUI, Alertify, Factory, Service) {
-            var _init, _loadDetails, _btnFunc, _viewAccesses, blocker = BlockUI.instances.get('blockRptCollectionReport'), table = angular.element('#rpt_collection_report');
+            var _init, _loadDetails, _btnFunc, _viewAccesses, blocker = BlockUI.instances.get('blockConsolidatedRptReport'), table = angular.element('#consolidated_rpt_report');
 
             /**
              * `_loadDetails` Load first needed data
@@ -83,7 +83,7 @@ define([
                     '<link href="../public/css/index.css" rel="stylesheet">' +
                     //       ---------------------     PAGE STYLE HERE    ---------------------------------
                     '<style>.table-responsive { min-height: unset !important; overflow-x: unset !important; }</style>' +
-                    '<style type="text/css" media="print">@page { size: landscape; margin: 5mm 5mm 5mm 5mm; }</style>' +
+                    '<style type="text/css" media="print">@page { margin: 15mm 5mm 15mm 5mm; }</style>' +
                     '</head><body onload="window.print()"><div class="container-fluid">' + innerContents +
                     '</div></body></html>');
                 // '</div><script>$.("div.table-responsive").removeClass("table-responsive");</script></body></html>');
@@ -98,9 +98,9 @@ define([
                 // default settings
                 Factory.autoloadSettings();
 
-                $scope.header.title = "Statement of Real Property Tax Declaration"
+                $scope.header.title = "Consolidated Real Property Tax Collection"
                 $scope.header.link.sub = "Tabular Reports"
-                $scope.header.link.main = "Statement of Real Property Tax Declaration"
+                $scope.header.link.main = "Consolidated Real Property Tax Collection"
                 $scope.header.showButton = false
 
                 $scope.templates = Factory.templates;

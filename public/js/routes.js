@@ -114,6 +114,13 @@ define(function() {
             "templateUrl": "/public/module/rpt_collection_report/rpt_collection_report.html",
             "deps": "/public/module/rpt_collection_report/index.js"
         },
+        {
+            "name": "main.consolidated_rpt_report",
+            "url": "/consolidated_rpt_report",
+            "controller": "ConsolidatedRptReportController",
+            "templateUrl": "/public/module/consolidated_rpt_report/consolidated_rpt_report.html",
+            "deps": "/public/module/consolidated_rpt_report/index.js"
+        },
     ];
 
     return routes;

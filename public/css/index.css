@@ -640,7 +640,6 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
     line-height: 1.3rem;
 }
 
-
 .font-12 {
     font-size: 13px;
 }
@@ -775,4 +774,20 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
 
 #t-custom td.no-border {
     border: none;
+}
+
+#t-custom td.no-border-l {
+    border-left: none;
+}
+
+#t-custom td.no-border-r {
+    border-right: none;
+}
+
+#t-custom td.no-border-t {
+    border-top: none;
+}
+
+#t-custom td.no-border-b {
+    border-bottom: none;
 }
