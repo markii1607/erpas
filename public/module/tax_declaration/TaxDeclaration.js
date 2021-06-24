@@ -35,7 +35,7 @@ define([
                     "dom": 'Bfrtip',
                     "paging": true,
                     "lengthChange": true,
-                    "pageLength": 15,
+                    "pageLength": 5,
                     "searching": true,
                     "ordering": true,
                     "info": true,
