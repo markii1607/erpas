@@ -144,7 +144,7 @@ define([
                         ariaDescribedBy : 'modal-body',
                         templateUrl     : 'payment_portal.html',
                         controller      : 'PaymentPortalController',
-                        size            : 'md',
+                        size            : 'xxlg',
                         resolve         : {
                             paramData : function () {
                                 return paramData;
