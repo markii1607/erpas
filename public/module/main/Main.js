@@ -107,7 +107,7 @@ define([
                         $location.path('main/' + link);
                     }
                 } else if ($scope.userDetails.access_type == 3) {  // TREASURER
-                    if (moduleAlias == 'TREAS') {
+                    if (moduleAlias == 'TREAS' || moduleAlias == 'RCR' || moduleAlias == 'CRR') {
                         $location.path('main/' + link);
                     } else {
                         Alertify.log('You don\'t have access to this module.');

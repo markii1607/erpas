@@ -87,8 +87,7 @@
 
                 $output = [
                     'status'    => $status,
-                    'rowData'   => []
-                    // 'rowData'   => $this->getTaxDeclaration($newOrID)[0]
+                    'rowData'   => $this->getGeneratedChkNumbers($newCheckID)[0]
                 ];
 
                 return $output;

@@ -51,7 +51,7 @@ define([
                     },
                     "mark": true,
                     "autoWidth": false,
-                    "responsive": true,
+                    "responsive": false,
                     "data": [],
                     "buttons": [],
                     "order": [

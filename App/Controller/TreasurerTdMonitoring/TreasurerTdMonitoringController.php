@@ -240,7 +240,7 @@
             $hasLotNo = empty($lot_no) ? false : true;
             $hasTdId  = empty($td_id)  ? false : true;
             $hasOwner = empty($owner)  ? false : true;
-
+            
             $data = [
                 'is_active' => 1
             ];
@@ -251,7 +251,7 @@
 
             $records = $this->dbCon->prepare($this->queryHandler->selectTdRecords($hasLotNo, $hasTdId, $hasOwner)->end());
             $records->execute($data);
-
+            
             $result = $records->fetchAll(\PDO::FETCH_ASSOC);
 
             foreach ($result as $key => $value) {
