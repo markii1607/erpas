@@ -791,3 +791,7 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
 #t-custom td.no-border-b {
     border-bottom: none;
 }
+
+td.border-1 {
+    border: 1px solid black !important;
+}

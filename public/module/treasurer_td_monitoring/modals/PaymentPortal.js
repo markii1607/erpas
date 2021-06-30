@@ -60,6 +60,28 @@ define([
                 
             }
 
+            $scope.addRow = function() {
+                $scope.addPaymentDetail.records.push({
+                    declarant: null,
+                    location: null,
+                    lot_no: null,
+                    td_no: null,
+                    land: null,
+                    improvement: null,
+                    total: null,
+                    tax_due: null,
+                    installment_no: null,
+                    installment_payment: null,
+                    full_payment: null,
+                    penalty: null,
+                    grand_total: null,
+                })
+            }
+
+            $scope.removeRow = function(index) {
+                $scope.addPaymentDetail.records.splice(index, 1)
+            }
+
             /**
              * `closeModal` Closing of modal.
              * @return {[void]}
@@ -111,7 +133,23 @@ define([
                 
                 $scope.td_records = ParamData.data.records
                 $scope.addPaymentDetail = {
-                    records : []
+                    records : [
+                        {
+                            declarant: null,
+                            location: null,
+                            lot_no: null,
+                            td_no: null,
+                            land: null,
+                            improvement: null,
+                            total: null,
+                            tax_due: null,
+                            installment_no: null,
+                            installment_payment: null,
+                            full_payment: null,
+                            penalty: null,
+                            grand_total: null,
+                        }
+                    ]
                 };
 
                 _loadDetails();
