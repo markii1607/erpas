@@ -30,15 +30,19 @@
 
         public function saveCertificationData($input)
         {
-            // print_r($input->improvements[0]->id);
+            // print_r($input);
             // die();
             try {
                 $this->dbCon->beginTransaction();
 
                 $entryData = [
                     'type'                  => 'B',
-                    'tax_declaration_id'    => $input->owner->id,
-                    'declaree'              => $input->owner->owner,
+                    'tax_declaration_id'    => !empty($input->chk_auto)   ? $input->owner->id       : null,
+                    'td_no'                 => !empty($input->chk_manual) ? $input->td_no           : null,
+                    'td_lot_no'             => !empty($input->chk_manual) ? $input->lot_no       : null,
+                    'td_effectivity'        => !empty($input->chk_manual) ? $input->td_effectivity  : null,
+                    'td_prop_location'      => !empty($input->chk_manual) ? $input->prop_location   : null,
+                    'declaree'              => !empty($input->chk_auto)   ? $input->owner->owner    : $input->owner_name,
                     'requestor'             => $input->requestor,
                     'purpose'               => $input->purpose,
                     'request_date'          => date('Y-m-d'),
@@ -66,9 +70,18 @@
                         'updated_at'                => date('Y-m-d H:i:s'),
                     ];
 
-                    if ($value->data_type == 'saved') {
-                        $subEntryData['tax_declaration_classification_id'] = $value->id;
-                    } else if ($value->data_type == 'new') {
+                    if (!empty($input->chk_auto)) {
+                        if ($value->data_type == 'saved') {
+                            $subEntryData['tax_declaration_classification_id'] = $value->id;
+                        } else if ($value->data_type == 'new') {
+                            $subEntryData['td_no']          = $value->td_no_new;
+                            $subEntryData['declarant']      = $value->owner_new;
+                            $subEntryData['lot_no']         = $value->lot_no_new;
+                            $subEntryData['area']           = $value->area_new;
+                            $subEntryData['market_value']   = $value->market_value_new;
+                            $subEntryData['assessed_value'] = $value->assessed_value_new;
+                        }
+                    } else if (!empty($input->chk_manual)) {
                         $subEntryData['td_no']          = $value->td_no_new;
                         $subEntryData['declarant']      = $value->owner_new;
                         $subEntryData['lot_no']         = $value->lot_no_new;
@@ -76,6 +89,7 @@
                         $subEntryData['market_value']   = $value->market_value_new;
                         $subEntryData['assessed_value'] = $value->assessed_value_new;
                     }
+                    
                     
                     $insertCertDetails = $this->dbCon->prepare($this->queryHandler->insertToTable('released_certification_details', $subEntryData));
                     $status = $insertCertDetails->execute($subEntryData);

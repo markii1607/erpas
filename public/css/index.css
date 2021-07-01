@@ -795,3 +795,47 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
 td.border-1 {
     border: 1px solid black !important;
 }
+
+/* Hiding the checkbox, but allowing it to be focused */
+.badgebox
+{
+    opacity: 0;
+}
+
+.badgebox + .badge
+{
+    /* Move the check mark away when unchecked */
+    text-indent: -999999px;
+    /* Makes the badge's width stay the same checked and unchecked */
+    width: 27px;
+}
+
+.badgebox:focus + .badge
+{
+    /* Set something to make the badge looks focused */
+    /* This really depends on the application, in my case it was: */
+    
+    /* Adding a light border */
+    box-shadow: inset 0px 0px 5px;
+    color: white;
+    /* Taking the difference out of the padding */
+}
+
+.badgebox:checked + .badge
+{
+    /* Move the check mark back when checked */
+    text-indent: 0;
+}
+
+.default-btn 
+{
+    background-color: #f4f4f4;
+    color: #444;
+    border-color: #ddd;
+}
+
+.lbl-selected 
+{
+    background-color: #2872fc;
+    color: white
+}

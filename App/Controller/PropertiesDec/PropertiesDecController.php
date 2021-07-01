@@ -139,14 +139,14 @@
             foreach ($result as $key => $value) {
                 if (!empty($value['tax_declaration_classification_id'])) {
                     $tdcData = $this->getTaxDeclarationClassification($value['tax_declaration_classification_id']);
-                    $result[$key]['td_no']          = !empty($tdcData) ? $tdcData[0]['td_no']           : '';
-                    $result[$key]['declarant']      = !empty($tdcData) ? $tdcData[0]['declarant']       : '';
-                    $result[$key]['lot_no']         = !empty($tdcData) ? $tdcData[0]['lot_no']          : '';
-                    $result[$key]['area']           = !empty($tdcData) ? $tdcData[0]['area']            : '';
-                    $result[$key]['market_value']   = !empty($tdcData) ? $tdcData[0]['market_value']    : '';
-                    $result[$key]['assessed_value'] = !empty($tdcData) ? $tdcData[0]['assessed_value']  : '';
-                    $result[$key]['property_kind']      = !empty($tdcData) ? $tdcData[0]['property_kind']  : '';
-                    $result[$key]['property_location']  = !empty($tdcData) ? $tdcData[0]['property_location']  : '';
+                    $result[$key]['td_no']          = !empty($tdcData) ? $tdcData[0]['td_no']           : $value['td_no'];
+                    $result[$key]['declarant']      = !empty($tdcData) ? $tdcData[0]['declarant']       : $value['declarant'];
+                    $result[$key]['lot_no']         = !empty($tdcData) ? $tdcData[0]['lot_no']          : $value['lot_no'];
+                    $result[$key]['area']           = !empty($tdcData) ? $tdcData[0]['area']            : $value['area'];
+                    $result[$key]['market_value']   = !empty($tdcData) ? $tdcData[0]['market_value']    : $value['market_value'];
+                    $result[$key]['assessed_value'] = !empty($tdcData) ? $tdcData[0]['assessed_value']  : $value['assessed_value'];
+                    $result[$key]['property_kind']      = !empty($tdcData) ? $tdcData[0]['property_kind']  : $value['property_kind'];
+                    $result[$key]['property_location']  = !empty($tdcData) ? $tdcData[0]['property_location']  : $value['property_location'];
                 }
             }
 

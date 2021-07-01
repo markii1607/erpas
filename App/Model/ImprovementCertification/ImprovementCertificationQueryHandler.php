@@ -21,16 +21,21 @@
                 'RC.or_no',
                 'RC.prepared_by',
                 'RC.verified_by',
-                'TD.effectivity',
-                'TD.td_no',
-                'TD.lot_no',
-                'TD.prop_location_street',
-                '(SELECT name FROM barangays WHERE id = TD.barangay_id) as brgy_name'
+                'IF(RC.tax_declaration_id IS NOT NULL, TD.td_no, RC.td_no) as td_no',
+                'IF(RC.tax_declaration_id IS NOT NULL, TD.lot_no, RC.td_lot_no) as lot_no',
+                'IF(RC.tax_declaration_id IS NOT NULL, TD.effectivity, RC.td_effectivity) as effectivity',
+                'IF(RC.tax_declaration_id IS NOT NULL, TD.prop_location_street, RC.td_prop_location) as prop_location_street',
+                'IF(RC.tax_declaration_id IS NOT NULL, (SELECT name FROM barangays WHERE id = TD.barangay_id), "") as brgy_name',
+                // 'TD.effectivity',
+                // 'TD.td_no',
+                // 'TD.lot_no',
+                // 'TD.prop_location_street',
+                // '(SELECT name FROM barangays WHERE id = TD.barangay_id) as brgy_name'
             ];
 
             $initQuery = $this->select($fields)
                               ->from('released_certifications RC')
-                              ->join(['tax_declarations TD' => 'TD.id = RC.tax_declaration_id'])
+                              ->leftJoin(['tax_declarations TD' => 'TD.id = RC.tax_declaration_id'])
                               ->where(['RC.is_active' => ':is_active', 'RC.type' => ':type']);
 
             $initQuery = ($id) ? $initQuery->andWhere(['RC.id' => ':id']) : $initQuery;

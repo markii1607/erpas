@@ -11,7 +11,9 @@
         public function getSelectionData()
         {
             $output = [
-                'owners'    => $this->getLotOwners()
+                'owners'    => $this->getLotOwners(),
+                'users'     => $this->getUsers(),
+                'user_id'   => $_SESSION['user_id']
             ];
 
             return $output;
@@ -21,8 +23,8 @@
         {
             $output = [
                 'records'   => $this->getDeclarantPropertyRecords($this->formatStrArray($data->owner)),
-                'users'     => $this->getUsers(),
-                'user_id'   => $_SESSION['user_id']
+                // 'users'     => $this->getUsers(),
+                // 'user_id'   => $_SESSION['user_id']
             ];
 
             return $output;
@@ -64,9 +66,21 @@
                         'updated_at'                => date('Y-m-d H:i:s'),
                     ];
 
-                    if ($value->data_type == 'saved') {
-                        $subEntryData['tax_declaration_classification_id'] = $value->id;
-                    } else if ($value->data_type == 'new') {
+                    if (!empty($input->chk_auto)) {
+                        
+                        if ($value->data_type == 'saved') {
+                            $subEntryData['tax_declaration_classification_id'] = $value->id;
+                        } else if ($value->data_type == 'new') {
+                            $subEntryData['td_no']              = $value->td_no_new;
+                            $subEntryData['declarant']          = $value->owner_new;
+                            $subEntryData['lot_no']             = $value->lot_no_new;
+                            $subEntryData['area']               = $value->area_new;
+                            $subEntryData['market_value']       = $value->market_value_new;
+                            $subEntryData['assessed_value']     = $value->assessed_value_new;
+                            $subEntryData['property_kind']      = $value->property_kind_new;
+                            $subEntryData['property_location']  = $value->property_location_new;
+                        }
+                    } else if (!empty($input->chk_manual)) {
                         $subEntryData['td_no']              = $value->td_no_new;
                         $subEntryData['declarant']          = $value->owner_new;
                         $subEntryData['lot_no']             = $value->lot_no_new;
@@ -76,6 +90,7 @@
                         $subEntryData['property_kind']      = $value->property_kind_new;
                         $subEntryData['property_location']  = $value->property_location_new;
                     }
+                    
                     
                     $insertCertDetails = $this->dbCon->prepare($this->queryHandler->insertToTable('released_certification_details', $subEntryData));
                     $status = $insertCertDetails->execute($subEntryData);
