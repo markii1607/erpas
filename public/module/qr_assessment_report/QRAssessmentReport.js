@@ -132,17 +132,9 @@ define([
              * `getDetails` Query string that will get first needed details.
              * @return {[route]}
              */
-            // _this.getDetails = function () {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/QRAssessmentReport/QRAssessmentReportService.php/getTDCount');
-            // };
-
-            // _this.retire = function (data) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/QRAssessmentReport/QRAssessmentReportService.php/retireQRAssessmentReport', data);
-            // };
-
-            // _this.archive = function (data) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/QRAssessmentReport/QRAssessmentReportService.php/archiveQRAssessmentReport', data);
-            // };
+            _this.getDetails = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/QrAssessmentReport/QrAssessmentReportService.php/getDetails', data);
+            };
         }
     ]);
 
@@ -163,10 +155,6 @@ define([
              */
             _loadDetails = function () {
 
-                // $scope.jqDataTableOptions         = Factory.dtOptions();
-                // $scope.jqDataTableOptions.data    = Factory.dummyData;
-                // $scope.jqDataTableOptions.buttons = _btnFunc();
-
             };
 
             $scope.print = function() {
@@ -186,204 +174,28 @@ define([
                 popupWinindow.document.close();
             };
 
-            /**
-             * `_btnFunc` list of button functions.
-             * @return {[type]}
-             */
-            // _btnFunc = function () {
-            //     var buttons = [];
-
-            //     buttons = [];
-
-            //     buttons.push({ 
-            //         init        : function(api, node, config) {
-            //             $(node).removeClass('btn-default btn-secondary');
-            //             $(node).addClass('btn bg-info text-white btn-sm add'); 
-            //             $(node).append('<i class="fas fa-plus"></i>&nbsp;<span class="hidden-xs hidden-sm">ADD</span>');
-            //         },
-            //         text        : '', 
-            //         titleAttr   : 'Add New', 
-            //         key: { 
-            //             key     : '1', 
-            //             altKey  : true 
-            //         }, 
-            //         'action'    : function () { 
-            //             // $scope.addPropertiesDec(); 
-            //         },
-            //         enabled     : true,
-            //         name        : 'add'
-            //     });
-                
-            //     return buttons;
-            // }
-
-            // $scope.rowBtns = {
-            //     "firstButton": function(data, index) {
-            //         $scope.viewPropertiesDec(data, index)
-            //     },
-            //     "secondButton": function(data, index) {
-            //         // $scope.editPropertiesDec(data, index)
-            //     },
-            //     "thirdButton": function(data, index) {
-            //         // $scope.deletePropertiesDec(data, index)
-            //     },
-            // };
-
-            // $scope.addPropertiesDec = function () {
-            //     var paramData, modalInstance;
-
-            //     paramData = {}
-
-            //     modalInstance = $uibModal.open({
-            //         animation       : true,
-            //         keyboard        : false,
-            //         backdrop        : 'static',
-            //         ariaLabelledBy  : 'modal-title',
-            //         ariaDescribedBy : 'modal-body',
-            //         templateUrl     : 'add_properties_dec.html',
-            //         controller      : 'AddPropertiesDecController',
-            //         size            : 'xxlg',
-            //         resolve         : {
-            //             paramData : function () {
-            //                 return paramData;
-            //             }
-            //         }
-            //     });
-
-            //     modalInstance.result.then(function (res) {
-            //         // console.log('addREsult: ', res);
-            //         // table.DataTable().row.add(res).draw();
-            //         // table.find('tbody tr').css('cursor', 'pointer');
-            //     }, function (res) {
-            //         // Result when modal is dismissed
-            //     });
-            // }
-
-            // $scope.editPropertiesDec = function (data, index) {
-            //     var paramData, modalInstance;
-
-            //     paramData = {
-            //         data,
-            //     }
-
-            //     modalInstance = $uibModal.open({
-            //         animation       : true,
-            //         keyboard        : false,
-            //         backdrop        : 'static',
-            //         ariaLabelledBy  : 'modal-title',
-            //         ariaDescribedBy : 'modal-body',
-            //         templateUrl     : 'edit_properties_dec.html',
-            //         controller      : 'EditPropertiesDecController',
-            //         size            : 'xxlg',
-            //         resolve         : {
-            //             paramData : function () {
-            //                 return paramData;
-            //             }
-            //         }
-            //     });
-
-            //     modalInstance.result.then(function (res) {
-            //         // console.log("editResult: ", res);
-            //         // table.DataTable().row(index).data(res).draw();
-            //     }, function (res) {
-            //         // Result when modal is dismissed
-            //     });
-            // }
-
-            // $scope.viewPropertiesDec = function (data, index) {
-            //     var paramData, modalInstance;
-
-            //     paramData = {
-            //         data,
-            //         server_base_url: $scope.server.base_url,
-            //     }
-
-            //     modalInstance = $uibModal.open({
-            //         animation       : true,
-            //         keyboard        : false,
-            //         backdrop        : 'static',
-            //         ariaLabelledBy  : 'modal-title',
-            //         ariaDescribedBy : 'modal-body',
-            //         templateUrl     : 'view_properties_dec.html',
-            //         controller      : 'ViewPropertiesDecController',
-            //         size            : 'xlg',
-            //         resolve         : {
-            //             paramData : function () {
-            //                 return paramData;
-            //             }
-            //         }
-            //     });
-
-            //     modalInstance.result.then(function (res) {
-            //     }, function (res) {
-            //         // Result when modal is dismissed
-            //     });
-            // }
-
-            // $scope.deletePropertiesDec = function(data, index){
-            //     Alertify
-            //     .okBtn("Yes")
-            //     .cancelBtn("Cancel")
-            //     .confirm("Are you sure you want to delete this certification?",
-            //         function () {
-            //             // blocker.start();
-            //             // Service.archive(data).then(res => {
-            //             //     if (res.data.status) {
-            //             //         table.DataTable().row('.selected').remove().draw(true);
-            //             //         Alertify.log('Deleted!');
-                                
-            //             //         blocker.stop();
-            //             //     } else {
-            //             //         Alertify.error("ERROR! Please contact the administrator.");
-            //             //         blocker.stop();
-            //             //     }
-            //             // });
-            //         }
-            //     );
-            // }
-
-            // $scope.setFilterStatus = function(filter){
-            //     $scope.filters.status = filter;
-
-            //     $scope.filterTaxDec();
-            // }
-
-            // $scope.filterTaxDec = function (params = []) {
-
-            //     console.log('params: ', params);
-            //     var paramData;
-
-            //     paramData = {
-            //         'status'        : $scope.filters.status,
-            //         'rev_id'        : params.rev_id,
-            //         'td_no'         : params.td_no,
-            //         'pin'           : params.pin,
-            //         'owner'         : params.owner,
-            //         'lot_no'        : params.lot_no,
-            //         'brgy_id'       : params.brgy_id,
-            //         'type'          : params.type,
-            //         'category'      : params.category,
-            //         'class_id'      : params.class_id,
-            //         'actual_use'    : params.actual_use,
-            //         'date_from'     : params.date_from,
-            //         'date_to'       : params.date_to,
-            //     };
-                
-
-            //     $timeout( function () {
-            //         _softConfig().dt.data('dt_params', angular.copy(paramData)); // parse dynamic data
-            //         _softConfig().dt.DataTable().draw();           // reload datatable
-            //     }, 100);
-            // };
-
-            // _softConfig = function(){
-            //     var temp = {
-            //         'rowCount' : table.DataTable().data().count(),
-            //         'dt'       : table
-            //     };
-
-            //     return temp;
-            // }
+            $scope.search = function(){
+                if ($scope.filter.date_range != null) {
+                    
+                    blocker.start();
+                    Service.getDetails($scope.filter).then(res => {
+                        if (!res.data.input_error) {
+                            if (res.data.records != undefined) {
+                                $scope.records = res.data.records;
+                                blocker.stop();
+                            } else {
+                                Alertify.error('An error occurred while saving. Please contact the administrator.');
+                                blocker.stop();
+                            }
+                        } else {
+                            Alertify.log('Invalid date range! Please make sure that FROM and TO dates are properly defined.');
+                            blocker.stop();
+                        }
+                    })
+                } else {
+                    Alertify.log('Please select a specific date range to proceed.');
+                }
+            }
 
             /**
              * `_init` Initialize first things first

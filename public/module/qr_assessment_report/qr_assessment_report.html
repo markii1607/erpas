@@ -5,6 +5,11 @@
                 <div class="col-4">
                     <input type="text" id="date_range" ng-model="filter.date_range" data-range="true" data-multiple-dates-separator=" - " data-toggle="tooltip" data-placement="top" title="Date Range" data-language="en" placeholder="Select Date Range" class="form-control date" autocomplete="off" />
                 </div>
+                <div class="col-2">
+                    <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Search TD Records for the Provided Date Range" ng-click="search()">
+                        <i class="fas fa-search"></i> <span></span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

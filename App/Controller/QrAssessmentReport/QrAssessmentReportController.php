@@ -37,6 +37,59 @@
             
         }
 
+        public function getDetails($data)
+        {
+            $dateExplode = explode(' - ', $data->date_range);
+            if (count($dateExplode) == 2) {
+                $from_date  = $this->formatDate($dateExplode[0]);
+                $to_date    = $this->formatDate($dateExplode[1]);
+
+                $taxable_classifications = [
+                    'Residential',
+                    'Agricultural',
+                    'Cultural',
+                    'Industrial',
+                    'Mineral',
+                    'Timber',
+                    'Special (Sec, 218(d))',
+                    'Machineries',
+                    'Cultural',
+                    'Scientific',
+                    'Hospital',
+                    'Local Water Utilities Administration (LWUA)',
+                    'GOCC - Water/Electric',
+                    'Recreation',
+                    'Others',
+                ];
+
+                $exempt_classifications = [
+                    'Government',
+                    'Religious',
+                    'Charitable',
+                    'Educational',
+                    'Machineries - Local Water District (LWD)',
+                    'Machineries - GOCC',
+                    'Pollution Control and Environmental Protection',
+                    'Reg. Coop. (R.A. 6938)',
+                    'Others',
+                ];
+
+                $records = [
+                    'taxable' => [],
+                    'exempt'  => []
+                ];
+
+                
+
+            } else {
+                $output = [
+                    'input_error' => true
+                ];
+            }
+
+            return $output;
+        }
+
         public function getTotalLandArea($from_date, $to_date, $tax_type, $classification)
         {
             $data = [
@@ -76,7 +129,7 @@
             return $totalNumberOfRPU->fetchAll(\PDO::FETCH_ASSOC);
         }
 
-        public function getTotalMarketValue($from_date, $to_date, $tax_type, $property_kind, $classification)
+        public function getTotalMarketValue($from_date, $to_date, $tax_type, $property_kind, $classification, $mvLimit = '')
         {
             $data = [
                 'is_active' => 1,
@@ -90,9 +143,23 @@
             $query = ($tax_type == 'taxable') ? $query->andWhereNotNull(['TD.is_taxable']) : $query->andWhereNotNull(['TD.is_exempt']);
             if (strtoupper($property_kind) == 'BUILDING') {
                 if (strtoupper($classification) == 'RESIDENTIAL') {
-                    
+                    $query = $query->logicEx(
+                        'AND 
+                            (
+                                C.name LIKE "'.$this->formatStr($classification).'" OR 
+                                C.name LIKE "%improvement%" OR 
+                                TDC.actual_use LIKE "'.$this->formatStr($classification).'" OR 
+                                TDC.actual_use LIKE "%improvement%"
+                            )
+                        '
+                    );
+                    if ($mvLimit == 'below') {
+                        $query = $query->logicEx('AND TDC.market_value < 175000');
+                    } else if ($mvLimit == 'above') {
+                        $query = $query->logicEx('AND TDC.market_value >= 175000');
+                    }
                 } else {
-                    # code...
+                    $query = $query->logicEx('AND (C.name LIKE "'.$this->formatStr($classification).'" OR TDC.actual_use LIKE "'.$this->formatStr($classification).'")');
                 }
                 
             } else {
