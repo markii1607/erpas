@@ -70,16 +70,30 @@ define([
                     improvement: null,
                     total: null,
                     tax_due: null,
-                    installment_no: null,
-                    installment_payment: null,
-                    full_payment: null,
-                    penalty: null,
-                    grand_total: null,
                 })
             }
 
             $scope.removeRow = function(index) {
                 $scope.addPaymentDetail.records.splice(index, 1)
+            }
+
+            $scope.addRowInstallment = function() {
+                $scope.addPaymentDetail.installment.push({
+                    declarant: null,
+                    installment_no: null,
+                    installment_payment: null,
+                    full_payment: null,
+                    penalty: null,
+                    total: 0.00,
+                })
+            }
+
+            $scope.removeRowInstallment = function(index) {
+                $scope.addPaymentDetail.installment.splice(index, 1)
+            }
+
+            $scope.computeTotal = function(index) {
+                $scope.addPaymentDetail.installment[index].total = Number($scope.addPaymentDetail.installment[index].full_payment) + Number($scope.addPaymentDetail.installment[index].penalty)
             }
 
             /**
@@ -143,14 +157,22 @@ define([
                             improvement: null,
                             total: null,
                             tax_due: null,
+                        }
+                    ],
+                    installment: [
+                        {
+                            declarant: null,
                             installment_no: null,
                             installment_payment: null,
                             full_payment: null,
                             penalty: null,
-                            grand_total: null,
+                            total: 0.00,
                         }
-                    ]
+                    ],
+                    grand_total: 0,
                 };
+
+                $scope.addrowspan = 0;
 
                 _loadDetails();
             };
