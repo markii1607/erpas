@@ -1,8 +1,8 @@
 <?php
-    require_once('../../Controller/TreasurerTdMonitoring/CheckGenerationController.php');
+    require_once('../../Controller/AccountingCollectionConfig/AccountingCollectionConfigController.php');
     require_once('../../Config/db_connection.php');
-
-    use App\Controller\TreasurerTdMonitoring\CheckGenerationController;
+    
+    use App\Controller\AccountingCollectionConfig\AccountingCollectionConfigController;
 
     /**
      * `functionHandler` Handler the controller and its method.
@@ -13,7 +13,7 @@
         
         $output = [];
 
-        $controller = new CheckGenerationController(connectToDb());
+        $controller = new AccountingCollectionConfigController(connectToDb());
 
         $methodName = str_replace("/", '', $_SERVER['PATH_INFO']);
 

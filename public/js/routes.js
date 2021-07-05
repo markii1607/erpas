@@ -121,6 +121,13 @@ define(function() {
             "templateUrl": "/public/module/consolidated_rpt_report/consolidated_rpt_report.html",
             "deps": "/public/module/consolidated_rpt_report/index.js"
         },
+        {
+            "name": "main.accounting_collection_config",
+            "url": "/accounting_collection_config",
+            "controller": "AccountingCollectionConfigController",
+            "templateUrl": "/public/module/accounting_collection_config/accounting_collection_config.html",
+            "deps": "/public/module/accounting_collection_config/index.js"
+        },
     ];
 
     return routes;

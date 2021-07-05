@@ -1,8 +1,7 @@
 define([
-    './TreasurerTdMonitoring.js',
-    './modals/AddTDPayment.js',
-    './modals/PaymentPortal.js',
-    './modals/ViewOrDetails.js',
+    './AccountingCollectionConfig.js',
+    './modals/CheckGeneration.js',
+    '../treasurer_td_monitoring/modals/ViewOrDetails.js',
     '../tax_declaration/modals/ViewTaxDeclaration.js',
     
     '../../directive/dataTable.js',

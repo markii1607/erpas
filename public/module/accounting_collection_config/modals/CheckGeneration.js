@@ -32,11 +32,11 @@ define([
              * @return {[type]}
              */
             _this.getRecords = function (data) {
-                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/CheckGenerationService.php/getRecords', {date_range : data});
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/AccountingCollectionConfig/CheckGenerationService.php/getRecords', {date_range : data});
             }
             
             _this.save = function (data) {
-                return $http.post(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/CheckGenerationService.php/saveCheckDetails', data);
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/AccountingCollectionConfig/CheckGenerationService.php/saveCheckDetails', data);
             }
         }
     ]);

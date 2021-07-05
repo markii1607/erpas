@@ -1,14 +1,14 @@
 <?php
-    namespace App\Controller\TreasurerTdMonitoring;
+    namespace App\Controller\AccountingCollectionConfig;
 
     require_once("../../Config/BaseController.php");
-    require_once("../../Model/TreasurerTdMonitoring/TreasurerTdMonitoringQueryHandler.php");
+    require_once("../../Model/AccountingCollectionConfig/AccountingCollectionConfigQueryHandler.php");
 
     use App\Config\BaseController as BaseController;
-    use App\Model\TreasurerTdMonitoring\TreasurerTdMonitoringQueryHandler as QueryHandler;
+    use App\Model\AccountingCollectionConfig\AccountingCollectionConfigQueryHandler as QueryHandler;
     use Exception;
 
-    class TreasurerTdMonitoringController extends BaseController {
+    class AccountingCollectionConfigController extends BaseController {
         /**
          * `$menu_id` Set the menu id
          * @var integer
@@ -62,26 +62,26 @@
             return $limit;
         }
 
-        public function getDtOrDetails($input)
+        public function getDtChkDetails($input)
         {
             // print_r($input['advanced_search']);
             // die();
             
-            $rows       = $this->getGeneratedOrNumbers('', $input['advanced_search'], $input['search']['value'], '', true);
-            $rowData    = $this->getGeneratedOrNumbers('', $input['advanced_search'], $input['search']['value'], $this->limit($input));
+            $rows       = $this->getGeneratedChkNumbers('', $input['advanced_search'], $input['search']['value'], '', true);
+            $rowData    = $this->getGeneratedChkNumbers('', $input['advanced_search'], $input['search']['value'], $this->limit($input));
             
 
             $output = array(
                 'draw'            => isset ($input['draw']) ? intval($input['draw']) : 0,
-                'recordsTotal'    => !empty($rows) ? intval($rows[0]['td_count']) : 0,
-                'recordsFiltered' => !empty($rows) ? intval($rows[0]['td_count']) : 0,
+                'recordsTotal'    => !empty($rows) ? intval($rows[0]['tc_count']) : 0,
+                'recordsFiltered' => !empty($rows) ? intval($rows[0]['tc_count']) : 0,
                 'data'            => $this->arrayToObject($rowData),
             );
 
             return $output;
         }
 
-        public function getGeneratedOrNumbers($id = '', $advancedSearch = [], $filterVal = '', $limit = '', $total = '')
+        public function getGeneratedChkNumbers($id = '', $advancedSearch = [], $filterVal = '', $limit = '', $total = '')
         {
             $hasId          = empty($id)     ? false : true;
             // $hasRevId       = empty($advancedSearch['rev_id'])      ? false : true;
@@ -95,7 +95,7 @@
             ($hasId) ? $data['id'] = $id : '';
             // ($hasRevId)     ? $data['rev_id'] = $advancedSearch['rev_id'] : '';
 
-            $query = $this->queryHandler->selectGeneratedOrNumbers($hasId, $hasTotal)->orderBy('PTD.transaction_date', 'DESC')->end();
+            $query = $this->queryHandler->selectGeneratedChkNumbers($hasId, $hasTotal)->orderBy('TC.date_generated', 'DESC')->end();
             $orNumbers = $this->dbCon->prepare($query.' '.$limit);
             $orNumbers->execute($data);
 
@@ -103,11 +103,27 @@
 
             if (!$hasTotal) {
                 foreach ($result as $key => $value) {
-                    $result[$key]['collector'] = $this->getUsers($value['user_id'])[0];
+                    $result[$key]['or_numbers'] = $this->getTreasurerCollectionDetails($value['id']);
                 }
             }
 
             return $result;
+        }
+
+        public function getTreasurerCollectionDetails($tc_id = '')
+        {
+            $hasTcId = empty($tc_id) ? false : true;
+
+            $data = [
+                'is_active' => 1
+            ];
+
+            ($hasTcId) ? $data['tc_id'] = $tc_id : '';
+
+            $details = $this->dbCon->prepare($this->queryHandler->selectTreasurerCollectionDetails($hasTcId)->orderBy('PTD.or_no', 'ASC')->end());
+            $details->execute($data);
+
+            return $details->fetchAll(\PDO::FETCH_ASSOC);
         }
 
         public function getBarangays($id = '')
@@ -160,35 +176,6 @@
             $tdNumbers->execute($data);
 
             $result = $tdNumbers->fetchAll(\PDO::FETCH_ASSOC);
-
-            foreach ($result as $key => $value) {
-                $result[$key]['approvers']      = json_decode($value['approvers']);
-                $result[$key]['barangay']       = $this->getBarangays($value['barangay_id'])[0];
-                $result[$key]['revision_year']  = $this->getRevisionYears($value['revision_year_id'])[0];
-                $result[$key]['canceled_td']    = !empty($value['canceled_td_id']) ? $this->getTDNumbers('', $value['canceled_td_id'])[0] : [];
-            }
-
-            return $result;
-        }
-
-        public function getTdRecords($lot_no = '', $td_id = '', $owner = '')
-        {
-            $hasLotNo = empty($lot_no) ? false : true;
-            $hasTdId  = empty($td_id)  ? false : true;
-            $hasOwner = empty($owner)  ? false : true;
-            
-            $data = [
-                'is_active' => 1
-            ];
-
-            ($hasLotNo) ? $data['lot_no'] = $this->strLike($lot_no) : '';
-            ($hasTdId)  ? $data['td_id']  = $td_id                  : '';
-            ($hasOwner) ? $data['owner']  = $this->strLike($owner)  : '';
-
-            $records = $this->dbCon->prepare($this->queryHandler->selectTdRecords($hasLotNo, $hasTdId, $hasOwner)->end());
-            $records->execute($data);
-            
-            $result = $records->fetchAll(\PDO::FETCH_ASSOC);
 
             foreach ($result as $key => $value) {
                 $result[$key]['approvers']      = json_decode($value['approvers']);

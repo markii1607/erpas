@@ -1,33 +1,29 @@
 <?php
-    namespace App\Model\TreasurerTdMonitoring;
+    namespace App\Model\AccountingCollectionConfig;
 
     require_once("../../AbstractClass/QueryHandler.php");
 
     use App\AbstractClass\QueryHandler;
 
-    class TreasurerTdMonitoringQueryHandler extends QueryHandler {
+    class AccountingCollectionConfigQueryHandler extends QueryHandler {
 
-        public function selectGeneratedOrNumbers($id = false, $total = false)
+        public function selectGeneratedChkNumbers($id = false, $total = false)
         {
             $fields = [
-                'PTD.id',
-                'PTD.user_id',
-                'DATE_FORMAT(PTD.transaction_date, "%M %d, %Y") as transaction_date',
-                'PTD.or_no',
-                'PTD.amount_paid',
-                'PTD.paid_by',
-                'PTD.has_check_no',
+                'TC.id',
+                'TC.user_id',
+                'DATE_FORMAT(TC.date_generated, "%M %d, %Y") as date_generated',
+                'TC.check_no',
+                'TC.total_amount',
                 'CONCAT_WS(" ", NULLIF(U.fname, ""), NULLIF(CONCAT(LEFT(U.mname,1), "."), ""), NULLIF(U.lname, "")) as collector_name',
                 'U.position as collector_position',
             ];
 
-            $fields = ($total) ? array('COUNT(PTD.id) as td_count') : $fields;
+            $fields = ($total) ? array('COUNT(TC.id) as tc_count') : $fields;
 
             $orWhereConditions = array(
-                'DATE_FORMAT(PTD.transaction_date, "%M %d, %Y")' => ':filter_val',
-                'PTD.or_no'         => ':filter_val',
-                'PTD.amount_paid'   => ':filter_val',
-                'PTD.paid_by'       => ':filter_val',
+                'DATE_FORMAT(TC.date_generated, "%M %d, %Y")' => ':filter_val',
+                'TC.check_no'       => ':filter_val',
                 'U.fname'           => ':filter_val',
                 'U.mname'           => ':filter_val',
                 'U.lname'           => ':filter_val',
@@ -35,14 +31,33 @@
             );
 
             $initQuery = $this->select($fields)
-                              ->from('paid_tax_declarations PTD')
-                              ->join(['users U' => 'U.id = PTD.user_id'])
-                              ->where(['PTD.is_active' => ':is_active'])
+                              ->from('treasurer_collections TC')
+                              ->join(['users U' => 'U.id = TC.user_id'])
+                              ->where(['TC.is_active' => ':is_active'])
                               ->logicEx('AND')
                               ->orWhereLike($orWhereConditions);
 
-            $initQuery = ($id) ? $initQuery->andWhere(['PTD.id' => ':id']) : $initQuery;
-            // $initQuery = ($date_from && $date_to) ? $initQuery->andWhereRange('PTD.transaction_date', [':date_from', ':date_to']) : $initQuery;
+            $initQuery = ($id) ? $initQuery->andWhere(['TC.id' => ':id']) : $initQuery;
+            // $initQuery = ($date_from && $date_to) ? $initQuery->andWhereRange('PTD.date_generated', [':date_from', ':date_to']) : $initQuery;
+
+            return $initQuery;
+        }
+
+        public function selectTreasurerCollectionDetails($tc_id = false)
+        {
+            $fields = [
+                'TCD.id',
+                'TCD.treasurer_collection_id',
+                'TCD.paid_tax_declaration_id',
+                'PTD.or_no'
+            ];
+
+            $initQuery = $this->select($fields)
+                              ->from('treasurer_collection_details TCD')
+                              ->join(['paid_tax_declarations PTD' => 'PTD.id = TCD.paid_tax_declaration_id'])
+                              ->where(['TCD.is_active' => ':is_active']);
+
+            $initQuery = ($tc_id) ? $initQuery->andWhere(['TCD.treasurer_collection_id' => ':tc_id']) : $initQuery;
 
             return $initQuery;
         }

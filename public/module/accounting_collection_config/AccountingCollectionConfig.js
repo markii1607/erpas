@@ -2,7 +2,7 @@ define([
     'app',
     'airDatepickeri18n'
 ], function (app) {
-    app.factory('TreasurerTdMonitoringFactory', [
+    app.factory('AccountingCollectionConfigFactory', [
         'alertify',
         function (alertify) {
             var Factory = {};
@@ -22,8 +22,7 @@ define([
              * @type {Array}
              */
             Factory.templates = [
-                'module/treasurer_td_monitoring/modals/add_td_payment.html',
-                'module/treasurer_td_monitoring/modals/payment_portal.html',
+                'module/accounting_collection_config/modals/check_generation.html',
                 'module/treasurer_td_monitoring/modals/view_or_details.html',
                 'module/tax_declaration/modals/view_tax_declaration.html',
             ];
@@ -37,22 +36,19 @@ define([
                             "data"   : null
                         },
                         {
-                            "data"   : "transaction_date",
+                            "data"   : "date_generated",
                         },
                         {
-                            "data"   : "or_no",
+                            "data"   : "check_no",
                         },
                         {
-                            "data"   : "amount_paid",
+                            "data"   : "total_amount",
                         },
                         {
-                            "data"   : "paid_by",
+                            "data"   : "or_numbers",
                         },
                         {
                             "data"   : "collector_name",
-                        },
-                        {
-                            "data"   : null,
                         },
                     ];
 
@@ -63,6 +59,21 @@ define([
 
                     var columnDefs = [
                         {
+                            "targets"    : 4,
+                            "searchable" : true,
+                            "orderable"  : true,
+                            "className"  : "text-left",
+                            "render"     : function(data, type, full, meta){
+                                var str =   '<ul>';
+                                                angular.forEach(data, (value, key) => {
+                                                    str += '<li>' + value.or_no + '</li>';
+                                                })
+                                    str +=  '</ul>';
+
+                                return str;
+                            }
+                        },
+                        {
                             "targets"    : 5,
                             "searchable" : true,
                             "orderable"  : true,
@@ -71,36 +82,23 @@ define([
                                 return '<span class="text-uppercase"><b>' + data + '</b></span><br><small>' + full.collector_position + '</small>';
                             }
                         },
-                        {
-                            "targets"    : 6,
-                            "searchable" : true,
-                            "orderable"  : true,
-                            "className"  : "text-center",
-                            "render"     : function(data, type, full, meta){
-                                
-                                var str = '';
-                                str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-md mr-2 text-white"><i class="fas fa-eye"></i> View O.R. Details</button>';
-
-                                return str;
-                            }
-                        },
                     ];
 
                     return columnDefs;
                 }
 
-                _ajaxUrl = function () {
+                _ajaxUrl = function (type) {
                     var ajax = {
-                        "url"  : APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/TreasurerTdMonitoringService.php/getDtOrDetails',
+                        "url"  : APP.SERVER_BASE_URL + '/App/Service/AccountingCollectionConfig/AccountingCollectionConfigService.php/getDtChkDetails',
                         "data" : function (data) {
                             var temp = {
                                 'advanced_search' : {
-                                    'date_range' : ''
+                                    'date_range'   : '',
                                 }
                             };
 
                             // Retrieve dynamic parameters
-                            var dt_params = angular.element('#tax_declarations').data('dt_params');
+                            var dt_params = angular.element('#collections_tbl').data('dt_params');
                             // console.log('dt_params: ', dt_params);
                             // Add dynamic parameters to the data object sent to the server
                             if (dt_params) {
@@ -161,16 +159,15 @@ define([
         }
     ]);
 
-    app.controller('TreasurerTdMonitoringController', [
+    app.controller('AccountingCollectionConfigController', [
         '$scope',
         '$uibModal',
         '$timeout',
         'blockUI',
         'alertify',
-        'TreasurerTdMonitoringFactory',
+        'AccountingCollectionConfigFactory',
         function ($scope, $uibModal, $timeout, BlockUI, Alertify, Factory) {
-            var _init, _loadDetails, _btnFunc, _viewAccesses, blocker = BlockUI.instances.get('blockTaxDeclarations'), 
-            td_table = angular.element('#tax_declarations');
+            var _init, _loadDetails, _btnFunc, _viewAccesses, blocker = BlockUI.instances.get('blockCollections'), cl_table = angular.element('#collections_tbl');
 
             /**
              * `_loadDetails` Load first needed data
@@ -178,7 +175,8 @@ define([
              */
             _loadDetails = function () {
 
-                $scope.jqDataTableOptions = Factory.dtOptions();
+                // $scope.jqDataTableOptions = Factory.dtOptions('tax_dec');
+                $scope.ctDataTableOptions = Factory.dtOptions();
 
             };
 
@@ -240,6 +238,29 @@ define([
                 });
             }
 
+            $scope.openCheckPortal = function () {
+                var modalInstance;
+
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'check_generation.html',
+                    controller      : 'CheckGenerationController',
+                    size            : 'md',
+                });
+
+                modalInstance.result.then(function (res) {
+                    console.log('addREsult: ', res);
+                    cl_table.DataTable().row.add(res).draw();
+                    cl_table.find('tbody tr').css('cursor', 'pointer');
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+            }
+
             /**
              * `_init` Initialize first things first
              * @return {mixed}
@@ -248,7 +269,7 @@ define([
                 // default settings
                 Factory.autoloadSettings();
 
-                $scope.header.title = "Treasurer's Department"
+                $scope.header.title = "Accounting Department"
                 $scope.header.link.sub = ""
                 $scope.header.link.main = "Transactions and Configuration"
                 $scope.header.showButton = false
