@@ -182,6 +182,8 @@ define([
                         if (!res.data.input_error) {
                             if (res.data.records != undefined) {
                                 $scope.records = res.data.records;
+                                $scope.computeOverallTotal();
+                                console.log($scope.records);
                                 blocker.stop();
                             } else {
                                 Alertify.error('An error occurred while saving. Please contact the administrator.');
@@ -195,6 +197,164 @@ define([
                 } else {
                     Alertify.log('Please select a specific date range to proceed.');
                 }
+            }
+
+            $scope.getTotal = function(data, value_type, classification = ''){
+                
+                if (data != undefined) {
+                    var total = 0;
+                    if (value_type == 'mv') {
+                        if (classification == 'residential') {
+                            total = parseFloat(data.land) + parseFloat(data.building.below_limit) + parseFloat(data.building.above_limit) + parseFloat(data.machinery) + parseFloat(data.others);
+                        } else {
+                            total = parseFloat(data.land) + parseFloat(data.building.building) + parseFloat(data.machinery) + parseFloat(data.others);
+                        }
+                    } else {
+                        total = parseFloat(data.land) + parseFloat(data.building) + parseFloat(data.machinery) + parseFloat(data.others);
+                    }
+
+                    return total;
+                } else {
+                    return '';
+                }
+
+            }
+
+            $scope.computeCollectibles = function(data, type){
+                if (data != undefined) {
+                    var total_av            = parseFloat(data.land) + parseFloat(data.building) + parseFloat(data.machinery) + parseFloat(data.others);
+                    var basic_tax           = total_av * 0.01;
+                    var sef_tax             = total_av * 0.01;
+                    var total_collectibles  = basic_tax + sef_tax;
+    
+                    if (type == 'basic') return basic_tax
+                    else if (type == 'sef') return sef_tax
+                    else if (type == 'total') return total_collectibles
+                    else return '0.00'
+                } else {
+                    return '';
+                }
+            }
+
+            $scope.computeOverallTotal = function(){
+                $scope.records.taxable.total_land_area      = 0;
+                $scope.records.taxable.total_rpu_land       = 0;
+                $scope.records.taxable.total_rpu_building   = 0;
+                $scope.records.taxable.total_rpu_machinery  = 0;
+                $scope.records.taxable.total_rpu_others     = 0;
+                $scope.records.taxable.overall_total_rpu    = 0;
+                $scope.records.taxable.total_mv_land        = 0;
+                $scope.records.taxable.total_mv_bldg_below  = 0;
+                $scope.records.taxable.total_mv_bldg_above  = 0;
+                $scope.records.taxable.total_mv_building    = 0;
+                $scope.records.taxable.total_mv_machinery   = 0;
+                $scope.records.taxable.total_mv_others      = 0;
+                $scope.records.taxable.overall_total_mv     = 0;
+                $scope.records.taxable.total_av_land        = 0;
+                $scope.records.taxable.total_av_building    = 0;
+                $scope.records.taxable.total_av_machinery   = 0;
+                $scope.records.taxable.total_av_others      = 0;
+                $scope.records.taxable.overall_total_av     = 0;
+                $scope.records.taxable.total_basic_tax      = 0;
+                $scope.records.taxable.total_sef_tax        = 0;
+                $scope.records.taxable.overall_total_tax    = 0;
+
+                let taxable_fields = [
+                    'residential',
+                    'agricultural',
+                    'cultural',
+                    'industrial',
+                    'mineral',
+                    'timber',
+                    'special',
+                    'sp_machineries',
+                    'sp_cultural',
+                    'sp_scientific',
+                    'sp_hospital',
+                    'sp_lwua',
+                    'sp_gocc',
+                    'sp_recreation',
+                    'sp_others',
+                ]
+
+                taxable_fields.map(key => {
+                    $scope.records.taxable.total_land_area      += parseFloat($scope.records.taxable[key].total_land_area_sqm);
+
+                    $scope.records.taxable.total_rpu_land       += parseFloat($scope.records.taxable[key].no_rpu.land);
+                    $scope.records.taxable.total_rpu_building   += parseFloat($scope.records.taxable[key].no_rpu.building);
+                    $scope.records.taxable.total_rpu_machinery  += parseFloat($scope.records.taxable[key].no_rpu.machinery);
+                    $scope.records.taxable.total_rpu_others     += parseFloat($scope.records.taxable[key].no_rpu.others);
+
+                    $scope.records.taxable.total_mv_land        += parseFloat($scope.records.taxable[key].market_value.land);
+                    $scope.records.taxable.total_mv_bldg_below  += parseFloat($scope.records.taxable[key].market_value.building.below_limit);
+                    $scope.records.taxable.total_mv_bldg_above  += parseFloat($scope.records.taxable[key].market_value.building.above_limit);
+                    $scope.records.taxable.total_mv_building    += parseFloat($scope.records.taxable[key].market_value.building.building);
+                    $scope.records.taxable.total_mv_machinery   += parseFloat($scope.records.taxable[key].market_value.machinery);
+                    $scope.records.taxable.total_mv_others      += parseFloat($scope.records.taxable[key].market_value.others);
+
+                    $scope.records.taxable.total_av_land        += parseFloat($scope.records.taxable[key].assessed_value.land);
+                    $scope.records.taxable.total_av_building    += parseFloat($scope.records.taxable[key].assessed_value.building);
+                    $scope.records.taxable.total_av_machinery   += parseFloat($scope.records.taxable[key].assessed_value.machinery);
+                    $scope.records.taxable.total_av_others      += parseFloat($scope.records.taxable[key].assessed_value.others);
+
+                    $scope.records.taxable.total_basic_tax      += parseFloat($scope.records.taxable[key].basic_tax);
+                    $scope.records.taxable.total_sef_tax        += parseFloat($scope.records.taxable[key].sef_tax);
+                })
+                $scope.records.taxable.overall_total_rpu = parseFloat($scope.records.taxable.total_rpu_land) + parseFloat($scope.records.taxable.total_rpu_building) + parseFloat($scope.records.taxable.total_rpu_machinery) + parseFloat($scope.records.taxable.total_rpu_others);
+                $scope.records.taxable.overall_total_mv  = parseFloat($scope.records.taxable.total_mv_land) + parseFloat($scope.records.taxable.total_mv_bldg_below) + parseFloat($scope.records.taxable.total_mv_bldg_above) + parseFloat($scope.records.taxable.total_mv_building) + parseFloat($scope.records.taxable.total_mv_machinery) + parseFloat($scope.records.taxable.total_mv_others);
+                $scope.records.taxable.overall_total_av  = parseFloat($scope.records.taxable.total_av_land) + parseFloat($scope.records.taxable.total_av_building) + parseFloat($scope.records.taxable.total_av_machinery) + parseFloat($scope.records.taxable.total_av_others);
+                $scope.records.taxable.overall_total_tax = parseFloat($scope.records.taxable.total_basic_tax) + parseFloat($scope.records.taxable.total_sef_tax);
+
+                $scope.records.exempt.total_land_area       = 0;
+                $scope.records.exempt.total_rpu_land        = 0;
+                $scope.records.exempt.total_rpu_building    = 0;
+                $scope.records.exempt.total_rpu_machinery   = 0;
+                $scope.records.exempt.total_rpu_others      = 0;
+                $scope.records.exempt.overall_total_rpu     = 0;
+                $scope.records.exempt.total_mv_land         = 0;
+                $scope.records.exempt.total_mv_building     = 0;
+                $scope.records.exempt.total_mv_machinery    = 0;
+                $scope.records.exempt.total_mv_others       = 0;
+                $scope.records.exempt.overall_total_mv      = 0;
+                $scope.records.exempt.total_av_land         = 0;
+                $scope.records.exempt.total_av_building     = 0;
+                $scope.records.exempt.total_av_machinery    = 0;
+                $scope.records.exempt.total_av_others       = 0;
+                $scope.records.exempt.overall_total_av      = 0;
+
+                let exempt_fields = [
+                    'government',
+                    'religious',
+                    'charitable',
+                    'educational',
+                    'machineries_lwd',
+                    'machineries_gocc',
+                    'pcep',
+                    'reg_coop',
+                    'others'
+                ]
+
+                exempt_fields.map(key => {
+                    $scope.records.exempt.total_land_area      += parseFloat($scope.records.exempt[key].total_land_area_sqm);
+
+                    $scope.records.exempt.total_rpu_land       += parseFloat($scope.records.exempt[key].no_rpu.land);
+                    $scope.records.exempt.total_rpu_building   += parseFloat($scope.records.exempt[key].no_rpu.building);
+                    $scope.records.exempt.total_rpu_machinery  += parseFloat($scope.records.exempt[key].no_rpu.machinery);
+                    $scope.records.exempt.total_rpu_others     += parseFloat($scope.records.exempt[key].no_rpu.others);
+                    
+                    $scope.records.exempt.total_mv_land        += parseFloat($scope.records.exempt[key].market_value.land);
+                    $scope.records.exempt.total_mv_building    += parseFloat($scope.records.exempt[key].market_value.building.building);
+                    $scope.records.exempt.total_mv_machinery   += parseFloat($scope.records.exempt[key].market_value.machinery);
+                    $scope.records.exempt.total_mv_others      += parseFloat($scope.records.exempt[key].market_value.others);
+                    
+                    $scope.records.exempt.total_av_land        += parseFloat($scope.records.exempt[key].assessed_value.land);
+                    $scope.records.exempt.total_av_building    += parseFloat($scope.records.exempt[key].assessed_value.building);
+                    $scope.records.exempt.total_av_machinery   += parseFloat($scope.records.exempt[key].assessed_value.machinery);
+                    $scope.records.exempt.total_av_others      += parseFloat($scope.records.exempt[key].assessed_value.others);
+                })
+                $scope.records.exempt.overall_total_rpu = parseFloat($scope.records.exempt.total_rpu_land) + parseFloat($scope.records.exempt.total_rpu_building) + parseFloat($scope.records.exempt.total_rpu_machinery) + parseFloat($scope.records.exempt.total_rpu_others);
+                $scope.records.exempt.overall_total_mv  = parseFloat($scope.records.exempt.total_mv_land) + parseFloat($scope.records.exempt.total_mv_building) + parseFloat($scope.records.exempt.total_mv_machinery) + parseFloat($scope.records.exempt.total_mv_others);
+                $scope.records.exempt.overall_total_av  = parseFloat($scope.records.exempt.total_av_land) + parseFloat($scope.records.exempt.total_av_building) + parseFloat($scope.records.exempt.total_av_machinery) + parseFloat($scope.records.exempt.total_av_others);
             }
 
             /**

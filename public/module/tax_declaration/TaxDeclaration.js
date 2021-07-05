@@ -133,7 +133,7 @@ define([
                             }
                         },
                         {
-                            "targets"   : 8,
+                            "targets"   : 9,
                             "searchable": false,
                             "orderable" : false,
                             "className" : "text-center",
@@ -173,6 +173,9 @@ define([
                         },
                         { 
                             "data" : "prop_location_street"
+                        },
+                        { 
+                            "data" : "created_at"
                         },
                         { 
                             "data" : "status"

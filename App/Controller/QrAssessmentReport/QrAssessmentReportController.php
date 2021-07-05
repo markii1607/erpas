@@ -45,33 +45,105 @@
                 $to_date    = $this->formatDate($dateExplode[1]);
 
                 $taxable_classifications = [
-                    'Residential',
-                    'Agricultural',
-                    'Cultural',
-                    'Industrial',
-                    'Mineral',
-                    'Timber',
-                    'Special (Sec, 218(d))',
-                    'Machineries',
-                    'Cultural',
-                    'Scientific',
-                    'Hospital',
-                    'Local Water Utilities Administration (LWUA)',
-                    'GOCC - Water/Electric',
-                    'Recreation',
-                    'Others',
+                    [
+                        'key'   => 'residential',
+                        'value' => 'Residential',
+                    ],
+                    [
+                        'key'   => 'agricultural',
+                        'value' => 'Agricultural',
+                    ],
+                    [
+                        'key'   => 'cultural',
+                        'value' => 'Cultural',
+                    ],
+                    [
+                        'key'   => 'industrial',
+                        'value' => 'Industrial',
+                    ],
+                    [
+                        'key'   => 'mineral',
+                        'value' => 'Mineral',
+                    ],
+                    [
+                        'key'   => 'timber',
+                        'value' => 'Timber',
+                    ],
+                    [
+                        'key'   => 'special',
+                        'value' => 'Special (Sec, 218(d))',
+                    ],
+                    [
+                        'key'   => 'sp_machineries',
+                        'value' => 'Machineries',
+                    ],
+                    [
+                        'key'   => 'sp_cultural',
+                        'value' => 'Cultural',
+                    ],
+                    [
+                        'key'   => 'sp_scientific',
+                        'value' => 'Scientific',
+                    ],
+                    [
+                        'key'   => 'sp_hospital',
+                        'value' => 'Hospital',
+                    ],
+                    [
+                        'key'   => 'sp_lwua',
+                        'value' => 'Local water Utilities Administraton (LWUA)',
+                    ],
+                    [
+                        'key'   => 'sp_gocc',
+                        'value' => 'GOCC - Water/Electric',
+                    ],
+                    [
+                        'key'   => 'sp_recreation',
+                        'value' => 'Recreation',
+                    ],
+                    [
+                        'key'   => 'sp_others',
+                        'value' => 'Others',
+                    ]
                 ];
 
                 $exempt_classifications = [
-                    'Government',
-                    'Religious',
-                    'Charitable',
-                    'Educational',
-                    'Machineries - Local Water District (LWD)',
-                    'Machineries - GOCC',
-                    'Pollution Control and Environmental Protection',
-                    'Reg. Coop. (R.A. 6938)',
-                    'Others',
+                    [
+                        'key'   => 'government',
+                        'value' => 'Government',
+                    ],
+                    [
+                        'key'   => 'religious',
+                        'value' => 'Religious',
+                    ],
+                    [
+                        'key'   => 'charitable',
+                        'value' => 'Charitable',
+                    ],
+                    [
+                        'key'   => 'educational',
+                        'value' => 'Educational',
+                    ],
+                    [
+                        'key'   => 'machineries_lwd',
+                        'value' => 'Machineries - Local Water District (LWD)',
+                    ],
+                    [
+                        'key'   => 'machineries_gocc',
+                        'value' => 'Machineries - GOCC',
+                    ],
+                    [
+                        'key'   => 'pcep',
+                        'value' => 'Pollution Control and Environmental Protection',
+                    ],
+                    [
+                        'key'   => 'reg_coop',
+                        'value' => 'Reg. Coop. (R.A. 6938)',
+                    ],
+                    [
+                        'key'   => 'others',
+                        'value' => 'Others',
+                    ]
                 ];
 
                 $records = [
@@ -79,7 +151,71 @@
                     'exempt'  => []
                 ];
 
-                
+                foreach ($taxable_classifications as $key => $value) {
+                    $records['taxable'][$value['key']] = [
+                        'total_land_area_sqm' => $this->getTotalLandArea($from_date, $to_date, 'taxable', $value['value']),
+                        'no_rpu'              => [
+                            'land'      => $this->getTotalNumberOfRPU($from_date, $to_date, 'taxable', 'land', $value['value']),
+                            'building'  => $this->getTotalNumberOfRPU($from_date, $to_date, 'taxable', 'building', $value['value']),
+                            'machinery' => $this->getTotalNumberOfRPU($from_date, $to_date, 'taxable', 'machinery', $value['value']),
+                            'others'    => $this->getTotalNumberOfRPU($from_date, $to_date, 'taxable', 'others', $value['value']),
+                        ],
+                        'market_value'  => [
+                            'land'      => $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'land', $value['value']),
+                            'building'  => [
+                                'below_limit'   => $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'building', $value['value'], 'below'),
+                                'above_limit'   => $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'building', $value['value'], 'above'),
+                                'building'      => $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'building', $value['value']),
+                            ],
+                            'machinery' => $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'machinery', $value['value']),
+                            'others'    => $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'others', $value['value']),
+                        ],
+                        'assessed_value' => [
+                            'land'      => $this->getTotalAssessedValue($from_date, $to_date, 'taxable', 'land', $value['value']),
+                            'building'  => $this->getTotalAssessedValue($from_date, $to_date, 'taxable', 'building', $value['value']),
+                            'machinery' => $this->getTotalAssessedValue($from_date, $to_date, 'taxable', 'machinery', $value['value']),
+                            'others'    => $this->getTotalAssessedValue($from_date, $to_date, 'taxable', 'others', $value['value']),
+                        ],
+                    ];
+
+                    $records['taxable'][$value['key']]['total_av']  = floatval($records['taxable'][$value['key']]['assessed_value']['land']) + floatval($records['taxable'][$value['key']]['assessed_value']['building']) + floatval($records['taxable'][$value['key']]['assessed_value']['machinery']) + floatval($records['taxable'][$value['key']]['assessed_value']['others']);
+                    $records['taxable'][$value['key']]['basic_tax'] = floatval($records['taxable'][$value['key']]['total_av']) * 0.01;
+                    $records['taxable'][$value['key']]['sef_tax']   = floatval($records['taxable'][$value['key']]['total_av']) * 0.01;
+                }
+
+                foreach ($exempt_classifications as $key => $value) {
+                    $records['exempt'][$value['key']] = [
+                        'total_land_area_sqm' => $this->getTotalLandArea($from_date, $to_date, 'exempt', $value['value']),
+                        'no_rpu'              => [
+                            'land'      => $this->getTotalNumberOfRPU($from_date, $to_date, 'exempt', 'land', $value['value']),
+                            'building'  => $this->getTotalNumberOfRPU($from_date, $to_date, 'exempt', 'building', $value['value']),
+                            'machinery' => $this->getTotalNumberOfRPU($from_date, $to_date, 'exempt', 'machinery', $value['value']),
+                            'others'    => $this->getTotalNumberOfRPU($from_date, $to_date, 'exempt', 'others', $value['value']),
+                        ],
+                        'market_value'  => [
+                            'land'      => $this->getTotalMarketValue($from_date, $to_date, 'exempt', 'land', $value['value']),
+                            'building'  => [
+                                'below_limit'   => $this->getTotalMarketValue($from_date, $to_date, 'exempt', 'building', $value['value'], 'below'),
+                                'above_limit'   => $this->getTotalMarketValue($from_date, $to_date, 'exempt', 'building', $value['value'], 'above'),
+                                'building'      => $this->getTotalMarketValue($from_date, $to_date, 'exempt', 'building', $value['value']),
+                            ],
+                            'machinery' => $this->getTotalMarketValue($from_date, $to_date, 'exempt', 'machinery', $value['value']),
+                            'others'    => $this->getTotalMarketValue($from_date, $to_date, 'exempt', 'others', $value['value']),
+                        ],
+                        'assessed_value' => [
+                            'land'      => $this->getTotalAssessedValue($from_date, $to_date, 'exempt', 'land', $value['value']),
+                            'building'  => $this->getTotalAssessedValue($from_date, $to_date, 'exempt', 'building', $value['value']),
+                            'machinery' => $this->getTotalAssessedValue($from_date, $to_date, 'exempt', 'machinery', $value['value']),
+                            'others'    => $this->getTotalAssessedValue($from_date, $to_date, 'exempt', 'others', $value['value']),
+                        ],
+                    ];
+
+                    $records['exempt'][$value['key']]['total_av'] = floatval($records['exempt'][$value['key']]['assessed_value']['land']) + floatval($records['exempt'][$value['key']]['assessed_value']['building']) + floatval($records['exempt'][$value['key']]['assessed_value']['machinery']) + floatval($records['exempt'][$value['key']]['assessed_value']['others']);
+                }
+
+                $output = [
+                    'records' => $records
+                ];
 
             } else {
                 $output = [
@@ -106,7 +242,9 @@
             $totalLandArea = $this->dbCon->prepare($query->end());
             $totalLandArea->execute($data);
 
-            return $totalLandArea->fetchAll(\PDO::FETCH_ASSOC);
+            $result = $totalLandArea->fetchAll(\PDO::FETCH_ASSOC);
+
+            return !empty($result) ? (($result[0]['total_area'] != null) ? $result[0]['total_area'] : 0) : 0;
         }
 
         public function getTotalNumberOfRPU($from_date, $to_date, $tax_type, $property_kind, $classification)
@@ -126,7 +264,9 @@
             $totalNumberOfRPU = $this->dbCon->prepare($query->end());
             $totalNumberOfRPU->execute($data);
 
-            return $totalNumberOfRPU->fetchAll(\PDO::FETCH_ASSOC);
+            $result = $totalNumberOfRPU->fetchAll(\PDO::FETCH_ASSOC);
+
+            return !empty($result) ? (($result[0]['total_rpu'] != null) ? $result[0]['total_rpu'] : 0) : 0;
         }
 
         public function getTotalMarketValue($from_date, $to_date, $tax_type, $property_kind, $classification, $mvLimit = '')
@@ -170,7 +310,9 @@
             $totalMarketValue = $this->dbCon->prepare($query->end());
             $totalMarketValue->execute($data);
 
-            return $totalMarketValue->fetchAll(\PDO::FETCH_ASSOC);
+            $result = $totalMarketValue->fetchAll(\PDO::FETCH_ASSOC);
+
+            return !empty($result) ? (($result[0]['total_market_value'] != null) ? $result[0]['total_market_value'] : 0) : 0;
         }
 
         public function getTotalAssessedValue($from_date, $to_date, $tax_type, $property_kind, $classification)
@@ -190,7 +332,9 @@
             $totalAssessedValue = $this->dbCon->prepare($query->end());
             $totalAssessedValue->execute($data);
 
-            return $totalAssessedValue->fetchAll(\PDO::FETCH_ASSOC);
+            $result = $totalAssessedValue->fetchAll(\PDO::FETCH_ASSOC);
+
+            return !empty($result) ? (($result[0]['total_assessed_value'] != null) ? $result[0]['total_assessed_value'] : 0) : 0;
         }
 
         public function formatStr($str)
