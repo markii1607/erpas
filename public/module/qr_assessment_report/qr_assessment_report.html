@@ -64,7 +64,7 @@
                         <tr>
                             <td class="font-arial font-12-l">LGU:</td>
                             <td class="font-arial font-12-l" colspan="7">MALILIPOT</td>
-                            <td class="font-arial font-12-l" colspan="17">Number of Barangays included in Report: 18</td>
+                            <td class="font-arial font-12-l" colspan="17">Number of Barangays included in Report: {{records.brgys.length}}</td>
                         </tr>
                         <tr>
                             <td class="font-arial font-12-l">Period Covered:</td>
@@ -2510,7 +2510,7 @@
                         <tr>
                             <td class="font-arial no-border font-12-l vert-middle py-1" colspan="19">Column 8 - Applicable to residential buildings & other structures only w/ market value of less than P175,000</td>
                             <!-- MUNICIPAL ASSESOR'S NAME -->
-                            <td class="font-arial no-border font-12-l vert-middle py-1 text-center" colspan="6" style="border-bottom: 2px solid black;">{{}}</td>
+                            <td class="font-arial no-border font-12-l vert-middle py-1 text-center text-uppercase" colspan="6" style="border-bottom: 2px solid black;">{{mun_assessor.full_name}}</td>
                         </tr>
                         <tr>
                             <td class="font-arial no-border font-12-l vert-middle py-1" colspan="19">Column 9 - Includes Residential buildings with market value of over P175,000</td>

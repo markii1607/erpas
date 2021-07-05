@@ -154,7 +154,6 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
-
             };
 
             $scope.print = function() {
@@ -181,7 +180,8 @@ define([
                     Service.getDetails($scope.filter).then(res => {
                         if (!res.data.input_error) {
                             if (res.data.records != undefined) {
-                                $scope.records = res.data.records;
+                                $scope.records      = res.data.records;
+                                $scope.mun_assessor = res.data.mun_assessor;
                                 $scope.computeOverallTotal();
                                 console.log($scope.records);
                                 blocker.stop();

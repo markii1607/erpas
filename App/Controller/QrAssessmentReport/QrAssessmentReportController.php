@@ -148,12 +148,14 @@
 
                 $records = [
                     'taxable' => [],
-                    'exempt'  => []
+                    'exempt'  => [],
+                    'brgys'   => []
                 ];
 
                 foreach ($taxable_classifications as $key => $value) {
                     $records['taxable'][$value['key']] = [
-                        'total_land_area_sqm' => $this->getTotalLandArea($from_date, $to_date, 'taxable', $value['value']),
+                        'total_land_area_sqm' => $this->getTotalLandArea($from_date, $to_date, 'taxable', $value['value'], 'land_area'),
+                        'total_brgys'         => $this->getTotalLandArea($from_date, $to_date, 'taxable', $value['value'], 'brgys'),
                         'no_rpu'              => [
                             'land'      => $this->getTotalNumberOfRPU($from_date, $to_date, 'taxable', 'land', $value['value']),
                             'building'  => $this->getTotalNumberOfRPU($from_date, $to_date, 'taxable', 'building', $value['value']),
@@ -181,11 +183,16 @@
                     $records['taxable'][$value['key']]['total_av']  = floatval($records['taxable'][$value['key']]['assessed_value']['land']) + floatval($records['taxable'][$value['key']]['assessed_value']['building']) + floatval($records['taxable'][$value['key']]['assessed_value']['machinery']) + floatval($records['taxable'][$value['key']]['assessed_value']['others']);
                     $records['taxable'][$value['key']]['basic_tax'] = floatval($records['taxable'][$value['key']]['total_av']) * 0.01;
                     $records['taxable'][$value['key']]['sef_tax']   = floatval($records['taxable'][$value['key']]['total_av']) * 0.01;
+
+                    foreach ($records['taxable'][$value['key']]['total_brgys'] as $bkey => $bvalue) {
+                        array_push($records['brgys'], $bvalue);
+                    }
                 }
 
                 foreach ($exempt_classifications as $key => $value) {
                     $records['exempt'][$value['key']] = [
-                        'total_land_area_sqm' => $this->getTotalLandArea($from_date, $to_date, 'exempt', $value['value']),
+                        'total_land_area_sqm' => $this->getTotalLandArea($from_date, $to_date, 'exempt', $value['value'], 'land_area'),
+                        'total_brgys'         => $this->getTotalLandArea($from_date, $to_date, 'exempt', $value['value'], 'brgys'),
                         'no_rpu'              => [
                             'land'      => $this->getTotalNumberOfRPU($from_date, $to_date, 'exempt', 'land', $value['value']),
                             'building'  => $this->getTotalNumberOfRPU($from_date, $to_date, 'exempt', 'building', $value['value']),
@@ -211,10 +218,16 @@
                     ];
 
                     $records['exempt'][$value['key']]['total_av'] = floatval($records['exempt'][$value['key']]['assessed_value']['land']) + floatval($records['exempt'][$value['key']]['assessed_value']['building']) + floatval($records['exempt'][$value['key']]['assessed_value']['machinery']) + floatval($records['exempt'][$value['key']]['assessed_value']['others']);
+                    foreach ($records['exempt'][$value['key']]['total_brgys'] as $bkey => $bvalue) {
+                        array_push($records['brgys'], $bvalue);
+                    }
                 }
 
+                $records['brgys'] = $this->filterDuplicates($records['brgys'], 'barangay_id');
+
                 $output = [
-                    'records' => $records
+                    'records'       => $records,
+                    'mun_assessor'  => !empty($this->getMunicipalAssessorData()) ? $this->getMunicipalAssessorData()[0] : []
                 ];
 
             } else {
@@ -226,7 +239,7 @@
             return $output;
         }
 
-        public function getTotalLandArea($from_date, $to_date, $tax_type, $classification)
+        public function getTotalLandArea($from_date, $to_date, $tax_type, $classification, $condition)
         {
             $data = [
                 'is_active' => 1,
@@ -235,16 +248,22 @@
                 'to_date'   => $to_date,
             ];
 
-            $query = $this->queryHandler->selectTotalLandArea();
+            $query = $this->queryHandler->selectTotalLandArea($condition);
             $query = ($tax_type == 'taxable') ? $query->andWhereNotNull(['TD.is_taxable']) : $query->andWhereNotNull(['TD.is_exempt']);
             $query = $query->logicEx('AND (C.name LIKE "'.$classification.'" OR TDC.actual_use LIKE "'.$classification.'")');
             
+            if($condition == 'brgys') $query = $query->groupBy('TD.barangay_id');
+
             $totalLandArea = $this->dbCon->prepare($query->end());
             $totalLandArea->execute($data);
 
             $result = $totalLandArea->fetchAll(\PDO::FETCH_ASSOC);
 
-            return !empty($result) ? (($result[0]['total_area'] != null) ? $result[0]['total_area'] : 0) : 0;
+            if ($condition == 'land_area') {
+                return !empty($result) ? (($result[0]['total_area'] != null) ? $result[0]['total_area'] : 0) : 0;
+            } else if ($condition == 'brgys') {
+                return $result;
+            }
         }
 
         public function getTotalNumberOfRPU($from_date, $to_date, $tax_type, $property_kind, $classification)
@@ -286,9 +305,9 @@
                     $query = $query->logicEx(
                         'AND 
                             (
-                                C.name LIKE "'.$this->formatStr($classification).'" OR 
+                                C.name LIKE "'.$classification.'" OR 
                                 C.name LIKE "%improvement%" OR 
-                                TDC.actual_use LIKE "'.$this->formatStr($classification).'" OR 
+                                TDC.actual_use LIKE "'.$classification.'" OR 
                                 TDC.actual_use LIKE "%improvement%"
                             )
                         '
@@ -299,11 +318,11 @@
                         $query = $query->logicEx('AND TDC.market_value >= 175000');
                     }
                 } else {
-                    $query = $query->logicEx('AND (C.name LIKE "'.$this->formatStr($classification).'" OR TDC.actual_use LIKE "'.$this->formatStr($classification).'")');
+                    $query = $query->logicEx('AND (C.name LIKE "'.$classification.'" OR TDC.actual_use LIKE "'.$classification.'")');
                 }
                 
             } else {
-                $query = $query->logicEx('AND (C.name LIKE "'.$this->formatStr($classification).'" OR TDC.actual_use LIKE "'.$this->formatStr($classification).'")');
+                $query = $query->logicEx('AND (C.name LIKE "'.$classification.'" OR TDC.actual_use LIKE "'.$classification.'")');
             }
             
 
@@ -337,6 +356,19 @@
             return !empty($result) ? (($result[0]['total_assessed_value'] != null) ? $result[0]['total_assessed_value'] : 0) : 0;
         }
 
+        public function getMunicipalAssessorData()
+        {
+            $data = [
+                'is_active' => 1,
+                'position'  => 'Municipal Assessor'
+            ];
+
+            $mun_assessor = $this->dbCon->prepare($this->queryHandler->selectMunicipalAssessorData()->end());
+            $mun_assessor->execute($data);
+
+            return $mun_assessor->fetchAll(\PDO::FETCH_ASSOC);
+        }
+
         public function formatStr($str)
         {
             $strExplode = explode(" ", $str);
@@ -346,5 +378,20 @@
             }
             
             return $outputStr;
+        }
+
+        public function filterDuplicates($data, $itemKey)
+        {
+            $temp_array = array();
+            $key_array  = array();
+        
+            foreach($data as $key => $val) {
+                if (!in_array($val[$itemKey], $key_array)) {
+                    $key_array[$key]  = $val[$itemKey];
+                    $temp_array[$key] = $val;
+                }
+            }
+
+            return array_values($temp_array);
         }
     }

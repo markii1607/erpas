@@ -7,11 +7,17 @@
 
     class QrAssessmentReportQueryHandler extends QueryHandler {
 
-        public function selectTotalLandArea()
+        public function selectTotalLandArea($condition)
         {
-            $fields = [
+            $sumField = [
                 'SUM(TDC.area_in_sqm) as total_area'
             ];
+
+            $brgyField = [
+                'TD.barangay_id'
+            ];
+
+            $fields = ($condition == 'land_area') ? $sumField : $brgyField;
 
             $joins = [
                 'tax_declarations TD'   => 'TD.id = TDC.tax_declaration_id',
@@ -110,6 +116,27 @@
                               ->where($whereConditions)
                               ->andWhereLike(['TD.property_kind' => ':prop_kind'])
                               ->andWhereRange('TD.created_at', [':from_date', ':to_date']);
+
+            return $initQuery;
+        }
+
+        public function selectMunicipalAssessorData()
+        {
+            $fields = [
+                'U.id',
+                'U.username',
+                'U.fname',
+                'U.mname',
+                'U.lname',
+                'CONCAT_WS(" ", NULLIF(U.fname, ""), NULLIF(CONCAT(LEFT(U.mname,1), "."), ""), NULLIF(U.lname, "")) as full_name',
+                'U.department',
+                'U.position',
+                'U.access_type',
+            ];
+
+            $initQuery = $this->select($fields)
+                            ->from('users U')
+                            ->where(['U.is_active' => ':is_active', 'U.position' => ':position']);
 
             return $initQuery;
         }
