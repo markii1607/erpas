@@ -59,32 +59,6 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
-                $scope.sampleOrNos = [
-                    {
-                        'or_no' : '4567859',
-                        'show'  : false
-                    },
-                    {
-                        'or_no' : '1111111',
-                        'show'  : false
-                    },
-                    {
-                        'or_no' : '2545654',
-                        'show'  : false
-                    },
-                    {
-                        'or_no' : '4567859',
-                        'show'  : false
-                    },
-                    {
-                        'or_no' : '4567859',
-                        'show'  : false
-                    },
-                    {
-                        'or_no' : '4567859',
-                        'show'  : false
-                    },
-                ];
             }
 
             $scope.getRecords = function(){
@@ -125,7 +99,7 @@ define([
                     ariaDescribedBy : 'modal-body',
                     templateUrl     : 'view_or_details.html',
                     controller      : 'ViewOrDetailsController',
-                    size            : 'md',
+                    size            : 'xxxlg',
                     resolve         : {
                         paramData : function () {
                             return paramData;

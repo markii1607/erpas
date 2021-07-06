@@ -14,7 +14,9 @@
                 'PTD.user_id',
                 'DATE_FORMAT(PTD.transaction_date, "%M %d, %Y") as transaction_date',
                 'PTD.or_no',
-                'PTD.amount_paid',
+                'PTD.total_basic',
+                'PTD.total_sef',
+                'PTD.total_amount_paid',
                 'PTD.paid_by',
                 'PTD.has_check_no',
                 'CONCAT_WS(" ", NULLIF(U.fname, ""), NULLIF(CONCAT(LEFT(U.mname,1), "."), ""), NULLIF(U.lname, "")) as collector_name',
@@ -26,7 +28,7 @@
             $orWhereConditions = array(
                 'DATE_FORMAT(PTD.transaction_date, "%M %d, %Y")' => ':filter_val',
                 'PTD.or_no'         => ':filter_val',
-                'PTD.amount_paid'   => ':filter_val',
+                'PTD.total_amount_paid'   => ':filter_val',
                 'PTD.paid_by'       => ':filter_val',
                 'U.fname'           => ':filter_val',
                 'U.mname'           => ':filter_val',
@@ -270,6 +272,7 @@
                 'PTDD.id',
                 'PTDD.paid_tax_declaration_id',
                 'PTDD.tax_declaration_id',
+                'PTDD.tax_due',
             ];
 
             $initQuery = $this->select($fields)
@@ -277,6 +280,26 @@
                               ->where(['PTDD.is_active' => ':is_active']);
 
             $initQuery = ($ptd_id) ? $initQuery->andWhere(['PTDD.paid_tax_declaration_id' => ':ptd_id']) : $initQuery;
+
+            return $initQuery;
+        }
+
+        public function selectPaidTaxDecDetailInstallments($ptdd_id = false)
+        {
+            $fields = [
+                'PTDD.id',
+                'PTDD.paid_tax_declaration_detail_id',
+                'PTDD.installment_text',
+                'PTDD.full_payment',
+                'PTDD.penalty_amount',
+                'PTDD.total',
+            ];
+
+            $initQuery = $this->select($fields)
+                              ->from('paid_tax_declaration_detail_installments PTDD')
+                              ->where(['PTDD.is_active' => ':is_active']);
+
+            $initQuery = ($ptdd_id) ? $initQuery->andWhere(['PTDD.paid_tax_declaration_detail_id' => ':ptdd_id']) : $initQuery;
 
             return $initQuery;
         }

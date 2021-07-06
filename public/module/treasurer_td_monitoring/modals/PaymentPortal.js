@@ -1,7 +1,8 @@
 define([
     'app',
+    'moment',
     'airDatepickeri18n',
-], function (app) {
+], function (app, moment) {
     app.factory('PaymentPortalFactory', [
         'alertify',
         function (alertify) {
@@ -57,7 +58,8 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
-                
+                $scope.addPaymentDetail.transaction_date = moment().format('LL');
+                console.log($scope.addPaymentDetail.transaction_date);
             }
 
             $scope.addRow = function() {
@@ -77,23 +79,41 @@ define([
                 $scope.addPaymentDetail.records.splice(index, 1)
             }
 
-            $scope.addRowInstallment = function() {
-                $scope.addPaymentDetail.installment.push({
-                    declarant: null,
-                    installment_no: null,
-                    installment_payment: null,
-                    full_payment: null,
-                    penalty: null,
-                    total: 0.00,
+            $scope.addRowInstallment = function(index) {
+                $scope.td_records[index].payments.push(
+                    {
+                        full_payment    : $scope.td_records[index].tax_due,
+                        penalty_amount  : 0,
+                        total_per_row   : $scope.td_records[index].tax_due,
+                    }
+                )
+
+                // $scope.computeTotal();
+            }
+
+            $scope.removeRowInstallment = function(index, subIndex) {
+                $scope.td_records[index].payments.splice(subIndex, 1)
+                // $scope.computeTotal();
+            }
+
+            $scope.computeTotalPerRow = function(index, subIndex){
+                $scope.td_records[index].payments[subIndex].total_per_row = Number($scope.td_records[index].payments[subIndex].full_payment) + Number($scope.td_records[index].payments[subIndex].penalty_amount);
+                // $scope.computeTotal();
+            }
+
+            $scope.computeTotal = function(condition = ''){
+                var total = 0;
+                angular.forEach($scope.td_records, (value, key) => {
+                    angular.forEach(value.payments, (pvalue, pkey) => {
+                        total += Number(pvalue.total_per_row)
+                    })
                 })
-            }
+                
+                $scope.addPaymentDetail.total_basic = total
+                $scope.addPaymentDetail.total_sef   = total
+                $scope.addPaymentDetail.grand_total = total * 2
 
-            $scope.removeRowInstallment = function(index) {
-                $scope.addPaymentDetail.installment.splice(index, 1)
-            }
-
-            $scope.computeTotal = function(index) {
-                $scope.addPaymentDetail.installment[index].total = Number($scope.addPaymentDetail.installment[index].full_payment) + Number($scope.addPaymentDetail.installment[index].penalty)
+                return (condition == 'total') ? total*2 : total
             }
 
             /**
@@ -133,7 +153,13 @@ define([
 
             _formatSubmittedData = function(data) {
                 angular.forEach($scope.td_records, (value, key) => {
-                    $scope.addPaymentDetail.records.push({id : value.id});
+                    $scope.addPaymentDetail.records.push(
+                        {
+                            id          : value.id,
+                            tax_due     : value.tax_due,
+                            payments    : value.payments
+                        }
+                    );
                 })
             }
 
@@ -146,33 +172,38 @@ define([
                 Factory.autoloadSettings();
                 
                 $scope.td_records = ParamData.data.records
+                angular.forEach($scope.td_records, (value, key) => {
+                    $scope.td_records[key].tax_due  = parseFloat(value.total_assessed_value) * 0.01;
+                    $scope.td_records[key].payments = [
+                        {
+                            full_payment    : $scope.td_records[key].tax_due,
+                            penalty_amount  : 0,
+                            total_per_row   : $scope.td_records[key].tax_due,
+                        }
+                    ];
+                })
+                console.log($scope.td_records);
                 $scope.addPaymentDetail = {
-                    records : [
-                        {
-                            declarant: null,
-                            location: null,
-                            lot_no: null,
-                            td_no: null,
-                            land: null,
-                            improvement: null,
-                            total: null,
-                            tax_due: null,
-                        }
-                    ],
-                    installment: [
-                        {
-                            declarant: null,
-                            installment_no: null,
-                            installment_payment: null,
-                            full_payment: null,
-                            penalty: null,
-                            total: 0.00,
-                        }
-                    ],
-                    grand_total: 0,
+                    total_basic : 0,
+                    total_sef   : 0,
+                    grand_total : 0,
+                    records     : []
                 };
 
-                $scope.addrowspan = 0;
+                // $scope.computeTotal();
+
+                $timeout(function() {
+                    angular.element('#transaction_date').datepicker({
+                        language: 'en',
+                        autoClose: true,
+                        dateFormat: 'MM d, yyyy',
+                        position: 'bottom left',
+                        maxDate: new Date(), 
+                        onSelect: function(formattedDate, date, inst) {
+                            $scope.addPaymentDetail.transaction_date = angular.copy(formattedDate);
+                        }
+                    });
+                }, 500);
 
                 _loadDetails();
             };

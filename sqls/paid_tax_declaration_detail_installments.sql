@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 05, 2021 at 02:58 PM
+-- Generation Time: Jul 05, 2021 at 02:57 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -25,19 +25,16 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `paid_tax_declarations`
+-- Table structure for table `paid_tax_declaration_detail_installments`
 --
 
-CREATE TABLE `paid_tax_declarations` (
+CREATE TABLE `paid_tax_declaration_detail_installments` (
   `id` int(5) UNSIGNED NOT NULL,
-  `user_id` int(5) UNSIGNED NOT NULL COMMENT 'user ID of collecting officer',
-  `transaction_date` date NOT NULL,
-  `or_no` text NOT NULL,
-  `total_basic` decimal(22,2) NOT NULL,
-  `total_sef` decimal(22,2) NOT NULL,
-  `total_amount_paid` decimal(22,2) NOT NULL,
-  `paid_by` text NOT NULL,
-  `has_check_no` tinyint(1) DEFAULT NULL,
+  `paid_tax_declaration_detail_id` int(5) UNSIGNED NOT NULL,
+  `installment_text` text NOT NULL,
+  `full_payment` decimal(22,4) NOT NULL,
+  `penalty_amount` decimal(22,4) NOT NULL,
+  `total` decimal(22,4) NOT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `created_by` int(5) UNSIGNED NOT NULL,
   `created_at` datetime NOT NULL,
@@ -50,9 +47,9 @@ CREATE TABLE `paid_tax_declarations` (
 --
 
 --
--- Indexes for table `paid_tax_declarations`
+-- Indexes for table `paid_tax_declaration_detail_installments`
 --
-ALTER TABLE `paid_tax_declarations`
+ALTER TABLE `paid_tax_declaration_detail_installments`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -60,9 +57,9 @@ ALTER TABLE `paid_tax_declarations`
 --
 
 --
--- AUTO_INCREMENT for table `paid_tax_declarations`
+-- AUTO_INCREMENT for table `paid_tax_declaration_detail_installments`
 --
-ALTER TABLE `paid_tax_declarations`
+ALTER TABLE `paid_tax_declaration_detail_installments`
   MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 

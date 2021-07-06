@@ -220,7 +220,29 @@
             $details = $this->dbCon->prepare($this->queryHandler->selectPaidTaxDecDetails($hasPtdId)->end());
             $details->execute($data);
 
-            return $details->fetchAll(\PDO::FETCH_ASSOC);
+            $result = $details->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach ($result as $key => $value) {
+                $result[$key]['payments'] = $this->getPaidTaxDecDetailInstallments($value['id']);
+            }
+
+            return $result;
+        }
+
+        public function getPaidTaxDecDetailInstallments($ptdd_id = '')
+        {
+            $hasPtddId = empty($ptdd_id) ? false : true;
+
+            $data = [
+                'is_active' => 1
+            ];
+
+            ($hasPtddId) ? $data['ptdd_id'] = $ptdd_id : '';
+
+            $installments = $this->dbCon->prepare($this->queryHandler->selectPaidTaxDecDetailInstallments($hasPtddId)->end());
+            $installments->execute($data);
+
+            return $installments->fetchAll(\PDO::FETCH_ASSOC);
         }
 
         public function getUsers($id = '')

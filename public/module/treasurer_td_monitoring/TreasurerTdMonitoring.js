@@ -43,7 +43,7 @@ define([
                             "data"   : "or_no",
                         },
                         {
-                            "data"   : "amount_paid",
+                            "data"   : "total_amount_paid",
                         },
                         {
                             "data"   : "paid_by",
@@ -203,7 +203,7 @@ define([
                     ariaDescribedBy : 'modal-body',
                     templateUrl     : 'view_or_details.html',
                     controller      : 'ViewOrDetailsController',
-                    size            : 'md',
+                    size            : 'xxxlg',
                     resolve         : {
                         paramData : function () {
                             return paramData;
