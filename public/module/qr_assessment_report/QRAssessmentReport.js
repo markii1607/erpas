@@ -23,101 +23,8 @@ define([
              * @type {Array}
              */
             Factory.templates = [
-                // 'module/properties_dec/modals/add_properties_dec.html',
-                // 'module/properties_dec/modals/edit_properties_dec.html',
-                // 'module/properties_dec/modals/view_properties_dec.html',
+                'module/qr_assessment_report/modals/edit_qr_assessment_report.html',
             ];
-
-            // Factory.dtOptions = function () {
-            //     var options = {};
-
-            //     options = {
-            //         "dom": 'Bfrtip',
-            //         "paging": true,
-            //         "lengthChange": true,
-            //         "pageLength": 15,
-            //         "searching": true,
-            //         "ordering": true,
-            //         "info": true,
-            //         "select": {
-            //             style: 'single'
-            //         },
-            //         "keys": {
-            //             keys: [
-            //                 13 /* ENTER */ ,
-            //                 38 /* UP */ ,
-            //                 40 /* DOWN */
-            //             ]
-            //         },
-            //         "mark": true,
-            //         "autoWidth": false,
-            //         "responsive": true,
-            //         "data": [],
-            //         "buttons": [],
-            //         "order": [
-            //             [
-            //                 0,
-            //                 "desc"
-            //             ]
-            //         ],
-            //         "columnDefs"   : [ 
-            //             {
-            //                 "targets"    : 0,
-            //                 "searchable" : false,
-            //                 "orderable"  : true,
-            //                 "className"  : "text-center"
-            //             },
-            //             {
-            //                 "targets"   : 1,
-            //                 "searchable": false,
-            //                 "orderable" : false,
-            //                 "className" : "text-center",
-            //                 "render"    : function(data, type, full, meta) {
-            //                     var str = '';
-            //                     str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-md mr-2 text-white"><i class="fas fa-eye"></i></button>';
-            //                     str += '<p style="margin-bottom:5px;"></p>';
-            //                     str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-edit"></i></button>';
-            //                     str += '<p style="margin-bottom:5px;"></p>';
-            //                     str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-md mr-2 text-white"><i class="fas fa-trash"></i></button>';
-
-            //                     return str;
-            //                 }
-            //             },
-            //             {
-            //                 "targets"   : 2,
-            //                 "searchable": true,
-            //                 "orderable" : true,
-            //                 "className" : "text-left",
-            //                 "render"    : function(data, type, full, meta) {
-            //                     return `${data.month} ${data.day}, ${data.year}`
-            //                 }
-            //             },
-            //         ],
-            //         "columns"      : 
-            //         [
-            //             { 
-            //                 "data" : null 
-            //             },
-            //             { 
-            //                 "data" : null 
-            //             },
-            //             { 
-            //                 "data" : "date"
-            //             },
-            //             { 
-            //                 "data" : "or_no"
-            //             },
-            //             { 
-            //                 "data" : "requestor"
-            //             },
-            //             { 
-            //                 "data" : "purpose"
-            //             },
-            //         ]
-            //     };
-
-            //     return options;
-            // };
 
             return Factory;
         }
@@ -172,6 +79,36 @@ define([
                 // '</div><script>$.("div.table-responsive").removeClass("table-responsive");</script></body></html>');
                 popupWinindow.document.close();
             };
+
+            $scope.editQrAssessmentReport = function () {
+                var paramData, modalInstance;
+
+                paramData = {}
+
+                modalInstance = $uibModal.open({
+                    animation       : true,
+                    keyboard        : false,
+                    backdrop        : 'static',
+                    ariaLabelledBy  : 'modal-title',
+                    ariaDescribedBy : 'modal-body',
+                    templateUrl     : 'edit_qr_assessment_report.html',
+                    controller      : 'EditQrAssessmentReportController',
+                    size            : 'xxlg',
+                    resolve         : {
+                        paramData : function () {
+                            return paramData;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (res) {
+                    console.log('addREsult: ', res);
+                    table.DataTable().row.add(res).draw();
+                    table.find('tbody tr').css('cursor', 'pointer');
+                }, function (res) {
+                    // Result when modal is dismissed
+                });
+            }
 
             $scope.search = function(){
                 if ($scope.filter.date_range != null) {

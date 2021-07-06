@@ -1,7 +1,7 @@
 define([
     './QRAssessmentReport.js',
     // './modals/AddPropertiesDec.js',
-    // './modals/EditPropertiesDec.js',
+    './modals/EditQrAssessmentReport.js',
     // './modals/ViewPropertiesDec.js',
     
     '../../directive/dataTable.js',
