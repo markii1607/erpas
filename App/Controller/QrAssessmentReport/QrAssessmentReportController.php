@@ -260,7 +260,7 @@
             $result = $totalLandArea->fetchAll(\PDO::FETCH_ASSOC);
 
             if ($condition == 'land_area') {
-                return !empty($result) ? (($result[0]['total_area'] != null) ? $result[0]['total_area'] : 0) : 0;
+                return !empty($result) ? (($result[0]['total_area'] != null) ? floatval($result[0]['total_area']) : 0) : 0;
             } else if ($condition == 'brgys') {
                 return $result;
             }
@@ -285,7 +285,7 @@
 
             $result = $totalNumberOfRPU->fetchAll(\PDO::FETCH_ASSOC);
 
-            return !empty($result) ? (($result[0]['total_rpu'] != null) ? $result[0]['total_rpu'] : 0) : 0;
+            return !empty($result) ? (($result[0]['total_rpu'] != null) ? floatval($result[0]['total_rpu']) : 0) : 0;
         }
 
         public function getTotalMarketValue($from_date, $to_date, $tax_type, $property_kind, $classification, $mvLimit = '')
@@ -331,7 +331,7 @@
 
             $result = $totalMarketValue->fetchAll(\PDO::FETCH_ASSOC);
 
-            return !empty($result) ? (($result[0]['total_market_value'] != null) ? $result[0]['total_market_value'] : 0) : 0;
+            return !empty($result) ? (($result[0]['total_market_value'] != null) ? floatval($result[0]['total_market_value']) : 0) : 0;
         }
 
         public function getTotalAssessedValue($from_date, $to_date, $tax_type, $property_kind, $classification)
@@ -353,7 +353,7 @@
 
             $result = $totalAssessedValue->fetchAll(\PDO::FETCH_ASSOC);
 
-            return !empty($result) ? (($result[0]['total_assessed_value'] != null) ? $result[0]['total_assessed_value'] : 0) : 0;
+            return !empty($result) ? (($result[0]['total_assessed_value'] != null) ? floatval($result[0]['total_assessed_value']) : 0) : 0;
         }
 
         public function getMunicipalAssessorData()

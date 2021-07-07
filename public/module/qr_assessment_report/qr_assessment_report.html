@@ -1,3 +1,27 @@
+<style>
+    #myBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 99;
+        font-size: 16px;
+        border: none;
+        outline: none;
+        background-color: red;
+        color: white;
+        cursor: pointer;
+        padding: 12px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        margin-right: 20px;
+        opacity: 70%;
+    }
+
+    #myBtn:hover {
+        background-color: #555;
+    }
+</style>
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div style="background-color: white; width: 100%; border-radius: 10px;" class="px-3 py-3 mb-2 inner-print-wrapper">
@@ -13,6 +37,11 @@
             </div>
         </div>
     </div>
+</div>
+<div>
+    <button id="myBtn" onclick="topFunction()" title="Go to Top Page">
+        <i class="fas fa-arrow-up"></i><br>Top
+    </button>
 </div>
 <div class="row" block-ui="blockQRAssessmentReport">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -2586,6 +2615,25 @@
         </button>
     </div>
 </div>
+
+<script>
+    var mybutton = document.getElementById('myBtn');
+    window.onscroll = function(){scrollFunction()};
+
+    function scrollFunction() {
+        if (document.documentElement.scrollTop > 0.05 || document.body.scrollTop > 0.05) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0;    // For Chrome, Firefox, IE, Opera
+    }
+
+</script>
 
 <!-- Load modal template -->
 <div class="modal" ng-repeat="template in templates">

@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="edit_qr_assessment_report.html">
     <div block-ui="blockEditQrAssessmentReport">
-        <form name="form.editQrAssessmentReport" ng-submit="update(form.editQrAssessmentReport.$valid)" novalidate>
+        <form name="form.editQrAssessmentReport" novalidate>
             <div class="modal-header align-items-center">
 				<span class="fa-stack fa-lg">
 	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
@@ -33,7 +33,7 @@
 					<div class="col-6">
 						<div class="form-group">
 							<label for="type" class="font-weight-bold">Type <i class="text-danger">*</i></label>
-							<ui-select ng-disabled="editQrAssessmentReport.type == undefined" multiple close-on-select="false" ng-model="editQrAssessmentReport.subcategory" id="subcategory" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+							<ui-select ng-disabled="editQrAssessmentReport.type == undefined" multiple close-on-select="true" ng-model="editQrAssessmentReport.subcategory" id="subcategory" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
 								<ui-select-match placeholder="Select Type">
 									<span>{{ $item.name }}</span>
 								</ui-select-match>
@@ -52,8 +52,8 @@
                             <td class="font-arial font-12-l text-center vert-middle py-3 px-3" colspan="5">Number of Real Property Units (RPUs)</td>
                             <td class="font-arial font-12-l text-center vert-middle py-3 px-3" colspan="7">Market Value</td>
                             <td class="font-arial font-12-l text-center vert-middle py-3 px-3" colspan="5">Assessed Value</td>
-                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3" colspan="3">Rate of Levy</td>
-                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3" colspan="3">TOTAL COLLECTIBLES</td>
+                            <!-- <td class="font-arial font-12-l text-center vert-middle py-3 px-3" colspan="3">Rate of Levy</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3" colspan="3">TOTAL COLLECTIBLES</td> -->
                         </tr>
                         <tr>
                             <td class="no-border" colspan="2"></td>
@@ -72,19 +72,19 @@
                             <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Machinery</td>
                             <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Other Improvements</td>
                             <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Total<br />(15+16+17+18)</td>
-                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Basic</td>
+                            <!-- <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Basic</td>
                             <td class="font-arial font-12-l text-center vert-middle py-3 px-3">SEF</td>
                             <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Idle Land</td>
                             <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Basic<br />(19 x 20)</td>
                             <td class="font-arial font-12-l text-center vert-middle py-3 px-3">SEF<br />(19 x 21)</td>
-                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Total<br />(23 + 24)</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Total<br />(23 + 24)</td> -->
                         </tr>
                         <tr>
                             <td class="no-border" colspan="8"></td>
                             <td class="font-arial font-12-l text-center vert-middle px-3">P175,000 or less</td>
                             <td class="font-arial font-12-l text-center vert-middle px-3">over P175,000</td>
                             <td class="font-arial font-12-l text-center vert-middle px-3">Building</td>
-                            <td class="no-border" colspan="14"></td>
+                            <td class="no-border" colspan="8"></td>
                         </tr>
                         <tr>
                             <td class="font-arial font-12-l text-center vert-middle px-3">1</td>
@@ -106,102 +106,86 @@
                             <td class="font-arial font-12-l text-center vert-middle px-3">17</td>
                             <td class="font-arial font-12-l text-center vert-middle px-3">18</td>
                             <td class="font-arial font-12-l text-center vert-middle px-3">19</td>
-                            <td class="font-arial font-12-l text-center vert-middle px-3">20</td>
+                            <!-- <td class="font-arial font-12-l text-center vert-middle px-3">20</td>
                             <td class="font-arial font-12-l text-center vert-middle px-3">21</td>
                             <td class="font-arial font-12-l text-center vert-middle px-3">22</td>
                             <td class="font-arial font-12-l text-center vert-middle px-3">23</td>
                             <td class="font-arial font-12-l text-center vert-middle px-3">24</td>
-                            <td class="font-arial font-12-l text-center vert-middle px-3">25</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">25</td> -->
                         </tr>
                         <tr>
-                            <td class="font-arial font-15 vert-middle b-grey py-1 text-uppercase" colspan="25">{{ editQrAssessmentReport.type.name }}</td>
+                            <td class="font-arial font-15 vert-middle b-grey py-1 text-uppercase" colspan="19">{{ editQrAssessmentReport.type.name }}</td>
                         </tr>
                         <tr ng-repeat="(key, sub) in editQrAssessmentReport.subcategory">
                             <td class="font-arial font-12-l vert-middle py-2">{{ sub.no }} {{ sub.name }}</td>
+
                             <!-- Total Land Area in Sqm -->
                             <td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" ng-model="editQrAssessmentReport.subcategory[key].data.total_land_area_sqm" step="0.01" min="0.00" class="form-control" /> 
 							</td>
+
                             <!-- Number of RPUs -->
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.no_rpu.land" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.no_rpu.building" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.no_rpu.machinery" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.no_rpu.others" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								{{ getTotal(editQrAssessmentReport.subcategory[key].data.no_rpu, 'rpu') | number:2 }}
 							</td>
+
                             <!-- Market Value -->
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.market_value.land" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.market_value.building.below_limit" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.market_value.building.above_limit" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.market_value.building.building" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.market_value.machinery" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.market_value.others" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								{{ getTotal(editQrAssessmentReport.subcategory[key].data.market_value, 'mv', sub.attr) | number:2 }}
 							</td>
+
                             <!-- Assessed Value -->
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.assessed_value.land" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.assessed_value.building" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.assessed_value.machinery" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.assessed_value.others" step="0.01" min="0.00" class="form-control" /> 
 							</td>
 							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
-							</td>
-                            <!-- Rate of Levy -->
-							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
-							</td>
-							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
-							</td>
-							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
-							</td>
-                            <!-- Total Collectibles -->
-							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
-							</td>
-							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
-							</td>
-							<td class="font-arial font-12-l vert-middle py-2 text-right">
-								<input type="number" step="0.01" min="0.00" class="form-control" /> 
+								{{ getTotal(editQrAssessmentReport.subcategory[key].data.assessed_value, 'av') | number:2 }}
 							</td>
                         </tr>
 					</tbody>
 				</table>
             </div>
             <div class="modal-footer bordered">
-				<button type="submit" class="btn btn-default bg-crimson-red" ng-disabled="form.editQrAssessmentReport.$invalid">
+				<button type="submit" class="btn btn-default bg-crimson-red" ng-click="saveUpdatedDetails()">
 					<span>UPDATE</span>
 				</button>
 				<button type="button" class="btn btn-default" ng-click="closeModal()">

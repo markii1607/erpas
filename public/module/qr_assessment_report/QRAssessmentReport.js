@@ -81,33 +81,54 @@ define([
             };
 
             $scope.editQrAssessmentReport = function () {
-                var paramData, modalInstance;
-
-                paramData = {}
-
-                modalInstance = $uibModal.open({
-                    animation       : true,
-                    keyboard        : false,
-                    backdrop        : 'static',
-                    ariaLabelledBy  : 'modal-title',
-                    ariaDescribedBy : 'modal-body',
-                    templateUrl     : 'edit_qr_assessment_report.html',
-                    controller      : 'EditQrAssessmentReportController',
-                    size            : 'xxlg',
-                    resolve         : {
-                        paramData : function () {
-                            return paramData;
-                        }
+                if ($scope.records != undefined) {
+                    
+                    var paramData, modalInstance;
+    
+                    paramData = {
+                        data : $scope.records
                     }
-                });
+    
+                    modalInstance = $uibModal.open({
+                        animation       : true,
+                        keyboard        : false,
+                        backdrop        : 'static',
+                        ariaLabelledBy  : 'modal-title',
+                        ariaDescribedBy : 'modal-body',
+                        templateUrl     : 'edit_qr_assessment_report.html',
+                        controller      : 'EditQrAssessmentReportController',
+                        size            : 'xxxlg',
+                        resolve         : {
+                            paramData : function () {
+                                return paramData;
+                            }
+                        }
+                    });
+    
+                    modalInstance.result.then(function (res) {
+                        console.log('updateResult: ', res);
+                        if (res.type == 'Taxable') {
+                            angular.forEach(res.data, (value, key) => {
+                                value.data.total_av = parseFloat(value.data.assessed_value.land) + parseFloat(value.data.assessed_value.building) + parseFloat(value.data.assessed_value.machinery) + parseFloat(value.data.assessed_value.others);
+                                value.data.basic_tax = value.data.total_av * 0.01;
+                                value.data.sef_tax = value.data.total_av * 0.01;
+                                $scope.records.taxable[value.attr] = value.data;
+                            })
+                        } else if (res.type == 'Exempt') {
+                            angular.forEach(res.data, (value, key) => {
+                                value.data.total_av = parseFloat(value.data.assessed_value.land) + parseFloat(value.data.assessed_value.building) + parseFloat(value.data.assessed_value.machinery) + parseFloat(value.data.assessed_value.others);
+                                $scope.records.exempt[value.attr] = value.data;
+                            })
+                        }
 
-                modalInstance.result.then(function (res) {
-                    console.log('addREsult: ', res);
-                    table.DataTable().row.add(res).draw();
-                    table.find('tbody tr').css('cursor', 'pointer');
-                }, function (res) {
-                    // Result when modal is dismissed
-                });
+                        $scope.computeOverallTotal();
+                    }, function (res) {
+                        // Result when modal is dismissed
+                    });
+
+                } else {
+                    Alertify.log('Undefined data. Please make sure to filter data first by selecting a specific date range.');
+                }
             }
 
             $scope.search = function(){
