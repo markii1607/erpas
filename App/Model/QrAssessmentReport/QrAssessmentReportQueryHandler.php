@@ -34,7 +34,8 @@
                               ->from('tax_declaration_classifications TDC')
                               ->join($joins)
                               ->where($whereConditions)
-                              ->andWhereRange('TD.created_at', [':from_date', ':to_date']);
+                              ->logicEx('AND TD.created_at BETWEEN '.':from_date'.' AND '.':to_date');
+                            //   ->log('TD.created_at', [':from_date', ':to_date']);
 
             return $initQuery;
         }
@@ -61,7 +62,8 @@
                               ->join($joins)
                               ->where($whereConditions)
                               ->andWhereLike(['TD.property_kind' => ':prop_kind'])
-                              ->andWhereRange('TD.created_at', [':from_date', ':to_date']);
+                              ->logicEx('AND TD.created_at BETWEEN '.':from_date'.' AND '.':to_date');
+                            //   ->andWhereRange('TD.created_at', [':from_date', ':to_date']);
 
             return $initQuery;
         }
@@ -88,7 +90,8 @@
                               ->join($joins)
                               ->where($whereConditions)
                               ->andWhereLike(['TD.property_kind' => ':prop_kind'])
-                              ->andWhereRange('TD.created_at', [':from_date', ':to_date']);
+                              ->logicEx('AND TD.created_at BETWEEN '.':from_date'.' AND '.':to_date');
+                            //   ->andWhereRange('TD.created_at', [':from_date', ':to_date']);
 
             return $initQuery;
         }
@@ -115,7 +118,8 @@
                               ->join($joins)
                               ->where($whereConditions)
                               ->andWhereLike(['TD.property_kind' => ':prop_kind'])
-                              ->andWhereRange('TD.created_at', [':from_date', ':to_date']);
+                              ->logicEx('AND TD.created_at BETWEEN '.':from_date'.' AND '.':to_date');
+                            //   ->andWhereRange('TD.created_at', [':from_date', ':to_date']);
 
             return $initQuery;
         }
