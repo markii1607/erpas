@@ -98,6 +98,7 @@ define([
 
             $scope.computeTotalPerRow = function(index, subIndex){
                 $scope.td_records[index].payments[subIndex].total_per_row = Number($scope.td_records[index].payments[subIndex].full_payment) + Number($scope.td_records[index].payments[subIndex].penalty_amount);
+                $scope.td_records[index].payments[subIndex].total_per_row = Math.round(($scope.td_records[index].payments[subIndex].total_per_row + Number.EPSILON) * 100) / 100;
                 // $scope.computeTotal();
             }
 
@@ -172,8 +173,9 @@ define([
                 Factory.autoloadSettings();
                 
                 $scope.td_records = ParamData.data.records
-                angular.forEach($scope.td_records, (value, key) => {
-                    $scope.td_records[key].tax_due  = parseFloat(value.total_assessed_value) * 0.01;
+                angular.forEach($scope.td_records, function(value, key) {
+                    $scope.td_records[key].tax_due  = Number(value.total_assessed_value) * 0.01;
+                    $scope.td_records[key].tax_due  = Math.round(($scope.td_records[key].tax_due + Number.EPSILON) * 100) / 100;
                     $scope.td_records[key].payments = [
                         {
                             full_payment    : $scope.td_records[key].tax_due,
