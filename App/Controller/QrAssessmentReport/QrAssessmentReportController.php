@@ -165,9 +165,9 @@
                         'market_value'  => [
                             'land'      => $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'land', $value['value']),
                             'building'  => [
-                                'below_limit'   => $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'building', $value['value'], 'below'),
-                                'above_limit'   => $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'building', $value['value'], 'above'),
-                                'building'      => $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'building', $value['value']),
+                                'below_limit'   => ($value['value'] == 'Residential') ? $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'building', $value['value'], 'below') : 0.00,
+                                'above_limit'   => ($value['value'] == 'Residential') ? $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'building', $value['value'], 'above') : 0.00,
+                                'building'      => ($value['value'] != 'Residential') ? $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'building', $value['value'])          : 0.00,
                             ],
                             'machinery' => $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'machinery', $value['value']),
                             'others'    => $this->getTotalMarketValue($from_date, $to_date, 'taxable', 'others', $value['value']),
@@ -302,13 +302,21 @@
             $query = ($tax_type == 'taxable') ? $query->andWhereNotNull(['TD.is_taxable']) : $query->andWhereNotNull(['TD.is_exempt']);
             if (strtoupper($property_kind) == 'BUILDING') {
                 if (strtoupper($classification) == 'RESIDENTIAL') {
-                    $query = $query->logicEx(
+                    /* $query = $query->logicEx(
                         'AND 
                             (
                                 C.name LIKE "'.$classification.'" OR 
-                                C.name LIKE "%improvement%" OR 
+                                C.name LIKE "%Improvement%" OR 
                                 TDC.actual_use LIKE "'.$classification.'" OR 
-                                TDC.actual_use LIKE "%improvement%"
+                                TDC.actual_use LIKE "%Improvement%"
+                            )
+                        '
+                    ); */
+                    $query = $query->logicEx(
+                        'AND 
+                            (
+                                C.name LIKE "%Improvement%" OR 
+                                TDC.actual_use LIKE "%Improvement%"
                             )
                         '
                     );

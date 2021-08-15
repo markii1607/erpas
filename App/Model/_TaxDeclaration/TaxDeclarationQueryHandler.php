@@ -111,8 +111,6 @@
                 'TDC.tax_declaration_id',
                 'TDC.classification_id',
                 'TDC.market_value_id',
-                'TDC.unit_value',
-                'TDC.uv_unit_measurement',
                 'TDC.area',
                 'TDC.unit_measurement',
                 'TDC.area_in_sqm',

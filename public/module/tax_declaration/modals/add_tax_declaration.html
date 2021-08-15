@@ -256,7 +256,8 @@
 											</button>
 										</th>
 										<th class="text-center align-middle">Classification<i class="text-danger">*<i></th>
-										<th class="text-center align-middle" ng-if="addTaxDec.type.name != 'Machinery'">Sub-Classification<i class="text-danger">*<i></th>
+										<!-- <th class="text-center align-middle" ng-if="addTaxDec.type.name != 'Machinery'">Sub-Classification<i class="text-danger">*<i></th> -->
+										<th class="text-center align-middle">Unit Value<i class="text-danger">*<i></th>
 										<th class="text-center align-middle">Area<i class="text-danger">*<i></th>
 										<th class="text-center align-middle">Market Value<i class="text-danger">*<i></th>
 										<th class="text-center align-middle">Actual Use<i class="text-danger">*<i></th>
@@ -273,7 +274,8 @@
 											</button>
 										</td>
 										<td>
-											<ui-select ng-model="addTaxDec.details[key].classification" theme="bootstrap" ng-change="getMarketValues(key)" reset-search-input="true" append-to-body="true" required>
+											<!-- <ui-select ng-model="addTaxDec.details[key].classification" theme="bootstrap" ng-change="getMarketValues(key)" reset-search-input="true" append-to-body="true" required> -->
+											<ui-select ng-model="addTaxDec.details[key].classification" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
 												<ui-select-match placeholder="Classification">
 													{{ $select.selected.name }}
 												</ui-select-match>
@@ -282,7 +284,7 @@
 												</ui-select-choices>
 											</ui-select>
 										</td>
-										<td ng-if="addTaxDec.type.name != 'Machinery'">
+										<!-- <td ng-if="addTaxDec.type.name != 'Machinery'">
 											<ui-select ng-model="addTaxDec.details[key].sub_classification" ng-change="computeMarketValue(key)" style="width: 250px;" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
 												<ui-select-match placeholder="Sub-Class">
 													{{ $select.selected.sub_classification }}
@@ -316,6 +318,23 @@
 													</table>
 												</ui-select-choices>
 											</ui-select>
+										</td> -->
+										<td>
+											<div class="form-row align-items-center">
+												<div class="col-8">
+													<input type="number" ng-model="addTaxDec.details[key].unit_value.area" step="0.01" min="0.00" class="form-control" placeholder="Unit Value" autocomplete="off" required />
+												</div>
+												<div class="col-4">
+													<ui-select ng-model="addTaxDec.details[key].unit_value.unit" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+														<ui-select-match placeholder="Unit">
+															{{ $select.selected.name }}
+														</ui-select-match>
+														<ui-select-choices style="font-size: 12px;" repeat="unit in units | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+															<span>{{unit.name}}</span>
+														</ui-select-choices>
+													</ui-select>
+												</div>
+											</div>
 										</td>
 										<td>
 											<div class="form-row align-items-center">
@@ -323,7 +342,7 @@
 													<input type="number" ng-model="addTaxDec.details[key].area" step="0.01" min="0.00" class="form-control" ng-change="computeMarketValue(key)" placeholder="Enter Area" autocomplete="off" required />
 												</div>
 												<div class="col-4">
-													<ui-select ng-model="addTaxDec.details[key].unit" theme="bootstrap" ng-disabled="addTaxDec.details[key].area == undefined" ng-change="computeMarketValue(key)" reset-search-input="true" append-to-body="true" required>
+													<ui-select ng-model="addTaxDec.details[key].unit" theme="bootstrap" ng-change="computeMarketValue(key)" ng-disabled="addTaxDec.details[key].area == undefined" reset-search-input="true" append-to-body="true" required>
 														<ui-select-match placeholder="Unit">
 															{{ $select.selected.name }}
 														</ui-select-match>
@@ -367,7 +386,7 @@
 								</tbody>
 								<tfoot>
 									<tr>
-										<td colspan="{{(addTaxDec.type.name != 'Machinery') ? 4 : 3}}" class="text-right">Php</td>
+										<td colspan="4" class="text-right">Php</td>
 										<td>
 											<input type="text" ng-model="addTaxDec.total_market_value | number" class="form-control" placeholder="Total Market Value" disabled />
 										</td>
