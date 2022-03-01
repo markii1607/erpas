@@ -85,7 +85,9 @@
                         $tdClassEntryData = [
                             'tax_declaration_id'    =>  $input->id,
                             'classification_id'     =>  $value->classification->id,
-                            'market_value_id'       =>  isset($value->sub_classification) ? $value->sub_classification->id : null,
+                            // 'market_value_id'       =>  isset($value->sub_classification) ? $value->sub_classification->id : null,
+                            'unit_value'            =>  $value->uv->area,
+                            'uv_unit_measurement'   =>  $value->uv->unit->name,
                             'area'                  =>  $value->area,
                             'unit_measurement'      =>  $value->unit->name,
                             'area_in_sqm'           =>  ($value->unit->name == 'sq.m') ? $value->area : $this->convertValue($value->area, 'sq.m'),
@@ -108,7 +110,9 @@
                     } else if ($value->data_type == 'saved') {
                         $tdClassEntryData = [
                             'classification_id'     =>  $value->classification->id,
-                            'market_value_id'       =>  isset($value->sub_classification) ? $value->sub_classification->id : null,
+                            // 'market_value_id'       =>  isset($value->sub_classification) ? $value->sub_classification->id : null,
+                            'unit_value'            =>  $value->uv->area,
+                            'uv_unit_measurement'   =>  $value->uv->unit->name,
                             'area'                  =>  $value->area,
                             'unit_measurement'      =>  $value->unit->name,
                             'area_in_sqm'           =>  ($value->unit->name == 'sq.m') ? $value->area : $this->convertValue($value->area, 'sq.m'),

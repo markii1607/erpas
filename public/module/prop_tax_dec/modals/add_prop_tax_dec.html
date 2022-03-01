@@ -16,177 +16,336 @@
 	            </button>
             </div>
             <div class="modal-body" id="modal-body">
-				<div class="row">
-					<div class="col-6">
-						<label for="td_no" class="font-weight-bold">Lot No.<i class="text-danger">*</i></label>
-					</div>
-					<div class="col-4">
-						<label for="td_no" class="font-weight-bold">Owner Name<i class="text-danger">*</i></label>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-6">
-						<div class="row">
-							<div class="col-10">
-								<div class="form-group">
-									<input type="text" ng-model="addPropTaxDec.lot_no" class="form-control" id="lot_no" placeholder="Enter Lot No..." ng-change="reset()" autofocus autocomplete="off" required />
-								</div>
-							</div>
-							<div class="col-2">
-								<button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Search Records for the Provided Lot Number" ng-disabled="addPropTaxDec.lot_no == undefined || addPropTaxDec.lot_no == ''" ng-click="getLotOwners()">
-									<i class="fas fa-search"></i> <span></span>
-								</button>
-							</div>
-						</div>
-                    </div>
-					<div class="col-4">
+				<div class="row mb-3">
+					<div class="col-12">
+						<label for="entry" class="font-weight-bold">Entry Type:<i class="text-danger">*</i></label>
 						<div class="form-group">
-							<ui-select ng-model="addPropTaxDec.owner" id="owner" theme="bootstrap" reset-search-input="true" ng-disabled="addPropTaxDec.lot_no == undefined || addPropTaxDec.lot_no == ''" append-to-body="true" required>
-								<ui-select-match placeholder="Select Owner Name">
-									<span>{{ $select.selected.owner }}</span>
-								</ui-select-match>
-								<ui-select-choices style="font-size: 12px;" repeat="owner in lot_owners | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
-									<span class="text-uppercase"><b>{{owner.owner}}</b></span><br>
-								</ui-select-choices>
-							</ui-select>
+							<label for="auto" class="btn default-btn" ng-class="{'lbl-selected' : addPropTaxDec.chk_auto}">AUTOMATED<input type="checkbox" ng-model="addPropTaxDec.chk_auto" id="auto" class="badgebox" ng-click="changeEntryType('auto')"><span class="badge">&check;</span></label>
+							<label for="manual" class="btn default-btn" ng-class="{'lbl-selected' : addPropTaxDec.chk_manual}">MANUAL<input type="checkbox" ng-model="addPropTaxDec.chk_manual" id="manual" class="badgebox" ng-click="changeEntryType('manual')"><span class="badge">&check;</span></label>
 						</div>
-                    </div>
-					<div class="col-2">
-						<button type="submit" class="btn btn-success" ng-if="!withExistingRecords" ng-disabled="addPropTaxDec.owner == undefined || addPropTaxDec.owner == ''" ng-click="verifyRecords()">
-							<i class="fas fa-id-badge"></i> <span>VERIFY RECORDS</span>
-						</button>
 					</div>
 				</div>
-				<div class="row" ng-if="withExistingRecords">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<div class="row">
-							<div class="col-12">
-								<div class="table-responsive">
-									<table class="table table-bordered">
-										<thead>
-											<tr>
-												<th class="text-center align-middle">
-													<button class="btn btn-success" type="button" title="Add Row" ng-click="addRow()">
-														<i class="fas fa-plus"></i>
-													</button>
-												</th>
-												<th class="text-center align-middle">ARP NO.</th>
-												<th class="text-center align-middle">DECLARANT</th>
-												<th class="text-center align-middle">LOT #</th>
-												<th class="text-center align-middle">AREA</th>
-												<th class="text-center align-middle">MARKET VALUE</th>
-												<th class="text-center align-middle">ASSESSED VALUE</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr ng-repeat="(key, value) in improvement_records track by $index">
-												<td class="text-center align-middle">
-													<button class="btn btn-danger" type="button" title="Remove Row" ng-click="removeRow($index)" ng-show="improvement_records.length > 1">
-														<i class="fas fa-times"></i>
-													</button>
-												</td>
-												<td class="align-middle">
-													<span ng-if="improvement_records[key].data_type == 'saved'">{{value.td_no}}</span>
-													<p ng-if="improvement_records[key].data_type == 'new'">
+				<div ng-if="addPropTaxDec.chk_auto">
+					<div class="row">
+						<div class="col-6">
+							<label for="td_no" class="font-weight-bold">Lot No.<i class="text-danger">*</i></label>
+						</div>
+						<div class="col-4">
+							<label for="td_no" class="font-weight-bold">Owner Name<i class="text-danger">*</i></label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<div class="row">
+								<div class="col-10">
+									<div class="form-group">
+										<input type="text" ng-model="addPropTaxDec.lot_no" class="form-control" id="lot_no" placeholder="Enter Lot No..." ng-change="reset()" autofocus autocomplete="off" required />
+									</div>
+								</div>
+								<div class="col-2">
+									<button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Search Records for the Provided Lot Number" ng-disabled="addPropTaxDec.lot_no == undefined || addPropTaxDec.lot_no == ''" ng-click="getLotOwners()">
+										<i class="fas fa-search"></i> <span></span>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-4">
+							<div class="form-group">
+								<ui-select ng-model="addPropTaxDec.owner" id="owner" theme="bootstrap" reset-search-input="true" ng-disabled="addPropTaxDec.lot_no == undefined || addPropTaxDec.lot_no == ''" append-to-body="true" required>
+									<ui-select-match placeholder="Select Owner Name">
+										<span>{{ $select.selected.owner }}</span>
+									</ui-select-match>
+									<ui-select-choices style="font-size: 12px;" repeat="owner in lot_owners | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+										<span class="text-uppercase"><b>{{owner.owner}}</b></span><br>
+									</ui-select-choices>
+								</ui-select>
+							</div>
+						</div>
+						<div class="col-2">
+							<button type="submit" class="btn btn-success" ng-if="!withExistingRecords" ng-disabled="addPropTaxDec.owner == undefined || addPropTaxDec.owner == ''" ng-click="verifyRecords()">
+								<i class="fas fa-id-badge"></i> <span>VERIFY RECORDS</span>
+							</button>
+						</div>
+					</div>
+					<div class="row" ng-if="withExistingRecords">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="row">
+								<div class="col-12">
+									<div class="table-responsive">
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th class="text-center align-middle">
+														<button class="btn btn-success" type="button" title="Add Row" ng-click="addRow()">
+															<i class="fas fa-plus"></i>
+														</button>
+													</th>
+													<th class="text-center align-middle">ARP NO.</th>
+													<th class="text-center align-middle">DECLARANT</th>
+													<th class="text-center align-middle">LOT #</th>
+													<th class="text-center align-middle">AREA</th>
+													<th class="text-center align-middle">MARKET VALUE</th>
+													<th class="text-center align-middle">ASSESSED VALUE</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="(key, value) in improvement_records track by $index">
+													<td class="text-center align-middle">
+														<button class="btn btn-danger" type="button" title="Remove Row" ng-click="removeRow($index)" ng-show="improvement_records.length > 1">
+															<i class="fas fa-times"></i>
+														</button>
+													</td>
+													<td class="align-middle">
+														<span ng-if="improvement_records[key].data_type == 'saved'">{{value.td_no}}</span>
+														<p ng-if="improvement_records[key].data_type == 'new'">
+															<input type="text" ng-model="improvement_records[key].td_no_new" class="form-control" placeholder="Enter TD No." autocomplete="off" required />
+														</p>
+													</td>
+													<td class="align-middle">
+														<span ng-if="improvement_records[key].data_type == 'saved'">{{value.owner}}</span>
+														<p ng-if="improvement_records[key].data_type == 'new'">
+															<input type="text" ng-model="improvement_records[key].owner_new" class="form-control" placeholder="Enter Declarant" autocomplete="off" required />
+														</p>
+													</td>
+													<td class="align-middle">
+														<span ng-if="improvement_records[key].data_type == 'saved'">{{value.actual_use}}</span>
+														<p ng-if="improvement_records[key].data_type == 'new'">
+															<input type="text" ng-model="improvement_records[key].lot_no_new" class="form-control" placeholder="Enter Lot No." autocomplete="off" required />
+														</p>
+													</td>
+													<td class="align-middle">
+														<span ng-if="improvement_records[key].data_type == 'saved'">{{value.area}}</span>
+														<p ng-if="improvement_records[key].data_type == 'new'">
+															<input type="text" ng-model="improvement_records[key].area_new" class="form-control" placeholder="Enter Area" autocomplete="off" required />
+														</p>
+													</td>
+													<td class="align-middle">
+														<span ng-if="improvement_records[key].data_type == 'saved'">{{value.market_value | number : 2}}</span>
+														<p ng-if="improvement_records[key].data_type == 'new'">
+															<input type="number" ng-model="improvement_records[key].market_value_new" class="form-control" placeholder="Market Value" autocomplete="off" required />
+														</p>
+													</td>
+													<td class="align-middle">
+														<span ng-if="improvement_records[key].data_type == 'saved'">{{value.assessed_value | number : 2}}</span>
+														<p ng-if="improvement_records[key].data_type == 'new'">
+															<input type="number" ng-model="improvement_records[key].assessed_value_new" class="form-control" placeholder="Assessed Value" autocomplete="off" required />
+														</p>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<div class="form-group">
+										<label for="requestor" class="font-weight-bold">Requestor Complete Name<i class="text-danger">*</i></label>
+										<input type="text" ng-model="addPropTaxDec.requestor" class="form-control" id="requestor" placeholder="Enter Requestor Name..." autofocus autocomplete="off" required />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-6">
+									<div class="form-group">
+										<label for="or_no" class="font-weight-bold">OR No.<i class="text-danger">*</i></label>
+										<input type="text" ng-model="addPropTaxDec.or_no" class="form-control" id="or_no" placeholder="Enter OR No..." autocomplete="off" required />
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="form-group">
+										<label for="amount_paid" class="font-weight-bold">Amount Paid<i class="text-danger">*</i></label>
+										<input type="text" ng-model="addPropTaxDec.amount_paid" class="form-control" id="amount_paid" placeholder="Enter Amount Paid..." autocomplete="off" required />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-8">
+									<label for="purpose" class="font-weight-bold">Purpose<i class="text-danger">*</i></label>
+									<textarea ng-model="addPropTaxDec.purpose" rows="3" class="form-control resize-none" id="purpose" placeholder="Enter Purpose..." autocomplete="off" required></textarea>
+								</div>
+							</div>
+							<div class="row" style="margin-top: 10px;">
+								<div class="col-6">
+									<div class="form-group">
+										<label for="prepared_by" class="font-weight-bold">Prepared By:<i class="text-danger">*</i></label>
+										<ui-select ng-model="addPropTaxDec.prepared_by" id="prepared_by" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+											<ui-select-match placeholder="Select User">
+												<span>{{ $select.selected.full_name }}</span>
+											</ui-select-match>
+											<ui-select-choices style="font-size: 12px;" repeat="user in users | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+												<span class="text-uppercase"><b>{{user.full_name}}</b></span><br>
+												<small>{{user.position}}</small>
+											</ui-select-choices>
+										</ui-select>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="form-group">
+										<label for="verified_by" class="font-weight-bold">Verified By:<i class="text-danger">*</i></label>
+										<ui-select ng-model="addPropTaxDec.verified_by" id="verified_by" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+											<ui-select-match placeholder="Select User">
+												<span>{{ $select.selected.full_name }}</span>
+											</ui-select-match>
+											<ui-select-choices style="font-size: 12px;" repeat="user in users | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+												<span class="text-uppercase"><b>{{user.full_name}}</b></span><br>
+												<small>{{user.position}}</small>
+											</ui-select-choices>
+										</ui-select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+				<div ng-if="addPropTaxDec.chk_manual">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="row">
+								<div class="col-4">
+									<div class="form-group">
+										<label for="td_no" class="font-weight-bold">Tax Declaration Number<i class="text-danger">*</i></label>
+										<input type="text" ng-model="addPropTaxDec.td_no" class="form-control" id="td_no" placeholder="Enter TD Number..." autofocus autocomplete="off" required />
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="form-group">
+										<label for="lot_no" class="font-weight-bold">Lot No.<i class="text-danger">*</i></label>
+										<input type="text" ng-model="addPropTaxDec.lot_no" class="form-control" id="lot_no" placeholder="Enter Lot No. ..." autofocus autocomplete="off" required />
+									</div>
+								</div>
+								<div class="col-5">
+									<div class="form-group">
+										<label for="owner_name" class="font-weight-bold">Declarant/Owner<i class="text-danger">*</i></label>
+										<input type="text" ng-model="addPropTaxDec.owner_name" class="form-control" id="owner_name" placeholder="Enter Requestor Name..." autofocus autocomplete="off" required />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-4">
+									<div class="form-group">
+										<label for="td_effectivity" class="font-weight-bold">Effectivity<i class="text-danger">*</i></label>
+										<input type="text" ng-model="addPropTaxDec.td_effectivity" class="form-control" id="td_effectivity" placeholder="Enter Effectivity Year..." autofocus autocomplete="off" required />
+									</div>
+								</div>
+								<div class="col-8">
+									<div class="form-group">
+										<label for="prop_location" class="font-weight-bold">Location of Property<i class="text-danger">*</i></label>
+										<input type="text" ng-model="addPropTaxDec.prop_location" class="form-control" id="prop_location" placeholder="Enter Location of Property..." autofocus autocomplete="off" required />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<div class="table-responsive">
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th class="text-center align-middle">
+														<button class="btn btn-success" type="button" title="Add Row" ng-click="addRow()">
+															<i class="fas fa-plus"></i>
+														</button>
+													</th>
+													<th class="text-center align-middle">ARP NO.</th>
+													<th class="text-center align-middle">DECLARANT</th>
+													<th class="text-center align-middle">LOT #</th>
+													<th class="text-center align-middle">AREA</th>
+													<th class="text-center align-middle">MARKET VALUE</th>
+													<th class="text-center align-middle">ASSESSED VALUE</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="(key, value) in improvement_records track by $index">
+													<td class="text-center align-middle">
+														<button class="btn btn-danger" type="button" title="Remove Row" ng-click="removeRow($index)" ng-show="improvement_records.length > 1">
+															<i class="fas fa-times"></i>
+														</button>
+													</td>
+													<td class="align-middle">
 														<input type="text" ng-model="improvement_records[key].td_no_new" class="form-control" placeholder="Enter TD No." autocomplete="off" required />
-													</p>
-												</td>
-												<td class="align-middle">
-													<span ng-if="improvement_records[key].data_type == 'saved'">{{value.owner}}</span>
-													<p ng-if="improvement_records[key].data_type == 'new'">
+													</td>
+													<td class="align-middle">
 														<input type="text" ng-model="improvement_records[key].owner_new" class="form-control" placeholder="Enter Declarant" autocomplete="off" required />
-													</p>
-												</td>
-												<td class="align-middle">
-													<span ng-if="improvement_records[key].data_type == 'saved'">{{value.actual_use}}</span>
-													<p ng-if="improvement_records[key].data_type == 'new'">
+													</td>
+													<td class="align-middle">
 														<input type="text" ng-model="improvement_records[key].lot_no_new" class="form-control" placeholder="Enter Lot No." autocomplete="off" required />
-													</p>
-												</td>
-												<td class="align-middle">
-													<span ng-if="improvement_records[key].data_type == 'saved'">{{value.area}}</span>
-													<p ng-if="improvement_records[key].data_type == 'new'">
+													</td>
+													<td class="align-middle">
 														<input type="text" ng-model="improvement_records[key].area_new" class="form-control" placeholder="Enter Area" autocomplete="off" required />
-													</p>
-												</td>
-												<td class="align-middle">
-													<span ng-if="improvement_records[key].data_type == 'saved'">{{value.market_value | number : 2}}</span>
-													<p ng-if="improvement_records[key].data_type == 'new'">
+													</td>
+													<td class="align-middle">
 														<input type="number" ng-model="improvement_records[key].market_value_new" class="form-control" placeholder="Market Value" autocomplete="off" required />
-													</p>
-												</td>
-												<td class="align-middle">
-													<span ng-if="improvement_records[key].data_type == 'saved'">{{value.assessed_value | number : 2}}</span>
-													<p ng-if="improvement_records[key].data_type == 'new'">
+													</td>
+													<td class="align-middle">
 														<input type="number" ng-model="improvement_records[key].assessed_value_new" class="form-control" placeholder="Assessed Value" autocomplete="off" required />
-													</p>
-												</td>
-											</tr>
-										</tbody>
-									</table>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<div class="form-group">
+										<label for="requestor" class="font-weight-bold">Requestor Complete Name<i class="text-danger">*</i></label>
+										<input type="text" ng-model="addPropTaxDec.requestor" class="form-control" id="requestor" placeholder="Enter Requestor Name..." autofocus autocomplete="off" required />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-6">
+									<div class="form-group">
+										<label for="or_no" class="font-weight-bold">OR No.<i class="text-danger">*</i></label>
+										<input type="text" ng-model="addPropTaxDec.or_no" class="form-control" id="or_no" placeholder="Enter OR No..." autocomplete="off" required />
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="form-group">
+										<label for="amount_paid" class="font-weight-bold">Amount Paid<i class="text-danger">*</i></label>
+										<input type="text" ng-model="addPropTaxDec.amount_paid" class="form-control" id="amount_paid" placeholder="Enter Amount Paid..." autocomplete="off" required />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-8">
+									<label for="purpose" class="font-weight-bold">Purpose<i class="text-danger">*</i></label>
+									<textarea ng-model="addPropTaxDec.purpose" rows="3" class="form-control resize-none" id="purpose" placeholder="Enter Purpose..." autocomplete="off" required></textarea>
+								</div>
+							</div>
+							<div class="row" style="margin-top: 10px;">
+								<div class="col-6">
+									<div class="form-group">
+										<label for="prepared_by" class="font-weight-bold">Prepared By:<i class="text-danger">*</i></label>
+										<ui-select ng-model="addPropTaxDec.prepared_by" id="prepared_by" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+											<ui-select-match placeholder="Select User">
+												<span>{{ $select.selected.full_name }}</span>
+											</ui-select-match>
+											<ui-select-choices style="font-size: 12px;" repeat="user in users | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+												<span class="text-uppercase"><b>{{user.full_name}}</b></span><br>
+												<small>{{user.position}}</small>
+											</ui-select-choices>
+										</ui-select>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="form-group">
+										<label for="verified_by" class="font-weight-bold">Verified By:<i class="text-danger">*</i></label>
+										<ui-select ng-model="addPropTaxDec.verified_by" id="verified_by" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+											<ui-select-match placeholder="Select User">
+												<span>{{ $select.selected.full_name }}</span>
+											</ui-select-match>
+											<ui-select-choices style="font-size: 12px;" repeat="user in users | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+												<span class="text-uppercase"><b>{{user.full_name}}</b></span><br>
+												<small>{{user.position}}</small>
+											</ui-select-choices>
+										</ui-select>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-12">
-								<div class="form-group">
-									<label for="requestor" class="font-weight-bold">Requestor Complete Name<i class="text-danger">*</i></label>
-									<input type="text" ng-model="addPropTaxDec.requestor" class="form-control" id="requestor" placeholder="Enter Requestor Name..." autofocus autocomplete="off" required />
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-6">
-								<div class="form-group">
-									<label for="or_no" class="font-weight-bold">OR No.<i class="text-danger">*</i></label>
-									<input type="text" ng-model="addPropTaxDec.or_no" class="form-control" id="or_no" placeholder="Enter OR No..." autocomplete="off" required />
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="form-group">
-									<label for="amount_paid" class="font-weight-bold">Amount Paid<i class="text-danger">*</i></label>
-									<input type="text" ng-model="addPropTaxDec.amount_paid" class="form-control" id="amount_paid" placeholder="Enter Amount Paid..." autocomplete="off" required />
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-8">
-								<label for="purpose" class="font-weight-bold">Purpose<i class="text-danger">*</i></label>
-								<textarea ng-model="addPropTaxDec.purpose" rows="3" class="form-control resize-none" id="purpose" placeholder="Enter Purpose..." autocomplete="off" required></textarea>
-							</div>
-						</div>
-						<div class="row" style="margin-top: 10px;">
-							<div class="col-6">
-								<div class="form-group">
-									<label for="prepared_by" class="font-weight-bold">Prepared By:<i class="text-danger">*</i></label>
-									<ui-select ng-model="addPropTaxDec.prepared_by" id="prepared_by" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
-										<ui-select-match placeholder="Select User">
-											<span>{{ $select.selected.full_name }}</span>
-										</ui-select-match>
-										<ui-select-choices style="font-size: 12px;" repeat="user in users | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
-											<span class="text-uppercase"><b>{{user.full_name}}</b></span><br>
-											<small>{{user.position}}</small>
-										</ui-select-choices>
-									</ui-select>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="form-group">
-									<label for="verified_by" class="font-weight-bold">Verified By:<i class="text-danger">*</i></label>
-									<ui-select ng-model="addPropTaxDec.verified_by" id="verified_by" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
-										<ui-select-match placeholder="Select User">
-											<span>{{ $select.selected.full_name }}</span>
-										</ui-select-match>
-										<ui-select-choices style="font-size: 12px;" repeat="user in users | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
-											<span class="text-uppercase"><b>{{user.full_name}}</b></span><br>
-											<small>{{user.position}}</small>
-										</ui-select-choices>
-									</ui-select>
-								</div>
-							</div>
-						</div>
-                    </div>
-                </div> 
+					</div> 
+				</div>
             </div>
             <div class="modal-footer bordered">
 				<button type="submit" class="btn btn-default bg-crimson-red" ng-click="save()" ng-disabled="form.addPropTaxDec.$invalid">

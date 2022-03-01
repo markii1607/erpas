@@ -23,101 +23,8 @@ define([
              * @type {Array}
              */
             Factory.templates = [
-                // 'module/properties_dec/modals/add_properties_dec.html',
-                // 'module/properties_dec/modals/edit_properties_dec.html',
-                // 'module/properties_dec/modals/view_properties_dec.html',
+                'module/qr_assessment_report/modals/edit_qr_assessment_report.html',
             ];
-
-            // Factory.dtOptions = function () {
-            //     var options = {};
-
-            //     options = {
-            //         "dom": 'Bfrtip',
-            //         "paging": true,
-            //         "lengthChange": true,
-            //         "pageLength": 15,
-            //         "searching": true,
-            //         "ordering": true,
-            //         "info": true,
-            //         "select": {
-            //             style: 'single'
-            //         },
-            //         "keys": {
-            //             keys: [
-            //                 13 /* ENTER */ ,
-            //                 38 /* UP */ ,
-            //                 40 /* DOWN */
-            //             ]
-            //         },
-            //         "mark": true,
-            //         "autoWidth": false,
-            //         "responsive": true,
-            //         "data": [],
-            //         "buttons": [],
-            //         "order": [
-            //             [
-            //                 0,
-            //                 "desc"
-            //             ]
-            //         ],
-            //         "columnDefs"   : [ 
-            //             {
-            //                 "targets"    : 0,
-            //                 "searchable" : false,
-            //                 "orderable"  : true,
-            //                 "className"  : "text-center"
-            //             },
-            //             {
-            //                 "targets"   : 1,
-            //                 "searchable": false,
-            //                 "orderable" : false,
-            //                 "className" : "text-center",
-            //                 "render"    : function(data, type, full, meta) {
-            //                     var str = '';
-            //                     str += '<button type="submit" id="firstButton" data-toggle="tooltip" title="View" class="btn btn-default bg-success btn-md mr-2 text-white"><i class="fas fa-eye"></i></button>';
-            //                     str += '<p style="margin-bottom:5px;"></p>';
-            //                     str += '<button type="submit" id="secondButton" data-toggle="tooltip" title="Edit" class="btn btn-default bg-warning btn-md mr-2 text-white"><i class="fas fa-edit"></i></button>';
-            //                     str += '<p style="margin-bottom:5px;"></p>';
-            //                     str += '<button type="submit" id="thirdButton" data-toggle="tooltip" title="Delete" class="btn btn-default bg-danger btn-md mr-2 text-white"><i class="fas fa-trash"></i></button>';
-
-            //                     return str;
-            //                 }
-            //             },
-            //             {
-            //                 "targets"   : 2,
-            //                 "searchable": true,
-            //                 "orderable" : true,
-            //                 "className" : "text-left",
-            //                 "render"    : function(data, type, full, meta) {
-            //                     return `${data.month} ${data.day}, ${data.year}`
-            //                 }
-            //             },
-            //         ],
-            //         "columns"      : 
-            //         [
-            //             { 
-            //                 "data" : null 
-            //             },
-            //             { 
-            //                 "data" : null 
-            //             },
-            //             { 
-            //                 "data" : "date"
-            //             },
-            //             { 
-            //                 "data" : "or_no"
-            //             },
-            //             { 
-            //                 "data" : "requestor"
-            //             },
-            //             { 
-            //                 "data" : "purpose"
-            //             },
-            //         ]
-            //     };
-
-            //     return options;
-            // };
 
             return Factory;
         }
@@ -132,17 +39,9 @@ define([
              * `getDetails` Query string that will get first needed details.
              * @return {[route]}
              */
-            // _this.getDetails = function () {
-            //     return $http.get(APP.SERVER_BASE_URL + '/App/Service/QRAssessmentReport/QRAssessmentReportService.php/getTDCount');
-            // };
-
-            // _this.retire = function (data) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/QRAssessmentReport/QRAssessmentReportService.php/retireQRAssessmentReport', data);
-            // };
-
-            // _this.archive = function (data) {
-            //     return $http.post(APP.SERVER_BASE_URL + '/App/Service/QRAssessmentReport/QRAssessmentReportService.php/archiveQRAssessmentReport', data);
-            // };
+            _this.getDetails = function (data) {
+                return $http.post(APP.SERVER_BASE_URL + '/App/Service/QrAssessmentReport/QrAssessmentReportService.php/getDetails', data);
+            };
         }
     ]);
 
@@ -162,11 +61,6 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
-
-                // $scope.jqDataTableOptions         = Factory.dtOptions();
-                // $scope.jqDataTableOptions.data    = Factory.dummyData;
-                // $scope.jqDataTableOptions.buttons = _btnFunc();
-
             };
 
             $scope.print = function() {
@@ -186,204 +80,240 @@ define([
                 popupWinindow.document.close();
             };
 
-            /**
-             * `_btnFunc` list of button functions.
-             * @return {[type]}
-             */
-            // _btnFunc = function () {
-            //     var buttons = [];
+            $scope.editQrAssessmentReport = function () {
+                if ($scope.records != undefined) {
+                    
+                    var paramData, modalInstance;
+    
+                    paramData = {
+                        data : $scope.records
+                    }
+    
+                    modalInstance = $uibModal.open({
+                        animation       : true,
+                        keyboard        : false,
+                        backdrop        : 'static',
+                        ariaLabelledBy  : 'modal-title',
+                        ariaDescribedBy : 'modal-body',
+                        templateUrl     : 'edit_qr_assessment_report.html',
+                        controller      : 'EditQrAssessmentReportController',
+                        size            : 'xxxlg',
+                        resolve         : {
+                            paramData : function () {
+                                return paramData;
+                            }
+                        }
+                    });
+    
+                    modalInstance.result.then(function (res) {
+                        console.log('updateResult: ', res);
+                        if (res.type == 'Taxable') {
+                            angular.forEach(res.data, (value, key) => {
+                                value.data.total_av = parseFloat(value.data.assessed_value.land) + parseFloat(value.data.assessed_value.building) + parseFloat(value.data.assessed_value.machinery) + parseFloat(value.data.assessed_value.others);
+                                value.data.basic_tax = value.data.total_av * 0.01;
+                                value.data.sef_tax = value.data.total_av * 0.01;
+                                $scope.records.taxable[value.attr] = value.data;
+                            })
+                        } else if (res.type == 'Exempt') {
+                            angular.forEach(res.data, (value, key) => {
+                                value.data.total_av = parseFloat(value.data.assessed_value.land) + parseFloat(value.data.assessed_value.building) + parseFloat(value.data.assessed_value.machinery) + parseFloat(value.data.assessed_value.others);
+                                $scope.records.exempt[value.attr] = value.data;
+                            })
+                        }
 
-            //     buttons = [];
+                        $scope.computeOverallTotal();
+                    }, function (res) {
+                        // Result when modal is dismissed
+                    });
 
-            //     buttons.push({ 
-            //         init        : function(api, node, config) {
-            //             $(node).removeClass('btn-default btn-secondary');
-            //             $(node).addClass('btn bg-info text-white btn-sm add'); 
-            //             $(node).append('<i class="fas fa-plus"></i>&nbsp;<span class="hidden-xs hidden-sm">ADD</span>');
-            //         },
-            //         text        : '', 
-            //         titleAttr   : 'Add New', 
-            //         key: { 
-            //             key     : '1', 
-            //             altKey  : true 
-            //         }, 
-            //         'action'    : function () { 
-            //             // $scope.addPropertiesDec(); 
-            //         },
-            //         enabled     : true,
-            //         name        : 'add'
-            //     });
+                } else {
+                    Alertify.log('Undefined data. Please make sure to filter data first by selecting a specific date range.');
+                }
+            }
+
+            $scope.search = function(){
+                if ($scope.filter.date_range != null) {
+                    
+                    blocker.start();
+                    Service.getDetails($scope.filter).then(res => {
+                        if (!res.data.input_error) {
+                            if (res.data.records != undefined) {
+                                $scope.records      = res.data.records;
+                                $scope.mun_assessor = res.data.mun_assessor;
+                                $scope.computeOverallTotal();
+                                console.log($scope.records);
+                                blocker.stop();
+                            } else {
+                                Alertify.error('An error occurred while saving. Please contact the administrator.');
+                                blocker.stop();
+                            }
+                        } else {
+                            Alertify.log('Invalid date range! Please make sure that FROM and TO dates are properly defined.');
+                            blocker.stop();
+                        }
+                    })
+                } else {
+                    Alertify.log('Please select a specific date range to proceed.');
+                }
+            }
+
+            $scope.getTotal = function(data, value_type, classification = ''){
                 
-            //     return buttons;
-            // }
+                if (data != undefined) {
+                    var total = 0;
+                    if (value_type == 'mv') {
+                        if (classification == 'residential') {
+                            total = parseFloat(data.land) + parseFloat(data.building.below_limit) + parseFloat(data.building.above_limit) + parseFloat(data.machinery) + parseFloat(data.others);
+                        } else {
+                            total = parseFloat(data.land) + parseFloat(data.building.building) + parseFloat(data.machinery) + parseFloat(data.others);
+                        }
+                    } else {
+                        total = parseFloat(data.land) + parseFloat(data.building) + parseFloat(data.machinery) + parseFloat(data.others);
+                    }
 
-            // $scope.rowBtns = {
-            //     "firstButton": function(data, index) {
-            //         $scope.viewPropertiesDec(data, index)
-            //     },
-            //     "secondButton": function(data, index) {
-            //         // $scope.editPropertiesDec(data, index)
-            //     },
-            //     "thirdButton": function(data, index) {
-            //         // $scope.deletePropertiesDec(data, index)
-            //     },
-            // };
+                    return total;
+                } else {
+                    return '';
+                }
 
-            // $scope.addPropertiesDec = function () {
-            //     var paramData, modalInstance;
+            }
 
-            //     paramData = {}
+            $scope.computeCollectibles = function(data, type){
+                if (data != undefined) {
+                    var total_av            = parseFloat(data.land) + parseFloat(data.building) + parseFloat(data.machinery) + parseFloat(data.others);
+                    var basic_tax           = total_av * 0.01;
+                    var sef_tax             = total_av * 0.01;
+                    var total_collectibles  = basic_tax + sef_tax;
+    
+                    if (type == 'basic') return basic_tax
+                    else if (type == 'sef') return sef_tax
+                    else if (type == 'total') return total_collectibles
+                    else return '0.00'
+                } else {
+                    return '';
+                }
+            }
 
-            //     modalInstance = $uibModal.open({
-            //         animation       : true,
-            //         keyboard        : false,
-            //         backdrop        : 'static',
-            //         ariaLabelledBy  : 'modal-title',
-            //         ariaDescribedBy : 'modal-body',
-            //         templateUrl     : 'add_properties_dec.html',
-            //         controller      : 'AddPropertiesDecController',
-            //         size            : 'xxlg',
-            //         resolve         : {
-            //             paramData : function () {
-            //                 return paramData;
-            //             }
-            //         }
-            //     });
+            $scope.computeOverallTotal = function(){
+                $scope.records.taxable.total_land_area      = 0;
+                $scope.records.taxable.total_rpu_land       = 0;
+                $scope.records.taxable.total_rpu_building   = 0;
+                $scope.records.taxable.total_rpu_machinery  = 0;
+                $scope.records.taxable.total_rpu_others     = 0;
+                $scope.records.taxable.overall_total_rpu    = 0;
+                $scope.records.taxable.total_mv_land        = 0;
+                $scope.records.taxable.total_mv_bldg_below  = 0;
+                $scope.records.taxable.total_mv_bldg_above  = 0;
+                $scope.records.taxable.total_mv_building    = 0;
+                $scope.records.taxable.total_mv_machinery   = 0;
+                $scope.records.taxable.total_mv_others      = 0;
+                $scope.records.taxable.overall_total_mv     = 0;
+                $scope.records.taxable.total_av_land        = 0;
+                $scope.records.taxable.total_av_building    = 0;
+                $scope.records.taxable.total_av_machinery   = 0;
+                $scope.records.taxable.total_av_others      = 0;
+                $scope.records.taxable.overall_total_av     = 0;
+                $scope.records.taxable.total_basic_tax      = 0;
+                $scope.records.taxable.total_sef_tax        = 0;
+                $scope.records.taxable.overall_total_tax    = 0;
 
-            //     modalInstance.result.then(function (res) {
-            //         // console.log('addREsult: ', res);
-            //         // table.DataTable().row.add(res).draw();
-            //         // table.find('tbody tr').css('cursor', 'pointer');
-            //     }, function (res) {
-            //         // Result when modal is dismissed
-            //     });
-            // }
+                let taxable_fields = [
+                    'residential',
+                    'agricultural',
+                    'cultural',
+                    'industrial',
+                    'mineral',
+                    'timber',
+                    'special',
+                    'sp_machineries',
+                    'sp_cultural',
+                    'sp_scientific',
+                    'sp_hospital',
+                    'sp_lwua',
+                    'sp_gocc',
+                    'sp_recreation',
+                    'sp_others',
+                ]
 
-            // $scope.editPropertiesDec = function (data, index) {
-            //     var paramData, modalInstance;
+                taxable_fields.map(key => {
+                    $scope.records.taxable.total_land_area      += parseFloat($scope.records.taxable[key].total_land_area_sqm);
 
-            //     paramData = {
-            //         data,
-            //     }
+                    $scope.records.taxable.total_rpu_land       += parseFloat($scope.records.taxable[key].no_rpu.land);
+                    $scope.records.taxable.total_rpu_building   += parseFloat($scope.records.taxable[key].no_rpu.building);
+                    $scope.records.taxable.total_rpu_machinery  += parseFloat($scope.records.taxable[key].no_rpu.machinery);
+                    $scope.records.taxable.total_rpu_others     += parseFloat($scope.records.taxable[key].no_rpu.others);
 
-            //     modalInstance = $uibModal.open({
-            //         animation       : true,
-            //         keyboard        : false,
-            //         backdrop        : 'static',
-            //         ariaLabelledBy  : 'modal-title',
-            //         ariaDescribedBy : 'modal-body',
-            //         templateUrl     : 'edit_properties_dec.html',
-            //         controller      : 'EditPropertiesDecController',
-            //         size            : 'xxlg',
-            //         resolve         : {
-            //             paramData : function () {
-            //                 return paramData;
-            //             }
-            //         }
-            //     });
+                    $scope.records.taxable.total_mv_land        += parseFloat($scope.records.taxable[key].market_value.land);
+                    $scope.records.taxable.total_mv_bldg_below  += parseFloat($scope.records.taxable[key].market_value.building.below_limit);
+                    $scope.records.taxable.total_mv_bldg_above  += parseFloat($scope.records.taxable[key].market_value.building.above_limit);
+                    $scope.records.taxable.total_mv_building    += parseFloat($scope.records.taxable[key].market_value.building.building);
+                    $scope.records.taxable.total_mv_machinery   += parseFloat($scope.records.taxable[key].market_value.machinery);
+                    $scope.records.taxable.total_mv_others      += parseFloat($scope.records.taxable[key].market_value.others);
 
-            //     modalInstance.result.then(function (res) {
-            //         // console.log("editResult: ", res);
-            //         // table.DataTable().row(index).data(res).draw();
-            //     }, function (res) {
-            //         // Result when modal is dismissed
-            //     });
-            // }
+                    $scope.records.taxable.total_av_land        += parseFloat($scope.records.taxable[key].assessed_value.land);
+                    $scope.records.taxable.total_av_building    += parseFloat($scope.records.taxable[key].assessed_value.building);
+                    $scope.records.taxable.total_av_machinery   += parseFloat($scope.records.taxable[key].assessed_value.machinery);
+                    $scope.records.taxable.total_av_others      += parseFloat($scope.records.taxable[key].assessed_value.others);
 
-            // $scope.viewPropertiesDec = function (data, index) {
-            //     var paramData, modalInstance;
+                    $scope.records.taxable.total_basic_tax      += parseFloat($scope.records.taxable[key].basic_tax);
+                    $scope.records.taxable.total_sef_tax        += parseFloat($scope.records.taxable[key].sef_tax);
+                })
+                $scope.records.taxable.overall_total_rpu = parseFloat($scope.records.taxable.total_rpu_land) + parseFloat($scope.records.taxable.total_rpu_building) + parseFloat($scope.records.taxable.total_rpu_machinery) + parseFloat($scope.records.taxable.total_rpu_others);
+                $scope.records.taxable.overall_total_mv  = parseFloat($scope.records.taxable.total_mv_land) + parseFloat($scope.records.taxable.total_mv_bldg_below) + parseFloat($scope.records.taxable.total_mv_bldg_above) + parseFloat($scope.records.taxable.total_mv_building) + parseFloat($scope.records.taxable.total_mv_machinery) + parseFloat($scope.records.taxable.total_mv_others);
+                $scope.records.taxable.overall_total_av  = parseFloat($scope.records.taxable.total_av_land) + parseFloat($scope.records.taxable.total_av_building) + parseFloat($scope.records.taxable.total_av_machinery) + parseFloat($scope.records.taxable.total_av_others);
+                $scope.records.taxable.overall_total_tax = parseFloat($scope.records.taxable.total_basic_tax) + parseFloat($scope.records.taxable.total_sef_tax);
 
-            //     paramData = {
-            //         data,
-            //         server_base_url: $scope.server.base_url,
-            //     }
+                $scope.records.exempt.total_land_area       = 0;
+                $scope.records.exempt.total_rpu_land        = 0;
+                $scope.records.exempt.total_rpu_building    = 0;
+                $scope.records.exempt.total_rpu_machinery   = 0;
+                $scope.records.exempt.total_rpu_others      = 0;
+                $scope.records.exempt.overall_total_rpu     = 0;
+                $scope.records.exempt.total_mv_land         = 0;
+                $scope.records.exempt.total_mv_building     = 0;
+                $scope.records.exempt.total_mv_machinery    = 0;
+                $scope.records.exempt.total_mv_others       = 0;
+                $scope.records.exempt.overall_total_mv      = 0;
+                $scope.records.exempt.total_av_land         = 0;
+                $scope.records.exempt.total_av_building     = 0;
+                $scope.records.exempt.total_av_machinery    = 0;
+                $scope.records.exempt.total_av_others       = 0;
+                $scope.records.exempt.overall_total_av      = 0;
 
-            //     modalInstance = $uibModal.open({
-            //         animation       : true,
-            //         keyboard        : false,
-            //         backdrop        : 'static',
-            //         ariaLabelledBy  : 'modal-title',
-            //         ariaDescribedBy : 'modal-body',
-            //         templateUrl     : 'view_properties_dec.html',
-            //         controller      : 'ViewPropertiesDecController',
-            //         size            : 'xlg',
-            //         resolve         : {
-            //             paramData : function () {
-            //                 return paramData;
-            //             }
-            //         }
-            //     });
+                let exempt_fields = [
+                    'government',
+                    'religious',
+                    'charitable',
+                    'educational',
+                    'machineries_lwd',
+                    'machineries_gocc',
+                    'pcep',
+                    'reg_coop',
+                    'others'
+                ]
 
-            //     modalInstance.result.then(function (res) {
-            //     }, function (res) {
-            //         // Result when modal is dismissed
-            //     });
-            // }
+                exempt_fields.map(key => {
+                    $scope.records.exempt.total_land_area      += parseFloat($scope.records.exempt[key].total_land_area_sqm);
 
-            // $scope.deletePropertiesDec = function(data, index){
-            //     Alertify
-            //     .okBtn("Yes")
-            //     .cancelBtn("Cancel")
-            //     .confirm("Are you sure you want to delete this certification?",
-            //         function () {
-            //             // blocker.start();
-            //             // Service.archive(data).then(res => {
-            //             //     if (res.data.status) {
-            //             //         table.DataTable().row('.selected').remove().draw(true);
-            //             //         Alertify.log('Deleted!');
-                                
-            //             //         blocker.stop();
-            //             //     } else {
-            //             //         Alertify.error("ERROR! Please contact the administrator.");
-            //             //         blocker.stop();
-            //             //     }
-            //             // });
-            //         }
-            //     );
-            // }
-
-            // $scope.setFilterStatus = function(filter){
-            //     $scope.filters.status = filter;
-
-            //     $scope.filterTaxDec();
-            // }
-
-            // $scope.filterTaxDec = function (params = []) {
-
-            //     console.log('params: ', params);
-            //     var paramData;
-
-            //     paramData = {
-            //         'status'        : $scope.filters.status,
-            //         'rev_id'        : params.rev_id,
-            //         'td_no'         : params.td_no,
-            //         'pin'           : params.pin,
-            //         'owner'         : params.owner,
-            //         'lot_no'        : params.lot_no,
-            //         'brgy_id'       : params.brgy_id,
-            //         'type'          : params.type,
-            //         'category'      : params.category,
-            //         'class_id'      : params.class_id,
-            //         'actual_use'    : params.actual_use,
-            //         'date_from'     : params.date_from,
-            //         'date_to'       : params.date_to,
-            //     };
-                
-
-            //     $timeout( function () {
-            //         _softConfig().dt.data('dt_params', angular.copy(paramData)); // parse dynamic data
-            //         _softConfig().dt.DataTable().draw();           // reload datatable
-            //     }, 100);
-            // };
-
-            // _softConfig = function(){
-            //     var temp = {
-            //         'rowCount' : table.DataTable().data().count(),
-            //         'dt'       : table
-            //     };
-
-            //     return temp;
-            // }
+                    $scope.records.exempt.total_rpu_land       += parseFloat($scope.records.exempt[key].no_rpu.land);
+                    $scope.records.exempt.total_rpu_building   += parseFloat($scope.records.exempt[key].no_rpu.building);
+                    $scope.records.exempt.total_rpu_machinery  += parseFloat($scope.records.exempt[key].no_rpu.machinery);
+                    $scope.records.exempt.total_rpu_others     += parseFloat($scope.records.exempt[key].no_rpu.others);
+                    
+                    $scope.records.exempt.total_mv_land        += parseFloat($scope.records.exempt[key].market_value.land);
+                    $scope.records.exempt.total_mv_building    += parseFloat($scope.records.exempt[key].market_value.building.building);
+                    $scope.records.exempt.total_mv_machinery   += parseFloat($scope.records.exempt[key].market_value.machinery);
+                    $scope.records.exempt.total_mv_others      += parseFloat($scope.records.exempt[key].market_value.others);
+                    
+                    $scope.records.exempt.total_av_land        += parseFloat($scope.records.exempt[key].assessed_value.land);
+                    $scope.records.exempt.total_av_building    += parseFloat($scope.records.exempt[key].assessed_value.building);
+                    $scope.records.exempt.total_av_machinery   += parseFloat($scope.records.exempt[key].assessed_value.machinery);
+                    $scope.records.exempt.total_av_others      += parseFloat($scope.records.exempt[key].assessed_value.others);
+                })
+                $scope.records.exempt.overall_total_rpu = parseFloat($scope.records.exempt.total_rpu_land) + parseFloat($scope.records.exempt.total_rpu_building) + parseFloat($scope.records.exempt.total_rpu_machinery) + parseFloat($scope.records.exempt.total_rpu_others);
+                $scope.records.exempt.overall_total_mv  = parseFloat($scope.records.exempt.total_mv_land) + parseFloat($scope.records.exempt.total_mv_building) + parseFloat($scope.records.exempt.total_mv_machinery) + parseFloat($scope.records.exempt.total_mv_others);
+                $scope.records.exempt.overall_total_av  = parseFloat($scope.records.exempt.total_av_land) + parseFloat($scope.records.exempt.total_av_building) + parseFloat($scope.records.exempt.total_av_machinery) + parseFloat($scope.records.exempt.total_av_others);
+            }
 
             /**
              * `_init` Initialize first things first

@@ -18,52 +18,84 @@
             <div class="modal-body" id="modal-body">
                 <div class="row">
                     <div class="col-12">
+
                         <div class="row mb-3">
                             <div class="col-12">
-                                <div class="card shadow">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-2"></div>
-                                            <div class="col-10">
-                                                <table>
-                                                    <tr>
-                                                        <th class="text-right">Transaction Date</th>
-                                                        <td>&nbsp;&nbsp;&nbsp;: {{orDetails.transaction_date}}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th class="text-right">Amount Paid</th>
-                                                        <td>&nbsp;&nbsp;&nbsp;: Php {{orDetails.amount_paid | number:2}}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th class="text-right">Paid By</th>
-                                                        <td>&nbsp;&nbsp;&nbsp;: {{orDetails.paid_by}}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th class="text-right">Collecting Officer</th>
-                                                        <td>&nbsp;&nbsp;&nbsp;: {{orDetails.collector.full_name}}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th class="text-right">Tax Declaration No./s</th>
-                                                        <td>&nbsp;&nbsp;&nbsp;:</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th></th>
-                                                        <td>
-                                                            <div ng-repeat="(key, value) in orDetails.td_list track by $index">
-                                                                <button class="btn btn-xs btn-primary" data-toggle="tooltip" title="View TD Details" ng-click="viewTaxDec(value)">
-                                                                    {{value.td_details.td_no}}
-                                                                </button>
-                                                                <p style="margin-bottom:5px;"></p>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <table id="big-table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="border-1 font-times font-12-l text-center text-uppercase align-middle px-3 py-2" width="10%">Name of Declared<br />Owner</td>
+                                            <td class="border-1 font-times font-12-l text-center text-uppercase align-middle px-3 py-2" width="10%">Location<br />Number and Street<br />or Barangay</td>
+                                            <td class="border-1 font-times font-12-l text-center text-uppercase align-middle px-3 py-2" width="10%">Lot<br />and Block<br />Number</td>
+                                            <td class="border-1 font-times font-12-l text-center text-uppercase align-middle px-3 py-2" width="10%">Tax<br />Declaration<br />Number</td>
+                                            <td class="border-1 font-times font-12-l text-center text-uppercase align-middle px-3 py-2" width="10%">Assessed Value</td>
+                                            <td class="border-1 font-times font-12-l text-center text-uppercase align-middle px-3 py-2" width="10%">Tax Due</td>
+                                            <td class="border-1 font-times font-12-l text-center text-uppercase align-middle px-3 py-2" width="10%">Installment</td>
+                                            <td class="border-1 font-times font-12-l text-center text-uppercase align-middle px-3 py-2" width="10%">Full<br />Payment</td>
+                                            <td class="border-1 font-times font-12-l text-center text-uppercase align-middle px-3 py-2" width="10%">Penalty<br />Per cent</td>
+                                            <td class="border-1 font-times font-12-l text-center text-uppercase align-middle px-3 py-2" width="10%">Total</td>
+                                        </tr>
+                                        <tr ng-repeat-start="(key, value) in orDetails.td_list track by $index">
+                                            <td rowspan="{{value.payments.length}}" class="border-1 font-times font-12-l align-middle px-3 py-2">{{ value.td_details.owner }}</td>
+                                            <td rowspan="{{value.payments.length}}" class="border-1 font-times font-12-l align-middle px-3 py-2">{{ (value.td_details.prop_location_street != null) ? value.td_details.prop_location_street + ', ' + value.td_details.barangay.name : value.td_details.barangay.name }}</td>
+                                            <td rowspan="{{value.payments.length}}" class="border-1 font-times font-12-l align-middle px-3 py-2">{{ (value.td_details.lot_no != null) ? value.td_details.lot_no : value.td_details.block_no }}</td>
+                                            <td rowspan="{{value.payments.length}}" class="border-1 font-times font-12-l align-middle px-3 py-2">
+                                                <button class="btn btn-xs btn-primary" data-toggle="tooltip" title="View TD Details" ng-click="viewTaxDec(value)">
+                                                    {{value.td_details.td_no}}
+                                                </button>
+                                            </td>
+                                            <td rowspan="{{value.payments.length}}" class="border-1 font-times font-12-l align-middle px-3 py-2">{{ value.td_details.total_assessed_value | number:2 }}</td>
+                                            <td rowspan="{{value.payments.length}}" class="border-1 font-times font-12-l align-middle px-3 py-2">{{ value.tax_due | number:2 }}</td>
+                                            <td class="border-1 font-times font-12-l align-middle px-3 py-2">{{ orDetails.td_list[key].payments[0].installment_text }}</td>
+                                            <td class="border-1 font-times font-12-l align-middle px-3 py-2">{{ orDetails.td_list[key].payments[0].full_payment | number:2 }}</td>
+                                            <td class="border-1 font-times font-12-l align-middle px-3 py-2">{{ orDetails.td_list[key].payments[0].penalty_amount | number:2 }}</td>
+                                            <td class="border-1 font-times font-12-l align-middle px-3 py-2">{{ orDetails.td_list[key].payments[0].total | number:2 }}</td>
+                                        </tr>
+                                        <tr ng-repeat="(pkey, pvalue) in value.payments | limitTo: (1-value.payments.length)">
+                                            <td class="border-1 font-times font-12-l align-middle px-3 py-2">{{ pvalue.installment_text }}</td>
+                                            <td class="border-1 font-times font-12-l align-middle px-3 py-2">{{ pvalue.full_payment | number:2 }}</td>
+                                            <td class="border-1 font-times font-12-l align-middle px-3 py-2">{{ pvalue.penalty_amount | number:2 }}</td>
+                                            <td class="border-1 font-times font-12-l align-middle px-3 py-2">{{ pvalue.total | number:2 }}</td>
+                                        </tr>
+                                        <tr ng-repeat-end></tr>
+                                        <tr ng-repeat-end></tr>
+                                        <tr>
+                                            <td class="border-1 font-times font-12-l" colspan="8"></td>
+                                            <td class="border-1 font-times font-12-l text-right">BASIC</td>
+                                            <td class="border-1 font-times font-12-l text-center">{{orDetails.total_basic | number:2}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="border-1 font-times font-12-l" colspan="8"></td>
+                                            <td class="border-1 font-times font-12-l text-right">SEF</td>
+                                            <td class="border-1 font-times font-12-l text-center">{{orDetails.total_sef | number:2}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="border-1 font-times font-12-l" colspan="8"></td>
+                                            <td class="border-1 font-times font-14-l text-right">Php</td>
+                                            <td class="border-1 font-times text-center font-14-l"><b>{{orDetails.total_amount_paid | number:2}}</b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
+
+                        <div class="row mb-3">
+                            <div class="col-9"></div>
+                            <div class="col-3">
+                                <p class="font-arial mb-3">Collecting Officer:</p>
+                                <p class="font-arial mb-0 font-weight-bold text-center" style="border-bottom: 2px solid black;">{{ orDetails.collector.full_name }}</p>
+                                <p class="font-arial mb-0 font-italic text-center">{{ orDetails.collector.position }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4 align-items-center" style="padding-left: 5rem; padding-right: 5rem;">
+                            <div class="col-12">
+                                <p class="font-arial mb-0"><b>O.R No.:</b> {{ orDetails.or_no }}</p>
+                                <p class="font-arial mb-0"><b>Date:</b> {{ orDetails.transaction_date }}</p>
+                                <p class="font-arial mb-0"><b>Paid By:</b> {{ orDetails.paid_by }}</p>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

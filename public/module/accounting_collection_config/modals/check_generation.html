@@ -1,0 +1,140 @@
+<style>
+    /* Hiding the checkbox, but allowing it to be focused */
+    .badgebox
+    {
+        opacity: 0;
+    }
+
+    .badgebox + .badge
+    {
+        /* Move the check mark away when unchecked */
+        text-indent: -999999px;
+        /* Makes the badge's width stay the same checked and unchecked */
+        width: 27px;
+    }
+
+    .badgebox:focus + .badge
+    {
+        /* Set something to make the badge looks focused */
+        /* This really depends on the application, in my case it was: */
+        
+        /* Adding a light border */
+        box-shadow: inset 0px 0px 5px;
+        /* Taking the difference out of the padding */
+    }
+
+    .badgebox:checked + .badge
+    {
+        /* Move the check mark back when checked */
+        text-indent: 0;
+    }
+
+    .default-btn 
+    {
+        background-color: #f4f4f4;
+        color: #444;
+        border-color: #ddd;
+    }
+
+    .lbl-selected
+    {
+        background-color: #ffc74f;
+        border-color: #ddd;
+        font-weight: 500;
+    }
+
+</style>
+<script type="text/ng-template" id="check_generation.html">
+    <div block-ui="blockCheckGeneration">
+        <form name="form.addCheckGeneration" novalidate>
+            <div class="modal-header align-items-center">
+				<span class="fa-stack fa-lg">
+	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+	                <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+	            </span>
+
+				<h5 class="modal-title" style="letter-spacing: 1px;">GENERATE CHECK NO.</h5>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+	                <span aria-hidden="true">
+	                    <i class="fas fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+                    <div class="col-12">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="check_no" class="form-label font-weight-bold">Date Range <i class="text-danger">*</i></label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <input type="text" id="date_range" ng-model="addGeneratedCheck.date_range" data-range="true" data-multiple-dates-separator=" - " data-toggle="tooltip" data-placement="top" title="Date Range" data-language="en" placeholder="Select Date Range" class="form-control date" autocomplete="off" />
+                                    </div>
+                                    <button class="btn btn-xs btn-primary" style="margin-left: 10px;" data-toggle="tooltip" title="Search O.R Numbers" ng-click="getRecords()">
+                                        <i class="fas fa-search"></i>&nbsp;Search Records
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-if="or_records.length > 0">
+                            <div class="row mb-3">
+                                <div class="col-4" ng-repeat="(key, value) in or_records track by $index">
+                                    <div class="form-inline">
+                                        <div class="form-group mb-2">
+                                            <label for="selected{{key}}" class="btn default-btn" ng-class="{'lbl-selected' : value.selected}">
+                                                OR#{{value.or_no}}
+                                                <input type="checkbox" ng-model="or_records[key].selected" id="selected{{key}}" class="badgebox" ng-click="computeAmount(or_records[key])">
+                                                <span class="badge">&check;</span>
+                                            </label>
+                                        </div>
+                                        <button class="btn btn-xs btn-primary mb-2" style="margin-left: 4px;" data-toggle="tooltip" title="View O.R. Details" ng-click="showDetails(value)">
+                                            <i class="fas fa-info"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label for="check_no" class="form-label font-weight-bold">Check No. <i class="text-danger">*</i></label>
+                                    <div class="form-group">
+                                        <input type="text" ng-model="addGeneratedCheck.check_no" class="form-control" id="check_no" placeholder="Enter Check Number..." autofocus autocomplete="off" required />
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <label for="total_amount" class="form-label font-weight-bold">Accumulated Amount</label>
+                                    <div class="form-group">
+                                        <input type="text" ng-value="addGeneratedCheck.total_amount | number" ng-model="addGeneratedCheck.total_amount" class="form-control" id="total_amount" autofocus autocomplete="off" readonly style="background-color: white;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <p class="text-danger font-italic" style="font-size: 10px;">* Fields are required.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bordered">
+				<button type="submit" class="btn btn-default bg-crimson-red" ng-if="or_records.length > 0" ng-disabled="!form.addCheckGeneration.$valid" ng-click="save()">
+					<span>SAVE CHECK DETAILS</span>
+				</button>
+				<button type="button" class="btn btn-default" ng-click="closeModal()">
+					<span>CLOSE</span>
+				</button>
+			</div>
+        </form>
+    </div>
+</script>

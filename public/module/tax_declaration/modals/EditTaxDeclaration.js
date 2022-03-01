@@ -98,10 +98,16 @@ define([
 
             _formatTdData = function(data){
                 angular.forEach(data, (value, key) => {
+                    $scope.editTaxDec.details[key].uv = {
+                        area    : value.unit_value,
+                        unit    : $filter('filter')($scope.units, {
+                            'name' : value.uv_unit_measurement
+                        }, true)[0]
+                    };
                     $scope.editTaxDec.details[key].unit = $filter('filter')($scope.units, {
                         'name' : value.unit_measurement
                     }, true)[0];
-                    $scope.getMarketValues(key, 'init');
+                    // $scope.getMarketValues(key, 'init');
                 });
 
                 $scope.editTaxDec.td_no = {
@@ -200,7 +206,7 @@ define([
                 $scope.editTaxDec.total_assessed_value = angular.copy(total.toFixed(2))
             }
 
-            $scope.getMarketValues = function(index, fnc = ''){
+            /* $scope.getMarketValues = function(index, fnc = ''){
                 if($scope.editTaxDec.details[index].sub_classification != undefined && fnc == '') delete $scope.editTaxDec.details[index].sub_classification;
                 blocker.start();
                 var tempData = {
@@ -217,35 +223,30 @@ define([
                         blocker.stop();
                     }
                 });
-            }
+            } */
 
             $scope.computeMarketValue = function(index){
-                console.log('type:', $scope.editTaxDec.property_kind);
-                console.log('inputUnit:', $scope.editTaxDec.details[index].unit.name);
-                console.log('mvUnit:', $scope.editTaxDec.details[index].sub_classification.unit);
 
                 // delete $scope.editTaxDec.details[index].assessment_level;
                 // delete $scope.editTaxDec.details[index].assessed_value;
-                if ($scope.editTaxDec.property_kind != 'Machinery') {
-                    if ($scope.editTaxDec.details[index].unit.name == $scope.editTaxDec.details[index].sub_classification.unit) {
-                        console.log('same unit');
-                        $scope.editTaxDec.details[index].market_value = $scope.editTaxDec.details[index].area * $scope.editTaxDec.details[index].sub_classification.market_value;
-                    } else {
-                        console.log('!same unit');
-                        if (($scope.editTaxDec.details[index].unit.name == 'ha.') && ($scope.editTaxDec.details[index].sub_classification.unit == 'sq.m')) {
-                            console.log('ha.');
-                            var convertedValue = $scope.editTaxDec.details[index].area * 10000;     // convert area to ha.
-                            $scope.editTaxDec.details[index].market_value = convertedValue * $scope.editTaxDec.details[index].sub_classification.market_value;
-                        } else if (($scope.editTaxDec.details[index].unit.name == 'sq.m') && ($scope.editTaxDec.details[index].sub_classification.unit == 'ha.')) {
-                            console.log('sq.m');
-                            var convertedValue = $scope.editTaxDec.details[index].area * 0.0001;     // convert area to sq.m
-                            $scope.editTaxDec.details[index].market_value = convertedValue * $scope.editTaxDec.details[index].sub_classification.market_value;
-                        }
+                if ($scope.editTaxDec.details[index].unit.name == $scope.editTaxDec.details[index].uv.unit.name) {
+                    console.log('same unit');
+                    $scope.editTaxDec.details[index].market_value = $scope.editTaxDec.details[index].area * $scope.editTaxDec.details[index].uv.area;
+                } else {
+                    console.log('!same unit');
+                    if (($scope.editTaxDec.details[index].unit.name == 'ha.') && ($scope.editTaxDec.details[index].uv.unit.name == 'sq.m')) {
+                        console.log('ha.');
+                        var convertedValue = $scope.editTaxDec.details[index].area * 10000;     // convert area to ha.
+                        $scope.editTaxDec.details[index].market_value = convertedValue * $scope.editTaxDec.details[index].uv.area;
+                    } else if (($scope.editTaxDec.details[index].unit.name == 'sq.m') && ($scope.editTaxDec.details[index].uv.unit.name == 'ha.')) {
+                        console.log('sq.m');
+                        var convertedValue = $scope.editTaxDec.details[index].area * 0.0001;     // convert area to sq.m
+                        $scope.editTaxDec.details[index].market_value = convertedValue * $scope.editTaxDec.details[index].uv.area;
                     }
-
-                    $scope.computeTotalMarketValue();
-                    $scope.computeAssessedValue(index);
                 }
+
+                $scope.computeTotalMarketValue();
+                $scope.computeAssessedValue(index);
             }
 
             $scope.computeAssessedValue = function(index){

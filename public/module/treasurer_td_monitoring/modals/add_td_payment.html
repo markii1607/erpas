@@ -81,6 +81,9 @@
 										<th class="text-center align-middle"></th>
 										<th class="text-center align-middle">TD No.</th>
 										<th class="text-center align-middle"></th>
+										<th class="text-center align-middle">Lot No.</th>
+										<th class="text-center align-middle">Declarant</th>
+										<th class="text-center align-middle">Property Location</th>
 										<th class="text-center align-middle">Total Assessed Value</th>
 										<th class="text-center align-middle"></th>
 									</tr>
@@ -101,6 +104,15 @@
                                         <td class="text-center align-middle">
                                             <span ng-if="value.is_taxable != null">Taxable</span>
                                             <span ng-if="value.is_exempt != null">Exempt</span>
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            {{value.lot_no}}
+                                        </td>
+                                        <td class="text-left align-middle">
+                                            {{value.owner}}
+                                        </td>
+                                        <td class="text-left align-middle">
+                                            {{value.prop_location_street}}, {{value.barangay.name}}
                                         </td>
                                         <td class="text-center align-middle">
                                             Php {{value.total_assessed_value | number:2}}

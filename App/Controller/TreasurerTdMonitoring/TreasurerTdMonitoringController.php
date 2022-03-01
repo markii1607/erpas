@@ -81,25 +81,6 @@
             return $output;
         }
 
-        public function getDtChkDetails($input)
-        {
-            // print_r($input['advanced_search']);
-            // die();
-            
-            $rows       = $this->getGeneratedChkNumbers('', $input['advanced_search'], $input['search']['value'], '', true);
-            $rowData    = $this->getGeneratedChkNumbers('', $input['advanced_search'], $input['search']['value'], $this->limit($input));
-            
-
-            $output = array(
-                'draw'            => isset ($input['draw']) ? intval($input['draw']) : 0,
-                'recordsTotal'    => !empty($rows) ? intval($rows[0]['tc_count']) : 0,
-                'recordsFiltered' => !empty($rows) ? intval($rows[0]['tc_count']) : 0,
-                'data'            => $this->arrayToObject($rowData),
-            );
-
-            return $output;
-        }
-
         public function getGeneratedOrNumbers($id = '', $advancedSearch = [], $filterVal = '', $limit = '', $total = '')
         {
             $hasId          = empty($id)     ? false : true;
@@ -127,51 +108,6 @@
             }
 
             return $result;
-        }
-
-        public function getGeneratedChkNumbers($id = '', $advancedSearch = [], $filterVal = '', $limit = '', $total = '')
-        {
-            $hasId          = empty($id)     ? false : true;
-            // $hasRevId       = empty($advancedSearch['rev_id'])      ? false : true;
-            $hasTotal       = empty($total)  ? false : true;
-
-            $data = [
-                'is_active'     => 1,
-                'filter_val'    => ($filterVal != '' ) ? '%'.$filterVal.'%' : '%%'
-            ];
-
-            ($hasId) ? $data['id'] = $id : '';
-            // ($hasRevId)     ? $data['rev_id'] = $advancedSearch['rev_id'] : '';
-
-            $query = $this->queryHandler->selectGeneratedChkNumbers($hasId, $hasTotal)->orderBy('TC.date_generated', 'DESC')->end();
-            $orNumbers = $this->dbCon->prepare($query.' '.$limit);
-            $orNumbers->execute($data);
-
-            $result = $orNumbers->fetchAll(\PDO::FETCH_ASSOC);
-
-            if (!$hasTotal) {
-                foreach ($result as $key => $value) {
-                    $result[$key]['or_numbers'] = $this->getTreasurerCollectionDetails($value['id']);
-                }
-            }
-
-            return $result;
-        }
-
-        public function getTreasurerCollectionDetails($tc_id = '')
-        {
-            $hasTcId = empty($tc_id) ? false : true;
-
-            $data = [
-                'is_active' => 1
-            ];
-
-            ($hasTcId) ? $data['tc_id'] = $tc_id : '';
-
-            $details = $this->dbCon->prepare($this->queryHandler->selectTreasurerCollectionDetails($hasTcId)->orderBy('PTD.or_no', 'ASC')->end());
-            $details->execute($data);
-
-            return $details->fetchAll(\PDO::FETCH_ASSOC);
         }
 
         public function getBarangays($id = '')
@@ -240,7 +176,7 @@
             $hasLotNo = empty($lot_no) ? false : true;
             $hasTdId  = empty($td_id)  ? false : true;
             $hasOwner = empty($owner)  ? false : true;
-
+            
             $data = [
                 'is_active' => 1
             ];
@@ -251,7 +187,7 @@
 
             $records = $this->dbCon->prepare($this->queryHandler->selectTdRecords($hasLotNo, $hasTdId, $hasOwner)->end());
             $records->execute($data);
-
+            
             $result = $records->fetchAll(\PDO::FETCH_ASSOC);
 
             foreach ($result as $key => $value) {
@@ -297,7 +233,29 @@
             $details = $this->dbCon->prepare($this->queryHandler->selectPaidTaxDecDetails($hasPtdId)->end());
             $details->execute($data);
 
-            return $details->fetchAll(\PDO::FETCH_ASSOC);
+            $result = $details->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach ($result as $key => $value) {
+                $result[$key]['payments'] = $this->getPaidTaxDecDetailInstallments($value['id']);
+            }
+
+            return $result;
+        }
+
+        public function getPaidTaxDecDetailInstallments($ptdd_id = '')
+        {
+            $hasPtddId = empty($ptdd_id) ? false : true;
+
+            $data = [
+                'is_active' => 1
+            ];
+
+            ($hasPtddId) ? $data['ptdd_id'] = $ptdd_id : '';
+
+            $installments = $this->dbCon->prepare($this->queryHandler->selectPaidTaxDecDetailInstallments($hasPtddId)->end());
+            $installments->execute($data);
+
+            return $installments->fetchAll(\PDO::FETCH_ASSOC);
         }
 
         public function getUsers($id = '')

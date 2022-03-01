@@ -40,6 +40,10 @@ define([
                 return $http.post(APP.SERVER_BASE_URL + '/App/Service/ImprovementCertification/AddPropTaxDecService.php/getSelectionData', {'lot_no' : data});
             }
 
+            _this.getSelectionDetails = function () {
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/NoPropertyCertification/AddNPCertificationService.php/getSelectionDetails');
+            }
+
             _this.verifyRecords = function (data) {
                 return $http.post(APP.SERVER_BASE_URL + '/App/Service/ImprovementCertification/AddPropTaxDecService.php/getImprovementRecords', data);
             }
@@ -69,6 +73,22 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
+                blocker.start();
+                Service.getSelectionDetails().then(result => {
+                    if (result.data.users != undefined) {
+                        $scope.users = result.data.users;
+                        $scope.addPropTaxDec.prepared_by = $filter('filter')($scope.users, {
+                            'id' : result.data.user_id
+                        }, true)[0];
+                        $scope.addPropTaxDec.verified_by = $filter('filter')($scope.users, {
+                            'position' : 'Municipal Assessor'
+                        }, true)[0];
+                        blocker.stop();
+                    } else {
+                        Alertify.error("Failed to fetch users' data for selection. Please contact the administrator.");
+                        blocker.stop();
+                    }
+                })
             }
 
             /**
@@ -78,6 +98,28 @@ define([
             $scope.closeModal = function () {
                 $uibModalInstance.dismiss();
             };
+
+            $scope.changeEntryType = function(type){
+                if (type == 'auto') {
+                    $scope.addPropTaxDec.chk_auto   = true;
+                    $scope.addPropTaxDec.chk_manual = false;
+
+                    delete $scope.addPropTaxDec.td_no;
+                    delete $scope.owner_name;
+                    delete $scope.td_effectivity;
+                    delete $scope.prop_location;
+                    delete $scope.improvement_records;
+                } else if (type == 'manual') {
+                    $scope.addPropTaxDec.chk_manual = true;
+                    $scope.addPropTaxDec.chk_auto   = false;
+
+                    $scope.improvement_records = [{}];
+                    delete $scope.addPropTaxDec.lot_no;
+                    delete $scope.addPropTaxDec.owner;
+                    delete $scope.lot_owners;
+                    
+                }
+            }
 
             $scope.getLotOwners = function(){
                 blocker.start();
@@ -108,15 +150,6 @@ define([
                         $scope.withExistingRecords = true;
                         $scope.improvement_records = res.data.records;
                         if ($scope.improvement_records.length == 0) Alertify.alert("<b>No records found!</b>");
-
-                        $scope.users = res.data.users;
-                        $scope.addPropTaxDec.prepared_by = $filter('filter')($scope.users, {
-                            'id' : res.data.user_id
-                        }, true)[0];
-                        $scope.addPropTaxDec.verified_by = $filter('filter')($scope.users, {
-                            'position' : 'Municipal Assessor'
-                        }, true)[0];
-
                         blocker.stop();
                     } else {
                         Alertify.error("An error occurred while fetching data. Please contact the administrator.");
@@ -147,7 +180,7 @@ define([
                     $scope.addPropTaxDec.improvements = $scope.improvement_records;
                     Service.save($scope.addPropTaxDec).then( function (res) {
                         if (res.data.status) {
-                            Alertify.success("Classification successfully added!");
+                            Alertify.success("Certification successfully added!");
 
                             $uibModalInstance.close(res.data.rowData);
                             blocker.stop();
@@ -178,7 +211,10 @@ define([
                 // $scope.infiniteScroll.numToAdd = 5;
                 // $scope.infiniteScroll.currentItems = 5;
                 
-                $scope.addPropTaxDec = {};
+                $scope.addPropTaxDec = {
+                    chk_auto    : false,
+                    chk_manual  : false,
+                };
 
                 $scope.withExistingRecords = false;
                 $scope.enabledOwnerSelection = false;

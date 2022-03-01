@@ -1,0 +1,197 @@
+<script type="text/ng-template" id="edit_qr_assessment_report.html">
+    <div block-ui="blockEditQrAssessmentReport">
+        <form name="form.editQrAssessmentReport" novalidate>
+            <div class="modal-header align-items-center">
+				<span class="fa-stack fa-lg">
+	                <i class="fas fa-square fa-stack-2x text-crimson"></i>
+	                <i class="fas fa-edit fa-stack-1x fa-inverse"></i>
+	            </span>
+
+				<h5 class="modal-title" style="letter-spacing: 1px;">EDIT DETAILS ON QUARTERLY REPORT</h5>
+
+	            <button type="button" class="close" aria-label="Close" ng-click="closeModal()">
+	                <span aria-hidden="true">
+	                    <i class="fas fa-times"></i>
+	                </span>
+	            </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="row">
+					<div class="col-6">
+						<div class="form-group">
+							<label for="type" class="font-weight-bold">Taxable or Exempt? <i class="text-danger">*</i></label>
+							<ui-select ng-model="editQrAssessmentReport.type" id="type" theme="bootstrap" reset-search-input="true" append-to-body="true" ng-change="updateType()" required>
+								<ui-select-match placeholder="Select Type">
+									<span>{{ $select.selected.name }}</span>
+								</ui-select-match>
+								<ui-select-choices style="font-size: 12px;" repeat="type in types | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+									<span>{{ type.name }}</span>
+								</ui-select-choices>
+							</ui-select>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="form-group">
+							<label for="type" class="font-weight-bold">Type <i class="text-danger">*</i></label>
+							<ui-select ng-disabled="editQrAssessmentReport.type == undefined" multiple close-on-select="true" ng-model="editQrAssessmentReport.subcategory" id="subcategory" theme="bootstrap" reset-search-input="true" append-to-body="true" required>
+								<ui-select-match placeholder="Select Type">
+									<span>{{ $item.name }}</span>
+								</ui-select-match>
+								<ui-select-choices style="font-size: 12px;" repeat="sub in subcategories | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+									<span>{{ sub.name }}</span>
+								</ui-select-choices>
+							</ui-select>
+						</div>
+					</div>
+                </div>
+				<table id="big-table" ng-if="editQrAssessmentReport.subcategory != undefined">
+					<tbody>
+						<tr>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Real Property Classification</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Land Area in Square Meters</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3" colspan="5">Number of Real Property Units (RPUs)</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3" colspan="7">Market Value</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3" colspan="5">Assessed Value</td>
+                            <!-- <td class="font-arial font-12-l text-center vert-middle py-3 px-3" colspan="3">Rate of Levy</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3" colspan="3">TOTAL COLLECTIBLES</td> -->
+                        </tr>
+                        <tr>
+                            <td class="no-border" colspan="2"></td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Land</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Building</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Machinery</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Other Improvements</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Total (3+4+5+6)</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Land</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3" colspan="3">Building</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Machinery</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Other Improvements</td>
+                            <td class="font-arial font-11-l text-center vert-middle py-3 px-3">Total<br />(8+9+10+12+13)-Residential<br />(8+11+12+13)-Others</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Land</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Building</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Machinery</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Other Improvements</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Total<br />(15+16+17+18)</td>
+                            <!-- <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Basic</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">SEF</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Idle Land</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Basic<br />(19 x 20)</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">SEF<br />(19 x 21)</td>
+                            <td class="font-arial font-12-l text-center vert-middle py-3 px-3">Total<br />(23 + 24)</td> -->
+                        </tr>
+                        <tr>
+                            <td class="no-border" colspan="8"></td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">P175,000 or less</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">over P175,000</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">Building</td>
+                            <td class="no-border" colspan="8"></td>
+                        </tr>
+                        <tr>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">1</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">2</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">3</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">4</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">5</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">6</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">7</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">8</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">9</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">10</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">11</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">12</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">13</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">14</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">15</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">16</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">17</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">18</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">19</td>
+                            <!-- <td class="font-arial font-12-l text-center vert-middle px-3">20</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">21</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">22</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">23</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">24</td>
+                            <td class="font-arial font-12-l text-center vert-middle px-3">25</td> -->
+                        </tr>
+                        <tr>
+                            <td class="font-arial font-15 vert-middle b-grey py-1 text-uppercase" colspan="19">{{ editQrAssessmentReport.type.name }}</td>
+                        </tr>
+                        <tr ng-repeat="(key, sub) in editQrAssessmentReport.subcategory">
+                            <td class="font-arial font-12-l vert-middle py-2">{{ sub.no }} {{ sub.name }}</td>
+
+                            <!-- Total Land Area in Sqm -->
+                            <td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" ng-model="editQrAssessmentReport.subcategory[key].data.total_land_area_sqm" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+
+                            <!-- Number of RPUs -->
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.no_rpu.land" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.no_rpu.building" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.no_rpu.machinery" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.no_rpu.others" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								{{ getTotal(editQrAssessmentReport.subcategory[key].data.no_rpu, 'rpu') | number:2 }}
+							</td>
+
+                            <!-- Market Value -->
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.market_value.land" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.market_value.building.below_limit" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.market_value.building.above_limit" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.market_value.building.building" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.market_value.machinery" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.market_value.others" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								{{ getTotal(editQrAssessmentReport.subcategory[key].data.market_value, 'mv', sub.attr) | number:2 }}
+							</td>
+
+                            <!-- Assessed Value -->
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.assessed_value.land" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.assessed_value.building" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.assessed_value.machinery" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								<input type="number" style="width: 150px;" ng-model="editQrAssessmentReport.subcategory[key].data.assessed_value.others" step="0.01" min="0.00" class="form-control" /> 
+							</td>
+							<td class="font-arial font-12-l vert-middle py-2 text-right">
+								{{ getTotal(editQrAssessmentReport.subcategory[key].data.assessed_value, 'av') | number:2 }}
+							</td>
+                        </tr>
+					</tbody>
+				</table>
+            </div>
+            <div class="modal-footer bordered">
+				<button type="submit" class="btn btn-default bg-crimson-red" ng-click="saveUpdatedDetails()">
+					<span>UPDATE</span>
+				</button>
+				<button type="button" class="btn btn-default" ng-click="closeModal()">
+					<span>CLOSE</span>
+				</button>
+			</div>
+        </form>
+    </div>
+</script>

@@ -58,7 +58,22 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
-                
+                blocker.start();
+                Service.getSelectionDetails().then(result => {
+                    if (result.data.users != undefined) {
+                        $scope.users = result.data.users;
+                        $scope.addNoPropDec.prepared_by = $filter('filter')($scope.users, {
+                            'id' : result.data.user_id
+                        }, true)[0];
+                        $scope.addNoPropDec.verified_by = $filter('filter')($scope.users, {
+                            'position' : 'Municipal Assessor'
+                        }, true)[0];
+                        blocker.stop();
+                    } else {
+                        Alertify.error("Failed to fetch users' data for selection. Please contact the administrator.");
+                        blocker.stop();
+                    }
+                })
             }
 
             /**
@@ -82,7 +97,6 @@ define([
 
                             Alertify.alert('RECORDS FOUND!!! <br><br>' + strOwners);
 
-                            $scope.withExistingRecords = true;
                         } else {
                             $scope.withExistingRecords = false;
                             blocker.start();
@@ -124,20 +138,42 @@ define([
              * @return {Object}
              */
             $scope.save = function () {
-                Alertify.confirm("Are you sure you want to save details for this certification?", function () {
-                    blocker.start();
+                blocker.start();
+                Service.verifyDeclareeRecords($scope.addNoPropDec.declarees).then(res => {
+                    if (res.data.records != undefined) {
+                        blocker.stop();
 
-                    Service.save($scope.addNoPropDec).then( function (res) {
-                        if (res.data.status) {
-                            Alertify.success("Release of certification was successfully recorded!");
-
-                            $uibModalInstance.close(res.data.rowData);
-                            blocker.stop();
+                        if (res.data.records.length > 0) {
+                            var strOwners = '';
+                            angular.forEach(res.data.records, function (value, key) {
+                                strOwners += '>> TD#<b>' + value.td_no + ' | </b> Owner: <b><i>' + value.owner + '</i></b>';
+                            });
+                            
+                            var alertMsg = 'RECORDS FOUND!!! <br><br>' + strOwners + '<br><br>Create certification anyway?';
                         } else {
-                            Alertify.error("An error occurred while saving! Please contact the administrator.");
-                            blocker.stop();
+                            var alertMsg = 'Are you sure you want to save details for this certification?';
                         }
-                    });
+
+                        Alertify.confirm(alertMsg, function () {
+                            blocker.start();
+        
+                            Service.save($scope.addNoPropDec).then( function (res) {
+                                if (res.data.status) {
+                                    Alertify.success("Release of certification was successfully recorded!");
+        
+                                    $uibModalInstance.close(res.data.rowData);
+                                    blocker.stop();
+                                } else {
+                                    Alertify.error("An error occurred while saving! Please contact the administrator.");
+                                    blocker.stop();
+                                }
+                            });
+                        });
+
+                    } else {
+                        Alertify.error("An error occurred while verifying records. Please contact the administrator.");
+                        blocker.stop();
+                    }
                 });
             };
 

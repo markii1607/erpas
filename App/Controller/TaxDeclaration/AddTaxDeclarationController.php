@@ -78,7 +78,7 @@
 
         public function saveNewTaxDeclaration($input)
         {
-            // print_r($this->convertValue(15, 'ha.'));
+            // print_r($input);
             // die();
 
             try {
@@ -153,7 +153,9 @@
                     $tdClassEntryData = [
                         'tax_declaration_id'    =>  $newTaxDecID,
                         'classification_id'     =>  $value->classification->id,
-                        'market_value_id'       =>  isset($value->sub_classification) ? $value->sub_classification->id : null,
+                        // 'market_value_id'       =>  isset($value->sub_classification) ? $value->sub_classification->id : null,
+                        'unit_value'            =>  $value->unit_value->area,
+                        'uv_unit_measurement'   =>  $value->unit_value->unit->name,
                         'area'                  =>  $value->area,
                         'unit_measurement'      =>  $value->unit->name,
                         'area_in_sqm'           =>  ($value->unit->name == 'sq.m') ? $value->area : $this->convertValue($value->area, 'sq.m'),

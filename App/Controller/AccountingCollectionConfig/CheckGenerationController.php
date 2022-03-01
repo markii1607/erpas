@@ -1,9 +1,9 @@
 <?php
-    namespace App\Controller\TreasurerTdMonitoring;
+    namespace App\Controller\AccountingCollectionConfig;
 
-    require_once("TreasurerTdMonitoringController.php");
+    require_once("AccountingCollectionConfigController.php");
 
-    use App\Controller\TreasurerTdMonitoring\TreasurerTdMonitoringController as ModuleController;
+    use App\Controller\AccountingCollectionConfig\AccountingCollectionConfigController as ModuleController;
     use Exception;
 
     class CheckGenerationController extends ModuleController {
@@ -87,8 +87,7 @@
 
                 $output = [
                     'status'    => $status,
-                    'rowData'   => []
-                    // 'rowData'   => $this->getTaxDeclaration($newOrID)[0]
+                    'rowData'   => $this->getGeneratedChkNumbers($newCheckID)[0]
                 ];
 
                 return $output;

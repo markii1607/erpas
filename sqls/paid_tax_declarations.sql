@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2021 at 07:58 AM
+-- Generation Time: Jul 05, 2021 at 02:58 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -33,7 +33,9 @@ CREATE TABLE `paid_tax_declarations` (
   `user_id` int(5) UNSIGNED NOT NULL COMMENT 'user ID of collecting officer',
   `transaction_date` date NOT NULL,
   `or_no` text NOT NULL,
-  `amount_paid` decimal(22,2) NOT NULL,
+  `total_basic` decimal(22,2) NOT NULL,
+  `total_sef` decimal(22,2) NOT NULL,
+  `total_amount_paid` decimal(22,2) NOT NULL,
   `paid_by` text NOT NULL,
   `has_check_no` tinyint(1) DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT 1,

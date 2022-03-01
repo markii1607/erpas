@@ -288,7 +288,8 @@
 
             foreach ($result as $key => $value) {
                 $result[$key]['classification']         = $this->getClassifications($value['classification_id'])[0];
-                $result[$key]['sub_classification']     = $this->getMarketValues('', '', $value['market_value_id'])[0];
+                // $result[$key]['sub_classification']     = $this->getMarketValues('', '', $value['market_value_id'])[0];
+                $result[$key]['unit_value']             = floatval($value['unit_value']);
                 $result[$key]['area']                   = floatval($value['area']);
                 $result[$key]['market_value']           = floatval($value['market_value']);
                 $result[$key]['assessed_value']         = floatval($value['assessed_value']);

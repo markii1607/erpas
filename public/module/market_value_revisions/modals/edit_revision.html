@@ -37,7 +37,7 @@
                                         <ui-select-match placeholder="Select Sub-Classification">
                                             {{ $select.selected.name }}
                                         </ui-select-match>
-                                        <ui-select-choices style="font-size: 12px;" repeat="subClfn in subclassifications | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
+                                        <ui-select-choices style="font-size: 12px;" repeat="subClfn in sub_classifications | filter: $select.search | limitTo: infiniteScroll.currentItems" infinite-scroll="addMoreItems()" infinite-scroll-distance="2">
                                             <span>{{subClfn.name}}</span>
                                         </ui-select-choices>
                                     </ui-select>

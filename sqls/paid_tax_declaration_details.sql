@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2021 at 11:13 AM
+-- Generation Time: Jul 06, 2021 at 05:02 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -32,6 +32,7 @@ CREATE TABLE `paid_tax_declaration_details` (
   `id` int(5) UNSIGNED NOT NULL,
   `paid_tax_declaration_id` int(5) UNSIGNED NOT NULL,
   `tax_declaration_id` int(5) UNSIGNED NOT NULL,
+  `tax_due` decimal(22,2) NOT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `created_by` int(5) UNSIGNED NOT NULL,
   `created_at` datetime NOT NULL,

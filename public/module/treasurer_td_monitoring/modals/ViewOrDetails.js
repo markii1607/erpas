@@ -32,7 +32,7 @@ define([
              * @return {[type]}
              */
             _this.getDetails = function (id) {
-                return $http.get(APP.SERVER_BASE_URL + '/App/Service/TreasurerTdMonitoring/CheckGenerationService.php/getOrTdList?ptd_id=' + id);
+                return $http.get(APP.SERVER_BASE_URL + '/App/Service/AccountingCollectionConfig/CheckGenerationService.php/getOrTdList?ptd_id=' + id);
             }
 
         }

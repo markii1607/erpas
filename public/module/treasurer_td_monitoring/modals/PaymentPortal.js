@@ -1,7 +1,8 @@
 define([
     'app',
+    'moment',
     'airDatepickeri18n',
-], function (app) {
+], function (app, moment) {
     app.factory('PaymentPortalFactory', [
         'alertify',
         function (alertify) {
@@ -57,7 +58,63 @@ define([
              * @return {[mixed]}
              */
             _loadDetails = function () {
+                $scope.addPaymentDetail.transaction_date = moment().format('LL');
+                console.log($scope.addPaymentDetail.transaction_date);
+            }
+
+            $scope.addRow = function() {
+                $scope.addPaymentDetail.records.push({
+                    declarant: null,
+                    location: null,
+                    lot_no: null,
+                    td_no: null,
+                    land: null,
+                    improvement: null,
+                    total: null,
+                    tax_due: null,
+                })
+            }
+
+            $scope.removeRow = function(index) {
+                $scope.addPaymentDetail.records.splice(index, 1)
+            }
+
+            $scope.addRowInstallment = function(index) {
+                $scope.td_records[index].payments.push(
+                    {
+                        full_payment    : $scope.td_records[index].tax_due,
+                        penalty_amount  : 0,
+                        total_per_row   : $scope.td_records[index].tax_due,
+                    }
+                )
+
+                // $scope.computeTotal();
+            }
+
+            $scope.removeRowInstallment = function(index, subIndex) {
+                $scope.td_records[index].payments.splice(subIndex, 1)
+                // $scope.computeTotal();
+            }
+
+            $scope.computeTotalPerRow = function(index, subIndex){
+                $scope.td_records[index].payments[subIndex].total_per_row = Number($scope.td_records[index].payments[subIndex].full_payment) + Number($scope.td_records[index].payments[subIndex].penalty_amount);
+                $scope.td_records[index].payments[subIndex].total_per_row = Math.round(($scope.td_records[index].payments[subIndex].total_per_row + Number.EPSILON) * 100) / 100;
+                // $scope.computeTotal();
+            }
+
+            $scope.computeTotal = function(condition = ''){
+                var total = 0;
+                angular.forEach($scope.td_records, (value, key) => {
+                    angular.forEach(value.payments, (pvalue, pkey) => {
+                        total += Number(pvalue.total_per_row)
+                    })
+                })
                 
+                $scope.addPaymentDetail.total_basic = total
+                $scope.addPaymentDetail.total_sef   = total
+                $scope.addPaymentDetail.grand_total = total * 2
+
+                return (condition == 'total') ? total*2 : total
             }
 
             /**
@@ -97,7 +154,13 @@ define([
 
             _formatSubmittedData = function(data) {
                 angular.forEach($scope.td_records, (value, key) => {
-                    $scope.addPaymentDetail.records.push({id : value.id});
+                    $scope.addPaymentDetail.records.push(
+                        {
+                            id          : value.id,
+                            tax_due     : value.tax_due,
+                            payments    : value.payments
+                        }
+                    );
                 })
             }
 
@@ -110,9 +173,39 @@ define([
                 Factory.autoloadSettings();
                 
                 $scope.td_records = ParamData.data.records
+                angular.forEach($scope.td_records, function(value, key) {
+                    $scope.td_records[key].tax_due  = Number(value.total_assessed_value) * 0.01;
+                    $scope.td_records[key].tax_due  = Math.round(($scope.td_records[key].tax_due + Number.EPSILON) * 100) / 100;
+                    $scope.td_records[key].payments = [
+                        {
+                            full_payment    : $scope.td_records[key].tax_due,
+                            penalty_amount  : 0,
+                            total_per_row   : $scope.td_records[key].tax_due,
+                        }
+                    ];
+                })
+                console.log($scope.td_records);
                 $scope.addPaymentDetail = {
-                    records : []
+                    total_basic : 0,
+                    total_sef   : 0,
+                    grand_total : 0,
+                    records     : []
                 };
+
+                // $scope.computeTotal();
+
+                $timeout(function() {
+                    angular.element('#transaction_date').datepicker({
+                        language: 'en',
+                        autoClose: true,
+                        dateFormat: 'MM d, yyyy',
+                        position: 'bottom left',
+                        maxDate: new Date(), 
+                        onSelect: function(formattedDate, date, inst) {
+                            $scope.addPaymentDetail.transaction_date = angular.copy(formattedDate);
+                        }
+                    });
+                }, 500);
 
                 _loadDetails();
             };
