@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2021 at 08:07 AM
+-- Generation Time: Aug 12, 2021 at 12:30 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -33,6 +33,8 @@ CREATE TABLE `tax_declaration_classifications` (
   `tax_declaration_id` int(5) NOT NULL,
   `classification_id` int(11) NOT NULL,
   `market_value_id` int(5) UNSIGNED DEFAULT NULL,
+  `unit_value` decimal(22,2) NOT NULL,
+  `uv_unit_measurement` text NOT NULL,
   `area` decimal(22,2) NOT NULL,
   `unit_measurement` text NOT NULL,
   `area_in_sqm` decimal(22,6) DEFAULT NULL,

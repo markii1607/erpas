@@ -73,12 +73,34 @@ define([
                 Service.getDetails().then(res => {
                     if (res.data.owners != undefined) {
                         $scope.lot_owners = res.data.owners;
+
+                        $scope.users = res.data.users;
+                        $scope.addPropTaxDec.prepared_by = $filter('filter')($scope.users, {
+                            'id' : res.data.user_id
+                        }, true)[0];
+                        $scope.addPropTaxDec.verified_by = $filter('filter')($scope.users, {
+                            'position' : 'Municipal Assessor'
+                        }, true)[0];
+
                         blocker.stop();
                     } else {
                         Alertify.error('<b>An error occurred while fetching data. Please contact the administrator.</b>');
                         blocker.stop();
                     }
                 })
+            }
+
+            $scope.changeEntryType = function(type){
+                if (type == 'auto') {
+                    $scope.addPropTaxDec.chk_auto   = true;
+                    $scope.addPropTaxDec.chk_manual = false;
+
+                } else if (type == 'manual') {
+                    $scope.addPropTaxDec.chk_manual = true;
+                    $scope.addPropTaxDec.chk_auto   = false;
+
+                    $scope.property_records = [{}];
+                }
             }
 
             /**
@@ -88,21 +110,6 @@ define([
             $scope.closeModal = function () {
                 $uibModalInstance.dismiss();
             };
-
-            $scope.getLotOwners = function(){
-                blocker.start();
-                Service.getLotOwners($scope.addPropTaxDec.lot_no).then(res => {
-                    $scope.enabledOwnerSelection = true;
-                    if (res.data.owners != undefined) {
-                        $scope.lot_owners = res.data.owners;
-                        if ($scope.lot_owners.length == 0) Alertify.alert("<b>No records found for Lot No#<i>" + $scope.addPropTaxDec.lot_no + "</i></b>");
-                        blocker.stop();
-                    } else {
-                        Alertify.error("An error occurred while fetching data. Please contact the administrator.");
-                        blocker.stop();
-                    }
-                })
-            }
 
             $scope.reset = function(){
                 $scope.withExistingRecords = false;
@@ -115,14 +122,6 @@ define([
                         $scope.withExistingRecords = true;
                         $scope.property_records = res.data.records;
                         if ($scope.property_records.length == 0) Alertify.alert("<b>No records found!</b>");
-
-                        $scope.users = res.data.users;
-                        $scope.addPropTaxDec.prepared_by = $filter('filter')($scope.users, {
-                            'id' : res.data.user_id
-                        }, true)[0];
-                        $scope.addPropTaxDec.verified_by = $filter('filter')($scope.users, {
-                            'position' : 'Municipal Assessor'
-                        }, true)[0];
 
                         blocker.stop();
                     } else {
@@ -153,7 +152,7 @@ define([
                     $scope.addPropTaxDec.property_records = $scope.property_records;
                     Service.save($scope.addPropTaxDec).then( function (res) {
                         if (res.data.status) {
-                            Alertify.success("Classification successfully added!");
+                            Alertify.success("Certification successfully added!");
 
                             $uibModalInstance.close(res.data.rowData);
                             blocker.stop();
@@ -184,7 +183,10 @@ define([
                 // $scope.infiniteScroll.numToAdd = 5;
                 // $scope.infiniteScroll.currentItems = 5;
                 
-                $scope.addPropTaxDec = {};
+                $scope.addPropTaxDec = {
+                    chk_auto    : false,
+                    chk_manual  : false,
+                };
 
                 $scope.withExistingRecords = false;
                 $scope.enabledOwnerSelection = false;

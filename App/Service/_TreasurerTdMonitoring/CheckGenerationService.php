@@ -1,8 +1,8 @@
 <?php
-    require_once('../../Controller/TreasurerTdMonitoring/CheckGenerationController.php');
+    require_once('../../Controller/AccountingCollectionConfig/CheckGenerationController.php');
     require_once('../../Config/db_connection.php');
 
-    use App\Controller\TreasurerTdMonitoring\CheckGenerationController;
+    use App\Controller\AccountingCollectionConfig\CheckGenerationController;
 
     /**
      * `functionHandler` Handler the controller and its method.

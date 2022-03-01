@@ -189,6 +189,7 @@
                 'TD.survey_no'          => ':lot_no',
                 'TD.lot_no'             => ':lot_no',
                 'TD.block_no'           => ':lot_no',
+                'TD.boundaries'   => ':lot_no',
                 'TD.boundaries_north'   => ':lot_no',
                 'TD.boundaries_south'   => ':lot_no',
                 'TD.boundaries_east'    => ':lot_no',

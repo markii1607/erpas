@@ -50,6 +50,7 @@
                 'TD.canceled_td_id',
                 'TD.ordinance_no',
                 'DATE_FORMAT(TD.ordinance_date, "%m/%d/%Y") as ordinance_date',
+                'DATE_FORMAT(TD.created_at, "%M %d, %Y") as created_at',
                 'TD.approvers',
                 'TD.memoranda',
                 'TD.status',

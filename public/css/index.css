@@ -792,6 +792,10 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
     border-bottom: none;
 }
 
+td.border-1 {
+    border: 1px solid black !important;
+}
+
 /* Hiding the checkbox, but allowing it to be focused */
 .badgebox
 {
@@ -813,6 +817,7 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
     
     /* Adding a light border */
     box-shadow: inset 0px 0px 5px;
+    color: white;
     /* Taking the difference out of the padding */
 }
 
@@ -829,32 +834,8 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
     border-color: #ddd;
 }
 
-.lbl-super
+.lbl-selected 
 {
-    background-color:#ED3850; 
-    color: white; 
-}
-
-.lbl-admin
-{
-    background-color:#ED389A; 
-    color: white; 
-}
-
-.lbl-treas
-{
-    background-color:#38C3ED; 
-    color: white; 
-}
-
-.lbl-acctg
-{
-    background-color:#38E6ED; 
-    color: white; 
-}
-
-.lbl-selected
-{
-    background-color:#e7972d; 
-    color: white; 
+    background-color: #2872fc;
+    color: white
 }
